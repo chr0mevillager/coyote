@@ -1,6 +1,15 @@
-import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
+import {
+	MessageActionRow,
+	MessageButton,
+	MessageEmbed,
+	CommandInteraction,
+	CacheType,
+	InteractionCollector,
+	MessageComponentInteraction,
+} from "discord.js";
 import { CustomCommand } from "../exports/types";
 import { client } from "../exports/client";
+import { v4 as uuidv4 } from "uuid";
 
 let send: CustomCommand = {
 	data: {
@@ -127,33 +136,33 @@ let send: CustomCommand = {
 		if (interaction.options.getString("link") && interaction.options.getString("link").match(/^((https:\/\/)|(http:\/\/))\w{2,100}(\.{1,10}\w{1,100}){1,100}(\/\w{0,100}){0,100}/gm)) link = interaction.options.getString("link");
 
 		//Buttons
-		const buttonRow = new MessageActionRow()
+		const buttonRow = (uuid: string) => new MessageActionRow()
 			.addComponents(
 				new MessageButton()
-					.setCustomId("send")
+					.setCustomId(uuid + "::send")
 					.setLabel("Send")
 					.setStyle("SUCCESS"),
 				new MessageButton()
-					.setCustomId("cancel")
+					.setCustomId(uuid + "::cancel")
 					.setLabel("Cancel")
 					.setStyle("DANGER"),
 			);
-		const buttonRowDisabled = new MessageActionRow()
+		const buttonRowDisabled = (uuid: string) => new MessageActionRow()
 			.addComponents(
 				new MessageButton()
-					.setCustomId("send")
+					.setCustomId(uuid + "::send")
 					.setLabel("Send")
 					.setStyle("SUCCESS")
 					.setDisabled(true),
 				new MessageButton()
-					.setCustomId("cancel")
+					.setCustomId(uuid + "::cancel")
 					.setLabel("Cancel")
 					.setStyle("DANGER")
 					.setDisabled(true),
 			);
-
 		//Announcement
 		if (interaction.options.getSubcommand() == "announcement") {
+			let uuid = uuidv4();
 			//Send preview
 			await interaction.reply({
 				content: "**Here is your message:**",
@@ -166,15 +175,13 @@ let send: CustomCommand = {
 						.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 
 				],
-				components: [buttonRow],
+				components: [buttonRow(uuid)],
 				ephemeral: true,
 			});
 			//Button Responses
-			let filter = i => i.customId === "send" || i.customId === "cancel";
-			let collector = interaction.channel.createMessageComponentCollector({ filter, time: 60000 });
-			collector.on("collect", async i => {
-				if (i.customId === "send") {
-					await i.deferUpdate();
+			let collector = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::send` || i.customId === `${uuid}::cancel`, time: 60000 });
+			collector.on("collect", async (i) => {
+				if (i.customId === uuid + "::send") {
 					await interaction.editReply({
 						content: "\u200B",
 						embeds: [
@@ -182,7 +189,7 @@ let send: CustomCommand = {
 								.setColor("#3ba55d")
 								.setTitle("Sent!")
 						],
-						components: [buttonRowDisabled],
+						components: [buttonRowDisabled(uuid)],
 					});
 					(client.channels.cache.find((channel) => (channel as any).id === interaction.channelId) as any).send({
 						embeds: [
@@ -195,19 +202,8 @@ let send: CustomCommand = {
 
 						],
 					});
-					(client.channels.cache.find((channel) => (channel as any).id === interaction.channelId) as any).send({
-						embeds: [
-							new MessageEmbed()
-								.setColor("#2f3136")
-								.setTitle(title)
-								.setDescription(description + "\n" + "\u200B")
-								.setURL(link)
-								.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
-
-						],
-					});
-				} else {
 					await i.deferUpdate();
+				} else {
 					await interaction.editReply({
 						content: "\u200B",
 						embeds: [
@@ -215,8 +211,9 @@ let send: CustomCommand = {
 								.setColor("#ed4245")
 								.setTitle("Canceled!")
 						],
-						components: [buttonRowDisabled],
+						components: [buttonRowDisabled(uuid)],
 					});
+					await i.deferUpdate();
 				}
 			});
 			collector.on("end", async i => {
@@ -227,12 +224,13 @@ let send: CustomCommand = {
 							.setColor("#ed4245")
 							.setTitle("Timed out!")
 					],
-					components: [buttonRowDisabled],
+					components: [buttonRowDisabled(uuid)],
 				});
 			})
 		}
 		//Polls
 		if (interaction.options.getSubcommand() == "poll") {
+			let uuid = uuidv4();
 			option_1 = interaction.options.getString("option_1");
 			option_2 = interaction.options.getString("option_2");
 
@@ -288,16 +286,14 @@ let send: CustomCommand = {
 						.setFields(options)
 
 				],
-				components: [buttonRow],
+				components: [buttonRow(uuid)],
 				ephemeral: true,
 			});
 
 			//Button Responses
-			let filter = i => i.customId === "send" || i.customId === "cancel";
-			let collector = interaction.channel.createMessageComponentCollector({ filter, time: 60000 });
+			let collector = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::send` || i.customId === `${uuid}::cancel`, time: 60000 });
 			collector.on("collect", async i => {
-				if (i.customId === "send") {
-					await i.deferUpdate();
+				if (i.customId === uuid + "::send") {
 					await interaction.editReply({
 						content: "\u200B",
 						embeds: [
@@ -305,7 +301,7 @@ let send: CustomCommand = {
 								.setColor("#3ba55d")
 								.setTitle("Sent!")
 						],
-						components: [buttonRowDisabled],
+						components: [buttonRowDisabled(uuid)],
 					});
 					(client.channels.cache.find((channel) => (channel as any).id === interaction.channelId) as any).send({
 						embeds: [
@@ -319,8 +315,8 @@ let send: CustomCommand = {
 
 						],
 					});
-				} else {
 					await i.deferUpdate();
+				} else {
 					await interaction.editReply({
 						content: "\u200B",
 						embeds: [
@@ -328,8 +324,9 @@ let send: CustomCommand = {
 								.setColor("#ed4245")
 								.setTitle("Canceled!")
 						],
-						components: [buttonRowDisabled],
+						components: [buttonRowDisabled(uuid)],
 					});
+					await i.deferUpdate();
 				}
 			});
 			collector.on("end", async i => {
@@ -340,11 +337,39 @@ let send: CustomCommand = {
 							.setColor("#ed4245")
 							.setTitle("Timed out!")
 					],
-					components: [buttonRowDisabled],
+					components: [buttonRowDisabled(uuid)],
 				});
 			})
 		}
 	},
 };
-
 export default send;
+
+// const listeners: Record<string, InteractionCollector<MessageComponentInteraction<CacheType>>> = {};
+// const buttonCallbacks = new Map<string, (interaction: MessageComponentInteraction<CacheType>) => void>();
+// function createButtonListener(interaction: CommandInteraction<CacheType>) {
+// 	const collector = interaction.channel.createMessageComponentCollector({});
+
+// 	collector.on("collect", (interaction) => {
+// 		if (buttonCallbacks.has(interaction.customId)) {
+// 			buttonCallbacks.get(interaction.customId)(interaction);
+// 		}
+// 	});
+
+// 	listeners[interaction.channel.id] = collector;
+// }
+
+// function createButtonListeners(interaction: CommandInteraction<CacheType>, buttonIds: string[], callback: (interaction: MessageComponentInteraction<CacheType>) => boolean) {
+// 	if (!listeners[interaction.channel.id]) createButtonListener(interaction);
+
+// 	function handler(interaction: MessageComponentInteraction<CacheType>) {
+// 		const shouldRemove = callback(interaction);
+// 		if (shouldRemove) {
+// 			buttonIds.forEach((buttonId) => buttonCallbacks.delete(buttonId));
+// 		}
+// 	}
+
+// 	buttonIds.forEach((buttonId) => {
+// 		buttonCallbacks.set(buttonId, handler);
+// 	});
+// }
