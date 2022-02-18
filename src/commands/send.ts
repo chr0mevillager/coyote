@@ -19,7 +19,7 @@ let send: CustomCommand = {
 		options: [
 			{
 				name: "message",
-				description: "What do you want to send feedback about?",
+				description: "Send a fancy message!",
 				type: 1,
 				options: [
 					{

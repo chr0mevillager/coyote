@@ -12,6 +12,7 @@ let help: CustomCommand = {
 				new MessageEmbed()
 					.setColor("#389af0")
 					.setTitle("/send announcement < Title > < Description > [ Image URL ]")
+					.setDescription("Send a fancy message!")
 					.addFields(
 						{
 							name: "`Title`",
@@ -29,12 +30,7 @@ let help: CustomCommand = {
 				new MessageEmbed()
 					.setColor("#389af0")
 					.setTitle("/info")
-					.addFields(
-						{
-							name: "Get information about the bot!",
-							value: "\u200B",
-						},
-					)
+					.setDescription("Get information about the bot!")
 			],
 			components: [
 				new MessageActionRow()
