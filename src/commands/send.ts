@@ -42,93 +42,6 @@ let send: CustomCommand = {
 					},
 				]
 			},
-			// {
-			// 	name: "raw_embed",
-			// 	description: "Send a complex embed.",
-			// 	type: 1,
-			// 	options: [
-			// 		{
-			// 			name: "components",
-			// 			description: "What components would you like in your embed?",
-			// 			type: "STRING",
-			// 			required: true,
-			// 		},
-			// 	]
-			// },
-			// {
-			// 	name: "warning",
-			// 	description: "What do you want to warn?",
-			// 	type: 1,
-			// 	options: [
-			// 		{
-			// 			name: "title",
-			// 			description: "What do you want the message to be titled?",
-			// 			type: "STRING",
-			// 			required: true,
-			// 		},
-			// 		{
-			// 			name: "description",
-			// 			description: "What do you want the description to be?",
-			// 			type: "STRING",
-			// 			required: true,
-			// 		},
-			// 	]
-			// },
-			// {
-			// 	name: "poll",
-			// 	description: "What do you want to make a poll about?",
-			// 	type: 1,
-			// 	options: [
-			// 		{
-			// 			name: "title",
-			// 			description: "What do you want the message to be titled?",
-			// 			type: "STRING",
-			// 			required: true,
-			// 		},
-			// 		{
-			// 			name: "description",
-			// 			description: "What do you want the description to be?",
-			// 			type: "STRING",
-			// 			required: true,
-			// 		},
-			// 		{
-			// 			name: "option_1",
-			// 			description: "What will the first option be?",
-			// 			type: "STRING",
-			// 			required: true,
-			// 		},
-			// 		{
-			// 			name: "option_2",
-			// 			description: "What will the second option be?",
-			// 			type: "STRING",
-			// 			required: true,
-			// 		},
-			// 		{
-			// 			name: "option_3",
-			// 			description: "What will the third option be?",
-			// 			type: "STRING",
-			// 			required: false,
-			// 		},
-			// 		{
-			// 			name: "option_4",
-			// 			description: "What will the fourth option be?",
-			// 			type: "STRING",
-			// 			required: false,
-			// 		},
-			// 		{
-			// 			name: "option_5",
-			// 			description: "What will the fifth option be?",
-			// 			type: "STRING",
-			// 			required: false,
-			// 		},
-			// 		{
-			// 			name: "link",
-			// 			description: "What do you want to link?",
-			// 			type: "STRING",
-			// 			required: false,
-			// 		},
-			// 	]
-			// }
 		],
 	},
 
@@ -149,16 +62,13 @@ let send: CustomCommand = {
 		let description: string = "\u200B";
 		let image: string = "";
 
-		let option_1: string = "";
-		let option_2: string = "";
-		let option_3: string = "";
-		let option_4: string = "";
-		let option_5: string = "";
-
 		//Get selected variables
 		title = interaction.options.getString("title");
 		description = interaction.options.getString("description");
 		if (interaction.options.getString("image") && interaction.options.getString("image").match(/^((https:\/\/)|(http:\/\/))\w{2,100}(\.{1,10}\w{1,100}){1,100}(\/\w{0,100}){0,100}/gm)) image = interaction.options.getString("image");
+
+		if (title.length > 256) title = title.slice(0, 256);
+		if (description.length > 4000) description = description.slice(0, 4000);
 
 		//Buttons
 		const buttonRow = (uuid: string) => new MessageActionRow()
@@ -257,32 +167,3 @@ let send: CustomCommand = {
 };
 
 export default send;
-
-// const listeners: Record<string, InteractionCollector<MessageComponentInteraction<CacheType>>> = {};
-// const buttonCallbacks = new Map<string, (interaction: MessageComponentInteraction<CacheType>) => void>();
-// function createButtonListener(interaction: CommandInteraction<CacheType>) {
-// 	const collector = interaction.channel.createMessageComponentCollector({});
-
-// 	collector.on("collect", (interaction) => {
-// 		if (buttonCallbacks.has(interaction.customId)) {
-// 			buttonCallbacks.get(interaction.customId)(interaction);
-// 		}
-// 	});
-
-// 	listeners[interaction.channel.id] = collector;
-// }
-
-// function createButtonListeners(interaction: CommandInteraction<CacheType>, buttonIds: string[], callback: (interaction: MessageComponentInteraction<CacheType>) => boolean) {
-// 	if (!listeners[interaction.channel.id]) createButtonListener(interaction);
-
-// 	function handler(interaction: MessageComponentInteraction<CacheType>) {
-// 		const shouldRemove = callback(interaction);
-// 		if (shouldRemove) {
-// 			buttonIds.forEach((buttonId) => buttonCallbacks.delete(buttonId));
-// 		}
-// 	}
-
-// 	buttonIds.forEach((buttonId) => {
-// 		buttonCallbacks.set(buttonId, handler);
-// 	});
-// }

@@ -11,63 +11,28 @@ let help: CustomCommand = {
 			embeds: [
 				new MessageEmbed()
 					.setColor("#389af0")
-					.setTitle("/send announcement < Title > [ Link ] [ Description ]")
+					.setTitle("/send announcement < Title > < Description > [ Image URL ]")
 					.addFields(
-						// {
-						// 	name: "`Header`",
-						// 	value: "Type in a short world or phrase that is less than 255 charicters."
-						// },
-						//{ name: "\u200B", value: "\u200B" },
 						{
 							name: "`Title`",
-							value: "This is a required field. Type in a word or phrase that is less than 255 charicters."
+							value: "Type in a word or phrase that is less than 200 charicters."
 						},
-						//{ name: "\u200B", value: "\u200B" },
-						{
-							name: "`Link`",
-							value: "Type in a link. The link provided here will be applied to the title."
-						},
-						//{ name: "\u200B", value: "\u200B" },
 						{
 							name: "`Description`",
-							value: "Type in a main description. To create a tab, use `\\t`. To make a line enter, use `\\n`. To add a link to a specific word, type `Your_Word_Here[Your_Link_Here]`."
+							value: "Type in a main description that is less than 4000 charicters."
+						},
+						{
+							name: "`Image`",
+							value: "Type in a link to an image."
 						},
 					),
-				// new MessageEmbed()
-				// 	.setColor("#389af0")
-				// 	.setTitle("/send warning < Title > [ Description ]")
-				// 	.addFields(
-				// 		{
-				// 			name: "`Title`",
-				// 			value: "This is a required field. Type in a word or phrase that is less than 255 charicters."
-				// 		},
-				// 		//{ name: "\u200B", value: "\u200B" },
-				// 		{
-				// 			name: "`Description`",
-				// 			value: "Type in a main description. To create a tab, use `\\t`. To make a line enter, use `\\n`. To add a link to a specific word, type `Your_Word_Here[Your_Link_Here]`."
-				// 		},
-				// 	),
 				new MessageEmbed()
 					.setColor("#389af0")
-					.setTitle("/send poll < Title > [ Link ] [ Description ] < Options >")
+					.setTitle("/info")
 					.addFields(
 						{
-							name: "`Title`",
-							value: "This is a required field. Type in a word or phrase that is less than 255 charicters."
-						},
-						//{ name: "\u200B", value: "\u200B" },
-						{
-							name: "`Link`",
-							value: "Type in a link. The link provided here will be applied to the title."
-						},
-						//{ name: "\u200B", value: "\u200B" },
-						{
-							name: "`Description`",
-							value: "Type in a main description. To create a tab, use `\\t`. To make a line enter, use `\\n`. To add a link to a specific word, type `Your_Word_Here[Your_Link_Here]`."
-						},
-						{
-							name: "`Options`",
-							value: "Type in up to 5 options for users to pick from."
+							name: "Get information about the bot!",
+							value: "\u200B",
 						},
 					)
 			],
@@ -78,7 +43,6 @@ let help: CustomCommand = {
 							.setLabel("Support Server")
 							.setStyle("LINK")
 							.setURL("https://google.com")
-						//.setCustomId("server")
 					)
 			],
 			ephemeral: true,
