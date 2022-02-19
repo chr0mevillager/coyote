@@ -7,6 +7,7 @@ import {
 	InteractionCollector,
 	MessageComponentInteraction,
 	GuildMember,
+	TextChannel,
 } from "discord.js";
 import { CustomCommand } from "../exports/types";
 import { client } from "../exports/client";
@@ -116,17 +117,9 @@ let send: CustomCommand = {
 			//Button Responses
 			let collector = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::send` || i.customId === `${uuid}::cancel`, time: 60000 });
 			collector.on("collect", async (i) => {
-				if (i.customId === uuid + "::send") {
-					await interaction.editReply({
-						content: "\u200B",
-						embeds: [
-							new MessageEmbed()
-								.setColor("#3ba55d")
-								.setTitle("Sent!")
-						],
-						components: [buttonRowDisabled(uuid)],
-					});
-					(client.channels.cache.find((channel) => (channel as any).id === interaction.channelId) as any).send({
+				//Send final
+				try {
+					await (client.channels.cache.find((channel) => (channel as any).id === interaction.channelId) as any).send({
 						embeds: [
 							new MessageEmbed()
 								.setColor("#2f3136")
@@ -137,14 +130,51 @@ let send: CustomCommand = {
 
 						],
 					});
+					if (i.customId === uuid + "::send") {
+						await interaction.editReply({
+							content: "\u200B",
+							embeds: [
+								new MessageEmbed()
+									.setColor("#3ba55d")
+									.setTitle("Sent!")
+							],
+							components: [buttonRowDisabled(uuid)],
+						});
+					} else {
+						await interaction.editReply({
+							content: "\u200B",
+							embeds: [
+								new MessageEmbed()
+									.setColor("#ed4245")
+									.setTitle("Canceled!")
+							],
+							components: [buttonRowDisabled(uuid)],
+						});
+						await i.deferUpdate();
+					}
 					await i.deferUpdate();
-				} else {
+				} catch {
 					await interaction.editReply({
 						content: "\u200B",
 						embeds: [
 							new MessageEmbed()
 								.setColor("#ed4245")
-								.setTitle("Canceled!")
+								.setTitle("Invalid permissions")
+								.setDescription("Please make sure I have the correct permissions to:")
+								.addFields(
+									{
+										name: "See this channel properly",
+										value: "`View Channels` Permission"
+									},
+									{
+										name: "Send messages",
+										value: "`Send Messages` Permission"
+									},
+									{
+										name: "Send embeded messages",
+										value: "`Embed Links` Permission"
+									},
+								)
 						],
 						components: [buttonRowDisabled(uuid)],
 					});

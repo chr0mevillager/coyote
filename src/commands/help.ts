@@ -16,7 +16,7 @@ let help: CustomCommand = {
 					.addFields(
 						{
 							name: "`Title`",
-							value: "Type in a word or phrase that is less than 200 charicters."
+							value: "Type in a word or phrase that is less than 256 charicters."
 						},
 						{
 							name: "`Description`",
