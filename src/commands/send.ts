@@ -25,19 +25,19 @@ let send: CustomCommand = {
 				options: [
 					{
 						name: "title",
-						description: "What do you want the message to be titled?",
+						description: "What do you want the message to be titled? (>256 charicters)",
 						type: "STRING",
 						required: true,
 					},
 					{
 						name: "description",
-						description: "What do you want the description to be?",
+						description: "What do you want the description to be? (>4000 charicters)",
 						type: "STRING",
 						required: true,
 					},
 					{
 						name: "image",
-						description: "What do you want the image to be?",
+						description: "What do you want the image to be? (Link)",
 						type: "STRING",
 						required: false,
 					},
@@ -118,19 +118,19 @@ let send: CustomCommand = {
 			let collector = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::send` || i.customId === `${uuid}::cancel`, time: 60000 });
 			collector.on("collect", async (i) => {
 				//Send final
-				try {
-					await (client.channels.cache.find((channel) => (channel as any).id === interaction.channelId) as any).send({
-						embeds: [
-							new MessageEmbed()
-								.setColor("#2f3136")
-								.setTitle(title)
-								.setDescription(description + "\n" + "\u200B")
-								.setImage(image)
-								.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+				if (i.customId === uuid + "::send") {
+					try {
+						await (client.channels.cache.find((channel) => (channel as any).id === interaction.channelId) as any).send({
+							embeds: [
+								new MessageEmbed()
+									.setColor("#2f3136")
+									.setTitle(title)
+									.setDescription(description + "\n" + "\u200B")
+									.setImage(image)
+									.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 
-						],
-					});
-					if (i.customId === uuid + "::send") {
+							],
+						});
 						await interaction.editReply({
 							content: "\u200B",
 							embeds: [
@@ -139,47 +139,48 @@ let send: CustomCommand = {
 									.setTitle("Sent!")
 							],
 							components: [buttonRowDisabled(uuid)],
+
 						});
-					} else {
+					} catch {
 						await interaction.editReply({
 							content: "\u200B",
 							embeds: [
 								new MessageEmbed()
 									.setColor("#ed4245")
-									.setTitle("Canceled!")
+									.setTitle("Invalid permissions")
+									.setDescription("Please make sure I have the correct permissions to:")
+									.addFields(
+										{
+											name: "See this channel properly",
+											value: "`View Channels` Permission"
+										},
+										{
+											name: "Send messages",
+											value: "`Send Messages` Permission"
+										},
+										{
+											name: "Send embeded messages",
+											value: "`Embed Links` Permission"
+										},
+									)
 							],
 							components: [buttonRowDisabled(uuid)],
 						});
 						await i.deferUpdate();
+						return;
 					}
-					await i.deferUpdate();
-				} catch {
+				} else {
 					await interaction.editReply({
 						content: "\u200B",
 						embeds: [
 							new MessageEmbed()
 								.setColor("#ed4245")
-								.setTitle("Invalid permissions")
-								.setDescription("Please make sure I have the correct permissions to:")
-								.addFields(
-									{
-										name: "See this channel properly",
-										value: "`View Channels` Permission"
-									},
-									{
-										name: "Send messages",
-										value: "`Send Messages` Permission"
-									},
-									{
-										name: "Send embeded messages",
-										value: "`Embed Links` Permission"
-									},
-								)
+								.setTitle("Canceled!")
 						],
 						components: [buttonRowDisabled(uuid)],
 					});
-					await i.deferUpdate();
 				}
+				await i.deferUpdate();
 			});
 			collector.on("end", async i => {
 				await interaction.editReply({
