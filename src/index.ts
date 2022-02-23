@@ -1,6 +1,8 @@
 import "./exports/vars";
 import { client } from "./exports/client";
 import commands from "./commands";
+import { Routes } from "discord-api-types";
+import { REST } from "@discordjs/rest";
 
 //Commands
 client.on("interactionCreate", async (interaction) => {
@@ -22,12 +24,20 @@ client.on("interactionCreate", async (interaction) => {
 client.once('ready', () => {
 	console.log("It's alive! (Probably)");
 	client.user.setActivity('/help', { type: 'LISTENING' });
+
+	//Creates commands in testing guild
 	const guild = client.guilds.cache.get(process.env.SLASH_COMMAND_TESTING_GUILD);
 	if (guild) {
 		Object.values(commands).forEach((command) => {
 			guild.commands.create(command.data);
 		});
 	}
+
+	//Creates commands in all guilds
+	Object.values(commands).forEach((command) => {
+		client.application.commands.create(command.data);
+	});
+
 });
 
 //Login

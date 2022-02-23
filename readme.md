@@ -2,7 +2,7 @@
 
 ## Add To Servers
 
-[Click here to add the bot to a server!](https://discord.com/oauth2/authorize?client_id=942083941307912193&scope=bot%20applications.commands&permissions=3072)
+[Click here to add the bot to a server!](https://discord.com/oauth2/authorize?client_id=942083941307912193&scope=bot%20applications.commands&permissions=18432)
 
 ---
 
