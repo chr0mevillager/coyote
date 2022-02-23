@@ -26,7 +26,8 @@ let help: CustomCommand = {
 							name: "`Image`",
 							value: "Type in a link to an image."
 						},
-					),
+					)
+					.setImage("https://cdn.discordapp.com/attachments/945889704375627807/945891916208275556/IMG_5194.gif"),
 				new MessageEmbed()
 					.setColor("#389af0")
 					.setTitle("/info")
