@@ -63,6 +63,8 @@ let send: CustomCommand = {
 		let description: string = "\u200B";
 		let image: string = "";
 
+		let update_sent = false;
+
 		//Get selected variables
 		title = interaction.options.getString("title");
 		description = interaction.options.getString("description");
@@ -139,8 +141,9 @@ let send: CustomCommand = {
 									.setTitle("Sent!")
 							],
 							components: [buttonRowDisabled(uuid)],
-
 						});
+						await i.deferUpdate();
+						update_sent = true;
 					} catch {
 						await interaction.editReply({
 							content: "\u200B",
@@ -167,7 +170,7 @@ let send: CustomCommand = {
 							components: [buttonRowDisabled(uuid)],
 						});
 						await i.deferUpdate();
-						return;
+						update_sent = true;
 					}
 				} else {
 					await interaction.editReply({
@@ -179,10 +182,12 @@ let send: CustomCommand = {
 						],
 						components: [buttonRowDisabled(uuid)],
 					});
+					await i.deferUpdate();
+					update_sent = true;
 				}
-				await i.deferUpdate();
 			});
 			collector.on("end", async i => {
+				if (update_sent) return;
 				await interaction.editReply({
 					content: "\u200B",
 					embeds: [
