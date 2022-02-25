@@ -20,10 +20,10 @@ let info: CustomCommand = {
 							.setLabel("Support Server")
 							.setStyle("LINK")
 							.setURL("https://google.com"),
-						new MessageButton()
-							.setLabel("Add to Server")
-							.setStyle("LINK")
-							.setURL("https://discord.com/oauth2/authorize?client_id=942083941307912193&scope=bot%20applications.commands&permissions=18432"),
+						// new MessageButton()
+						// 	.setLabel("Add to Server")
+						// 	.setStyle("LINK")
+						// 	.setURL("https://discord.com/oauth2/authorize?client_id=942083941307912193&scope=bot%20applications.commands&permissions=18432"),
 						new MessageButton()
 							.setLabel("Github")
 							.setStyle("LINK")

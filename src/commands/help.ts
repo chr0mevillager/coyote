@@ -27,21 +27,21 @@ let help: CustomCommand = {
 							value: "Type in a link to an image."
 						},
 					)
-					.setImage("https://cdn.discordapp.com/attachments/945889704375627807/945891916208275556/IMG_5194.gif"),
+					.setImage("https://cdn.discordapp.com/attachments/945889704375627807/946566904187875388/send-command.gif"),
 				new MessageEmbed()
 					.setColor("#389af0")
 					.setTitle("/info")
 					.setDescription("Get information about the bot!")
 			],
-			components: [
-				new MessageActionRow()
-					.addComponents(
-						new MessageButton()
-							.setLabel("Support Server")
-							.setStyle("LINK")
-							.setURL("https://google.com")
-					)
-			],
+			// components: [
+			// 	new MessageActionRow()
+			// 		.addComponents(
+			// 			new MessageButton()
+			// 				.setLabel("Support Server")
+			// 				.setStyle("LINK")
+			// 				.setURL("https://google.com")
+			// 		)
+			// ],
 			ephemeral: true,
 		});
 	},
