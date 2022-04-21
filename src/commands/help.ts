@@ -20,7 +20,7 @@ let help: CustomCommand = {
 						},
 						{
 							name: "`Description`",
-							value: "Type in a main description that is less than 4000 charicters."
+							value: "Type in a main description that is less than 4000 charicters. Use \"\\n\" to create an enter."
 						},
 						{
 							name: "`Image`",
