@@ -16,10 +16,10 @@ let info: CustomCommand = {
 			components: [
 				new MessageActionRow()
 					.addComponents(
-						new MessageButton()
-							.setLabel("Support Server")
-							.setStyle("LINK")
-							.setURL("https://google.com"),
+						// new MessageButton()
+						// 	.setLabel("Support Server")
+						// 	.setStyle("LINK")
+						// 	.setURL("https://google.com"),
 						// new MessageButton()
 						// 	.setLabel("Add to Server")
 						// 	.setStyle("LINK")

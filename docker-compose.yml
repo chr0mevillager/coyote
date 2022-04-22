@@ -1,0 +1,7 @@
+version: '3'
+services:
+  discordbot:
+    user: node
+    build:
+      context: dist
+    restart: unless-stopped

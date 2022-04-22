@@ -2,7 +2,7 @@
 	"name": "bible_verses",
 	"version": "1.0.0",
 	"description": "",
-	"main": "dist/index.js",
+	"main": "index.js",
 	"scripts": {
 		"serve": "node -r ts-node/register src/index.ts"
 	},
