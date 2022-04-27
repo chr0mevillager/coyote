@@ -47,17 +47,6 @@ let send: CustomCommand = {
 	},
 
 	async execute(interaction) {
-		if (!(interaction.member as GuildMember).permissions.has("ADMINISTRATOR")) {
-			await interaction.reply({
-				embeds: [
-					new MessageEmbed()
-						.setColor("#ed4245")
-						.setTitle("You need to be a server admin to use this command!")
-				],
-				ephemeral: true,
-			});
-			return;
-		}
 		//Blank Vars
 		let title: string = "\u200B";
 		let description: string = "\u200B";
