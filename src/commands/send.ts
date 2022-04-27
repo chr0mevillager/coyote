@@ -122,9 +122,9 @@ let send: CustomCommand = {
 									.setDescription(description + "\n" + "\u200B")
 									.setImage(image)
 									.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
-
 							],
 						});
+
 						await interaction.editReply({
 							content: "\u200B",
 							embeds: [
@@ -181,11 +181,15 @@ let send: CustomCommand = {
 			collector.on("end", async i => {
 				if (update_sent) return;
 				await interaction.editReply({
-					content: "\u200B",
+					content: "**Timed Out!**",
 					embeds: [
 						new MessageEmbed()
-							.setColor("#ed4245")
-							.setTitle("Timed out!")
+							.setColor("#2f3136")
+							.setTitle(title)
+							.setDescription(description + "\n" + "\u200B")
+							.setImage(image)
+							.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+
 					],
 					components: [buttonRowDisabled(uuid)],
 				});
