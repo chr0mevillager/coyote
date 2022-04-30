@@ -22,8 +22,9 @@ client.on("interactionCreate", async (interaction) => {
 
 //On login
 client.once('ready', () => {
+	setHelpActivity();
 	console.log("It's alive! (Probably)");
-	client.user.setActivity('/help', { type: 'LISTENING' });
+
 
 	//Creates commands in testing guild
 	const guild = client.guilds.cache.get(process.env.SLASH_COMMAND_TESTING_GUILD);
@@ -42,3 +43,8 @@ client.once('ready', () => {
 
 //Login
 client.login(process.env.DISCORD_AUTH);
+
+function setHelpActivity() {
+	client.user.setActivity('/help', { type: 'LISTENING' });
+	setInterval(setHelpActivity, 7200000);
+}
