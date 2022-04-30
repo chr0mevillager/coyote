@@ -62,8 +62,8 @@ let send: CustomCommand = {
 		if (title.length > 256) title = title.slice(0, 256);
 		if (description.length > 4000) description = description.slice(0, 4000);
 
-		description = JSON.parse('"' + description.replace(/"/g, '\\"') + '"')
-		//description = description.replace("\\n", "\u000A");
+		description = JSON.parse('"' + description.replace(/"/g, '\\"') + '"');
+		title = JSON.parse('"' + title.replace(/"/g, '\\"') + '"');
 
 		//Buttons
 		const buttonRow = (uuid: string) => new MessageActionRow()
