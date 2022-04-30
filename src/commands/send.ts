@@ -166,11 +166,15 @@ let send: CustomCommand = {
 					}
 				} else {
 					await interaction.editReply({
-						content: "\u200B",
+						content: "**Canceled!**",
 						embeds: [
 							new MessageEmbed()
-								.setColor("#ed4245")
-								.setTitle("Canceled!")
+								.setColor("#2f3136")
+								.setTitle(title)
+								.setDescription(description + "\n" + "\u200B")
+								.setImage(image)
+								.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+
 						],
 						components: [buttonRowDisabled(uuid)],
 					});
