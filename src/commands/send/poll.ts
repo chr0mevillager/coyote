@@ -20,11 +20,13 @@ export default async function pollInteraction(interaction) {
 
 	let update_sent = false;
 
+	let pollMessage;
+
 	//Get selected variables
 	question = interaction.options.getString("question");
 	if (interaction.options.get("visible-results")) {
 		visibleResults = interaction.options.get("visible-results")
-		if (visibleResults) results = "this is a public poll";
+		if (visibleResults) results = "```Poll results will appear here.```";
 	}
 
 
@@ -100,8 +102,8 @@ export default async function pollInteraction(interaction) {
 			new MessageEmbed()
 				.setColor("#2f3136")
 				.setTitle(question)
-				.setDescription(results + "\n" + "\u200B")
-				.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+				.setDescription(results)
+				.setFooter({ text: "Poll Made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 		],
 		components: [
 			buttonRow(uuid),
@@ -131,6 +133,8 @@ export default async function pollInteraction(interaction) {
 						pollButtonRow1(uuid),
 						pollButtonRow2(uuid),
 					],
+				}).then(sentMessage => {
+					pollMessage = sentMessage;
 				});
 
 				await interaction.editReply({
@@ -190,7 +194,7 @@ export default async function pollInteraction(interaction) {
 						.setColor("#2f3136")
 						.setTitle(question)
 						.setDescription(results + "\n" + "\u200B")
-						.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+						.setFooter({ text: "Poll Made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 				],
 				components: [
 					buttonRowDisabled(uuid),
@@ -202,23 +206,24 @@ export default async function pollInteraction(interaction) {
 			update_sent = true;
 			//Buttons
 		} else if (i.customId === uuid + "::pollButton1") {
-			if (!responders.includes(interaction.user.id)) pollResponses1.push(interaction.user.id);
-			responders.push(interaction.user.id);
+			if (!responders.includes(i.user.id)) pollResponses1.push(i.user.id);
+			responders.push(i.user.id);
+			console.log(responders);
 			await i.deferUpdate();
 			if (visibleResults) updateMessage();
 		} else if (i.customId === uuid + "::pollButton2") {
-			if (!responders.includes(interaction.user.id)) pollResponses2.push(interaction.user.id);
-			responders.push(interaction.user.id);
+			if (!responders.includes(i.user.id)) pollResponses2.push(i.user.id);
+			responders.push(i.user.id);
 			await i.deferUpdate();
 			if (visibleResults) updateMessage();
 		} else if (i.customId === uuid + "::pollButton3") {
-			if (!responders.includes(interaction.user.id)) pollResponses3.push(interaction.user.id);
-			responders.push(interaction.user.id);
+			if (!responders.includes(i.user.id)) pollResponses3.push(i.user.id);
+			responders.push(i.user.id);
 			await i.deferUpdate();
 			if (visibleResults) updateMessage();
 		} else if (i.customId === uuid + "::pollButton4") {
-			if (!responders.includes(interaction.user.id)) pollResponses4.push(interaction.user.id);
-			responders.push(interaction.user.id);
+			if (!responders.includes(i.user.id)) pollResponses4.push(i.user.id);
+			responders.push(i.user.id);
 			await i.deferUpdate();
 			if (visibleResults) updateMessage();
 		}
@@ -232,7 +237,7 @@ export default async function pollInteraction(interaction) {
 					.setColor("#2f3136")
 					.setTitle(question)
 					.setDescription(results + "\n" + "\u200B")
-					.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+					.setFooter({ text: "Poll Made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 			],
 			components: [
 				buttonRowDisabled(uuid),
@@ -241,6 +246,15 @@ export default async function pollInteraction(interaction) {
 			],
 		});
 		if (!visibleResults) updateMessage();
+		await pollMessage.edit({
+			embeds: [
+				new MessageEmbed()
+					.setColor("#2f3136")
+					.setTitle(question)
+					.setDescription(results)
+					.setFooter({ text: "Poll Made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+			]
+		});
 	})
 
 	async function updateMessage() {
@@ -248,14 +262,13 @@ export default async function pollInteraction(interaction) {
 			"\n\nOption 2: " + pollResponses2.length +
 			"```";
 
-		await interaction.editReply({
-			content: "**Canceled!**",
+		await pollMessage.edit({
 			embeds: [
 				new MessageEmbed()
 					.setColor("#2f3136")
 					.setTitle(question)
-					.setDescription(results + "\n" + "\u200B")
-					.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+					.setDescription(results)
+					.setFooter({ text: "Poll Made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 			],
 			components: [
 				buttonRowDisabled(uuid),

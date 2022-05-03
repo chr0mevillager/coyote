@@ -39,7 +39,6 @@ client.once('ready', () => {
 		client.application.commands.create(command.data);
 	});
 
-
 });
 
 //Login
