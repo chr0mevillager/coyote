@@ -1,20 +1,18 @@
 import {
-	MessageActionRow,
-	MessageButton,
+	ColorResolvable,
 	MessageEmbed,
 } from "discord.js";
+import sendUpdate from "../../exports/send_update";
 import { client } from "../../exports/client";
-import { v4 as uuidv4 } from "uuid";
+import * as buttons from "../../exports/send_buttons";
 
 export default async function messageInteraction(interaction) {
-	//Blank Vars
+
+	//Inputs ---
 	let title: string = "\u200B";
 	let description: string = "\u200B";
 	let image: string = "";
 
-	let update_sent = false;
-
-	//Get selected variables
 	title = interaction.options.getString("title");
 	description = interaction.options.getString("description");
 	if (interaction.options.getString("image") && interaction.options.getString("image").match(/^((https:\/\/)|(http:\/\/))\w{2,100}(\.{1,10}\w{1,100}){1,100}(\/\w{0,100}){0,100}/gm)) image = interaction.options.getString("image");
@@ -25,77 +23,43 @@ export default async function messageInteraction(interaction) {
 	description = JSON.parse('"' + description.replace(/"/g, '\\"') + '"');
 	title = JSON.parse('"' + title.replace(/"/g, '\\"') + '"');
 
-	//Buttons
-	const buttonRow = (uuid: string) => new MessageActionRow()
-		.addComponents(
-			new MessageButton()
-				.setCustomId(uuid + "::send")
-				.setLabel("Send")
-				.setStyle("SUCCESS"),
-			new MessageButton()
-				.setCustomId(uuid + "::cancel")
-				.setLabel("Cancel")
-				.setStyle("DANGER"),
-		);
-	const buttonRowDisabled = (uuid: string) => new MessageActionRow()
-		.addComponents(
-			new MessageButton()
-				.setCustomId(uuid + "::send")
-				.setLabel("Send")
-				.setStyle("SUCCESS")
-				.setDisabled(true),
-			new MessageButton()
-				.setCustomId(uuid + "::cancel")
-				.setLabel("Cancel")
-				.setStyle("DANGER")
-				.setDisabled(true),
-		);
+	//Embed
+	const userMessage = (color: string) => new MessageEmbed()
+		.setColor(color as ColorResolvable)
+		.setTitle(title)
+		.setDescription(description + "\n" + "\u200B")
+		.setImage(image)
+		.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 
+	//Other Variables
+	let updateSent = false;
+	let uuid = interaction.id;
 
-	let uuid = uuidv4();
-	//Send preview
+	//Send preview ---
 	await interaction.reply({
 		content: "**Here is your message:**",
-		embeds: [
-			new MessageEmbed()
-				.setColor("#2f3136")
-				.setTitle(title)
-				.setDescription(description + "\n" + "\u200B")
-				.setImage(image)
-				.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
-
-		],
-		components: [buttonRow(uuid)],
+		embeds: [userMessage("#2f3136")],
+		components: [buttons.buttonRow(uuid)],
 		ephemeral: true,
 	});
-	//Button Responses
+
+	//Start Collector ---
 	let collector = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::send` || i.customId === `${uuid}::cancel`, time: 60000 });
 	collector.on("collect", async (i) => {
-		//Send final
+
+		//Send
 		if (i.customId === uuid + "::send") {
 			try {
 				await (client.channels.cache.find((channel) => (channel as any).id === interaction.channelId) as any).send({
-					embeds: [
-						new MessageEmbed()
-							.setColor("#2f3136")
-							.setTitle(title)
-							.setDescription(description + "\n" + "\u200B")
-							.setImage(image)
-							.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
-					],
+					embeds: [userMessage("#2f3136")],
 				});
 
 				await interaction.editReply({
-					content: "\u200B",
-					embeds: [
-						new MessageEmbed()
-							.setColor("#3ba55d")
-							.setTitle("Sent!")
-					],
-					components: [buttonRowDisabled(uuid)],
+					content: "**Sent!**",
+					embeds: [userMessage("#3ba55d")],
+					components: [buttons.buttonRowDisabled(uuid)],
 				});
-				await i.deferUpdate();
-				update_sent = true;
+				sendUpdate(i, updateSent);
 			} catch {
 				await interaction.editReply({
 					content: "\u200B",
@@ -119,43 +83,27 @@ export default async function messageInteraction(interaction) {
 								},
 							)
 					],
-					components: [buttonRowDisabled(uuid)],
+					components: [buttons.buttonRowDisabled(uuid)],
 				});
-				await i.deferUpdate();
-				update_sent = true;
+				sendUpdate(i, updateSent);
 			}
-		} else {
+			//Cancel
+		} else if (i.customId === uuid + "::cancel") {
 			await interaction.editReply({
 				content: "**Canceled!**",
-				embeds: [
-					new MessageEmbed()
-						.setColor("#2f3136")
-						.setTitle(title)
-						.setDescription(description + "\n" + "\u200B")
-						.setImage(image)
-						.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
-
-				],
-				components: [buttonRowDisabled(uuid)],
+				embeds: [userMessage("#2f3136")],
+				components: [buttons.buttonRowDisabled(uuid)],
 			});
-			await i.deferUpdate();
-			update_sent = true;
+			sendUpdate(i, updateSent);
 		}
 	});
+	//Time Out ---
 	collector.on("end", async i => {
-		if (update_sent) return;
+		if (updateSent) return;
 		await interaction.editReply({
 			content: "**Timed Out!**",
-			embeds: [
-				new MessageEmbed()
-					.setColor("#2f3136")
-					.setTitle(title)
-					.setDescription(description + "\n" + "\u200B")
-					.setImage(image)
-					.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
-
-			],
-			components: [buttonRowDisabled(uuid)],
+			embeds: [userMessage("#2f3136")],
+			components: [buttons.buttonRowDisabled(uuid)],
 		});
 	})
 }
