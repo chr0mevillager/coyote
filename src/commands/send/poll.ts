@@ -7,6 +7,7 @@ import {
 import { client } from "../../exports/client";
 import { v4 as uuidv4 } from "uuid";
 import generateTimeStamp from "../../exports/timestamp";
+import { isNullOrUndefined } from "util";
 
 export default async function pollInteraction(interaction) {
 	//Blank Vars
@@ -95,28 +96,28 @@ export default async function pollInteraction(interaction) {
 					.setLabel(interaction.options.getString("option-3"))
 					.setStyle("PRIMARY")
 			);
-		if ((interaction.options.getString("option-3")) != null && (interaction.options.getString("option-3")) != undefined) {
-			button4exists = true;
-			pollButtonRow4 = (uuid: string) => new MessageActionRow()
-				.addComponents(
-					new MessageButton()
-						.setCustomId(uuid + "::pollButton4")
-						.setLabel(interaction.options.getString("option-4"))
-						.setStyle("PRIMARY")
-				);
-		}
+	}
+	if ((interaction.options.getString("option-4")) != null && (interaction.options.getString("option-4")) != undefined) {
+		button4exists = true;
+		pollButtonRow4 = (uuid: string) => new MessageActionRow()
+			.addComponents(
+				new MessageButton()
+					.setCustomId(uuid + "::pollButton4")
+					.setLabel(interaction.options.getString("option-4"))
+					.setStyle("PRIMARY")
+			);
 	}
 
 	let uuid = uuidv4();
 
 	//Send preview
 	await interaction.reply({
-		content: "**Here is your message:**",
+		content: "**Here is your poll:**",
 		embeds: [
 			new MessageEmbed()
 				.setColor("#2f3136")
 				.setTitle(question)
-				.setDescription(results + "\n" + "🕑 Closes <t:" + timeToClose + ":R>")
+				.setDescription(results + "\n" + "🕑  Closes <t:" + timeToClose + ":R>")
 				.setFooter({ text: "Poll Made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 		],
 		components: [
@@ -133,7 +134,7 @@ export default async function pollInteraction(interaction) {
 			if (visibleResults) {
 				results = "```No votes yet.```";
 			} else {
-				results = "";
+				results = "\u2800\n\u2800";
 			}
 			try {
 				if (!button3exists && !button4exists) {
@@ -142,7 +143,7 @@ export default async function pollInteraction(interaction) {
 							new MessageEmbed()
 								.setColor("#2f3136")
 								.setTitle(question)
-								.setDescription(results + "\n" + "🕑 Closes <t:" + timeToClose + ":R>")
+								.setDescription(results + "\n" + "🕑  Closes <t:" + timeToClose + ":R>")
 								.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 						],
 						components: [
@@ -158,7 +159,7 @@ export default async function pollInteraction(interaction) {
 							new MessageEmbed()
 								.setColor("#2f3136")
 								.setTitle(question)
-								.setDescription(results + "\n" + "🕑 Closes <t:" + timeToClose + ":R>")
+								.setDescription(results + "\n" + "🕑  Closes <t:" + timeToClose + ":R>")
 								.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 						],
 						components: [
@@ -175,7 +176,7 @@ export default async function pollInteraction(interaction) {
 							new MessageEmbed()
 								.setColor("#2f3136")
 								.setTitle(question)
-								.setDescription(results + "\n" + "🕑 Closes <t:" + timeToClose + ":R>")
+								.setDescription(results + "\n" + "🕑  Closes <t:" + timeToClose + ":R>")
 								.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 						],
 						components: [
@@ -192,7 +193,7 @@ export default async function pollInteraction(interaction) {
 							new MessageEmbed()
 								.setColor("#2f3136")
 								.setTitle(question)
-								.setDescription(results + "\n" + "🕑 Closes <t:" + timeToClose + ":R>")
+								.setDescription(results + "\n" + "🕑  Closes <t:" + timeToClose + ":R>")
 								.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 						],
 						components: [
@@ -219,8 +220,7 @@ export default async function pollInteraction(interaction) {
 				});
 
 				await i.deferUpdate();
-			} catch (error) {
-				console.log(error);
+			} catch {
 				//Invalid Perms
 				await interaction.editReply({
 					content: "\u200B",
@@ -259,7 +259,7 @@ export default async function pollInteraction(interaction) {
 					new MessageEmbed()
 						.setColor("#2f3136")
 						.setTitle(question)
-						.setDescription(results + "\n" + "🕑 Closed on <t:" + + Math.round(new Date().getTime() / 1000) + ">")
+						.setDescription(results + "\n" + "🕑  Closed on <t:" + + Math.round(new Date().getTime() / 1000) + ">")
 						.setFooter({ text: "Poll Made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 				],
 				components: [
@@ -299,22 +299,26 @@ export default async function pollInteraction(interaction) {
 				new MessageEmbed()
 					.setColor("#2f3136")
 					.setTitle(question)
-					.setDescription(results + "\n" + "🕑 Closed on <t:" + + Math.round(new Date().getTime() / 1000) + ">")
+					.setDescription(results + "\n" + "🕑  Closed on <t:" + + Math.round(new Date().getTime() / 1000) + ">")
 					.setFooter({ text: "Poll Made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 			],
 			components: [
 				buttonRowDisabled(uuid),
 			],
 		});
-		await pollMessage.edit({
-			embeds: [
-				new MessageEmbed()
-					.setColor("#2f3136")
-					.setTitle(question)
-					.setDescription(results + "\n" + "🕑 Closed on <t:" + + Math.round(new Date().getTime() / 1000) + ">")
-					.setFooter({ text: "Poll Made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
-			]
-		});
+		if (pollMessage != null && pollMessage != undefined) {
+			updateMessage();
+			await pollMessage.edit({
+				embeds: [
+					new MessageEmbed()
+						.setColor("#2f3136")
+						.setTitle(question)
+						.setDescription(results + "\n" + "🕑  Closed on <t:" + + Math.round(new Date().getTime() / 1000) + ">")
+						.setFooter({ text: "Poll Made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+				],
+				components: [],
+			});
+		}
 	})
 
 	async function updateMessage() {
@@ -327,7 +331,7 @@ export default async function pollInteraction(interaction) {
 					new MessageEmbed()
 						.setColor("#2f3136")
 						.setTitle(question)
-						.setDescription(results + "\n" + "🕑 Closes <t:" + timeToClose + ":R>")
+						.setDescription(results + "\n" + "🕑  Closes <t:" + timeToClose + ":R>")
 						.setFooter({ text: "Poll Made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 				],
 				components: [
@@ -346,7 +350,7 @@ export default async function pollInteraction(interaction) {
 					new MessageEmbed()
 						.setColor("#2f3136")
 						.setTitle(question)
-						.setDescription(results + "\n" + "🕑 Closes <t:" + timeToClose + ":R>")
+						.setDescription(results + "\n" + "🕑  Closes <t:" + timeToClose + ":R>")
 						.setFooter({ text: "Poll Made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 				],
 				components: [
@@ -366,7 +370,7 @@ export default async function pollInteraction(interaction) {
 					new MessageEmbed()
 						.setColor("#2f3136")
 						.setTitle(question)
-						.setDescription(results + "\n" + "🕑 Closes <t:" + timeToClose + ":R>")
+						.setDescription(results + "\n" + "🕑  Closes <t:" + timeToClose + ":R>")
 						.setFooter({ text: "Poll Made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 				],
 				components: [
@@ -387,7 +391,7 @@ export default async function pollInteraction(interaction) {
 					new MessageEmbed()
 						.setColor("#2f3136")
 						.setTitle(question)
-						.setDescription(results + "\n" + "🕑 Closes <t:" + timeToClose + ":R>")
+						.setDescription(results + "\n" + "🕑  Closes <t:" + timeToClose + ":R>")
 						.setFooter({ text: "Poll Made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 				],
 				components: [
