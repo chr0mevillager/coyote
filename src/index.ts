@@ -4,6 +4,7 @@ import commands from "./commands";
 import { Routes } from "discord-api-types";
 import { REST } from "@discordjs/rest";
 import logMessage from "./exports/error";
+import setBotActivity from "./exports/activity";
 
 //Commands
 client.on("interactionCreate", async (interaction) => {
@@ -20,7 +21,7 @@ client.on("interactionCreate", async (interaction) => {
 
 //On login
 client.once('ready', () => {
-	setHelpActivity();
+	setBotActivity("help");
 	console.log("It's alive! (Probably)");
 
 
@@ -41,8 +42,3 @@ client.once('ready', () => {
 
 //Login
 client.login(process.env.DISCORD_AUTH);
-
-function setHelpActivity() {
-	client.user.setActivity('/help', { type: 'LISTENING' });
-	setInterval(setHelpActivity, 7200000);
-}
