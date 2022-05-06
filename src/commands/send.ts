@@ -1,3 +1,4 @@
+import logMessage from "../exports/error";
 import { CustomCommand } from "../exports/types";
 import messageInteraction from "./send/message"
 import pollInteraction from "./send/poll";
@@ -86,13 +87,15 @@ let send: CustomCommand = {
 		if (interaction.options.getSubcommand() === "message") {
 			try {
 				messageInteraction(interaction);
-			} catch {
+			} catch (error) {
+				logMessage(error, "/send message command", interaction);
 				return;
 			}
 		} else if (interaction.options.getSubcommand() === "poll") {
 			try {
 				pollInteraction(interaction);
-			} catch {
+			} catch (error) {
+				logMessage(error, "/send poll command", interaction);
 				return;
 			}
 		}

@@ -3,6 +3,7 @@ import { client } from "./exports/client";
 import commands from "./commands";
 import { Routes } from "discord-api-types";
 import { REST } from "@discordjs/rest";
+import logMessage from "./exports/error";
 
 //Commands
 client.on("interactionCreate", async (interaction) => {
@@ -10,12 +11,9 @@ client.on("interactionCreate", async (interaction) => {
 		const command = commands[interaction.commandName];
 		try {
 			await command.execute(interaction);
-		} catch (err) {
-			console.error(err);
-			await interaction.reply({
-				content: "You just found an ultra-rare bug!",
-				ephemeral: true,
-			});
+		} catch (error) {
+			console.error(error);
+			await logMessage(error, "index");
 		}
 	}
 });
