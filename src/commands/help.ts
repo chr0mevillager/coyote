@@ -26,12 +26,42 @@ let help: CustomCommand = {
 							name: "`Image`",
 							value: "Type in a link to an image."
 						},
-					)
-					.setImage("https://cdn.discordapp.com/attachments/945889704375627807/946566904187875388/send-command.gif"),
+					),
+				//.setImage("https://cdn.discordapp.com/attachments/945889704375627807/946566904187875388/send-command.gif") Finding a new alternative for img urls, as Discord deletes old images.
+				new MessageEmbed()
+					.setColor("#389af0")
+					.setTitle("/send poll < Question > < Option 1 > < Option 2 > [ Option 3 ] [ Option 4 ] < Visible Results >")
+					.setDescription("Send a simple, anonymous poll! Polls are open for 1 day.")
+					.addFields(
+						{
+							name: "`Question`",
+							value: "Type in the poll question in less than 256 charicters. Use `\\n\` to create an enter, `\\u2800` to create an empty feild, and to create a link, type `( Your Text )[ URL ]`"
+						},
+						{
+							name: "`Question 1`",
+							value: "Type in a response to your question that is less than 100 charicters."
+						},
+						{
+							name: "`Question 2`",
+							value: "Type in a response to your question that is less than 100 charicters."
+						},
+						{
+							name: "`Question 3`",
+							value: "Type in a response to your question that is less than 100 charicters."
+						},
+						{
+							name: "`Question 4`",
+							value: "Type in a response to your question that is less than 100 charicters."
+						},
+						{
+							name: "`Visible Results`",
+							value: "Decide if poll should show its results live or after the poll is complete."
+						},
+					),
 				new MessageEmbed()
 					.setColor("#389af0")
 					.setTitle("/info")
-					.setDescription("Get information about the bot!")
+					.setDescription("Get information about the bot!"),
 			],
 			// components: [
 			// 	new MessageActionRow()
