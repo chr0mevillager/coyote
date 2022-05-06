@@ -21,6 +21,7 @@ client.on("interactionCreate", async (interaction) => {
 
 //On login
 client.once('ready', () => {
+
 	setBotActivity("help");
 	console.log("It's alive! (Probably)");
 
