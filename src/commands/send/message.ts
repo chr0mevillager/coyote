@@ -23,6 +23,10 @@ export default async function messageInteraction(interaction) {
 	description = JSON.parse('"' + description.replace(/"/g, '\\"') + '"');
 	title = JSON.parse('"' + title.replace(/"/g, '\\"') + '"');
 
+	//Other Variables
+	let updateSent = false;
+	let uuid = interaction.id;
+
 	//Embed
 	const userMessage = (color: string) => new MessageEmbed()
 		.setColor(color as ColorResolvable)
@@ -31,11 +35,7 @@ export default async function messageInteraction(interaction) {
 		.setImage(image)
 		.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 
-	//Other Variables
-	let updateSent = false;
-	let uuid = interaction.id;
-
-	//Send preview ---
+	//Send Preview ---
 	await interaction.reply({
 		content: "**Here is your message:**",
 		embeds: [userMessage("#2f3136")],
@@ -59,7 +59,6 @@ export default async function messageInteraction(interaction) {
 					embeds: [userMessage("#3ba55d")],
 					components: [buttons.buttonRowDisabled(uuid)],
 				});
-				sendUpdate(i, updateSent);
 			} catch {
 				await interaction.editReply({
 					content: "\u200B",
@@ -85,8 +84,9 @@ export default async function messageInteraction(interaction) {
 					],
 					components: [buttons.buttonRowDisabled(uuid)],
 				});
-				sendUpdate(i, updateSent);
 			}
+			sendUpdate(i, updateSent);
+
 			//Cancel
 		} else if (i.customId === uuid + "::cancel") {
 			await interaction.editReply({
@@ -97,7 +97,7 @@ export default async function messageInteraction(interaction) {
 			sendUpdate(i, updateSent);
 		}
 	});
-	//Time Out ---
+	//Timed Out ---
 	collector.on("end", async i => {
 		if (updateSent) return;
 		await interaction.editReply({

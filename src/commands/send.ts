@@ -49,14 +49,14 @@ let send: CustomCommand = {
 					},
 					{
 						name: "option-1",
-						description: "What should the first option be?",
+						description: "What should the first option be? (>80 charicters)",
 						type: 3,
 						required: true,
 
 					},
 					{
 						name: "option-2",
-						description: "What should the second option be?",
+						description: "What should the second option be? (>80 charicters)",
 						type: 3,
 						required: true,
 					},
@@ -68,13 +68,13 @@ let send: CustomCommand = {
 					},
 					{
 						name: "option-3",
-						description: "What should the third option be?",
+						description: "What should the third option be? (>80 charicters)",
 						type: 3,
 						required: false,
 					},
 					{
 						name: "option-4",
-						description: "What should the fourth option be?",
+						description: "What should the fourth option be? (>80 charicters)",
 						type: 3,
 						required: false,
 					},

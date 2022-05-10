@@ -1,227 +1,163 @@
 import {
-	BaseMessageComponent,
 	MessageActionRow,
 	MessageButton,
 	MessageEmbed,
 } from "discord.js";
 import { client } from "../../exports/client";
-import { v4 as uuidv4 } from "uuid";
 import generateTimeStamp from "../../exports/timestamp";
-import { isNullOrUndefined } from "util";
+import * as buttons from "../../exports/send_buttons";
+import sendUpdate from "../../exports/send_update";
 
 export default async function pollInteraction(interaction) {
-	//Blank Vars
-	let question: string = "\u200B";
+
+	//Inputs ---
+	let question: string = interaction.options.getString("question");
 	let results: string = "\u200B";
 	let visibleResults = interaction.options.getBoolean("visible-results");
 
+	if (question.length > 256) question = question.slice(0, 256);
+	question = JSON.parse('"' + question.replace(/"/g, '\\"') + '"');
+
+	//Poll Results
 	let pollResponses1 = [];
 	let pollResponses2 = [];
 	let pollResponses3 = [];
 	let pollResponses4 = [];
 	let responders = [];
 
+	//Other Variables
 	let updateSent = false;
-
-	let pollMessage;
-
 	let timeToClose = generateTimeStamp(1, 0, 0);
+	let uuid = interaction.id;
+	let pollMessage;
+	let pollMessageID;
 
-	//Get selected variables
-	question = interaction.options.getString("question");
+	let previewResults;
 	if (visibleResults) {
-		results = "```Poll results will appear here.```"
+		previewResults = "```Poll results will appear here.```";
 	} else {
-		results = "```Poll results will appear here after the poll closes.```"
+		previewResults = "```Poll results will appear here after the poll closes.```";
 	}
 
-
-	if (question.length > 256) question = question.slice(0, 256);
-	question = JSON.parse('"' + question.replace(/"/g, '\\"') + '"');
-
-	//Buttons
-	const buttonRow = (uuid: string) => new MessageActionRow()
-		.addComponents(
-			new MessageButton()
-				.setCustomId(uuid + "::send")
-				.setLabel("Send")
-				.setStyle("SUCCESS"),
-			new MessageButton()
-				.setCustomId(uuid + "::cancel")
-				.setLabel("Cancel")
-				.setStyle("DANGER"),
-		);
-	const buttonRowDisabled = (uuid: string) => new MessageActionRow()
-		.addComponents(
-			new MessageButton()
-				.setCustomId(uuid + "::send")
-				.setLabel("Send")
-				.setStyle("SUCCESS")
-				.setDisabled(true),
-			new MessageButton()
-				.setCustomId(uuid + "::cancel")
-				.setLabel("Cancel")
-				.setStyle("DANGER")
-				.setDisabled(true),
-		);
-
 	//Poll Buttons
+	let pollButton1: string = interaction.options.getString("option-1");
+	let pollButton2: string = interaction.options.getString("option-2");
+	let pollButton3;
+	let pollButton4;
+
+	pollButton1 = JSON.parse('"' + pollButton1.replace(/"/g, '\\"') + '"');
+	pollButton2 = JSON.parse('"' + pollButton2.replace(/"/g, '\\"') + '"');
+
+	if (pollButton1.length > 80) pollButton1 = pollButton1.slice(0, 80);
+	if (pollButton2.length > 80) pollButton2 = pollButton2.slice(0, 80);
+
 	const pollButtonRow1 = (uuid: string) => new MessageActionRow()
 		.addComponents(
 			new MessageButton()
 				.setCustomId(uuid + "::pollButton1")
-				.setLabel(interaction.options.getString("option-1"))
+				.setLabel(pollButton1)
 				.setStyle("PRIMARY")
 		);
 	const pollButtonRow2 = (uuid: string) => new MessageActionRow()
 		.addComponents(
 			new MessageButton()
 				.setCustomId(uuid + "::pollButton2")
-				.setLabel(interaction.options.getString("option-2"))
+				.setLabel(pollButton2)
 				.setStyle("PRIMARY")
 		);
 
 	let pollButtonRow3;
-	let pollButtonRow4;
-
 	let button3exists = false;
+	let pollButtonRow4;
 	let button4exists = false;
+
+	let pollButtons = [
+		pollButtonRow1(uuid),
+		pollButtonRow2(uuid),
+	];
 
 	if ((interaction.options.getString("option-3")) != null && (interaction.options.getString("option-3")) != undefined) {
 		button3exists = true;
+		pollButton3 = interaction.options.getString("option-3");
+		if (pollButton3.length > 80) pollButton3 = pollButton3.slice(0, 80);
+		pollButton3 = JSON.parse('"' + pollButton3.replace(/"/g, '\\"') + '"');
+
 		pollButtonRow3 = (uuid: string) => new MessageActionRow()
 			.addComponents(
 				new MessageButton()
 					.setCustomId(uuid + "::pollButton3")
-					.setLabel(interaction.options.getString("option-3"))
+					.setLabel(pollButton3)
 					.setStyle("PRIMARY")
 			);
+		pollButtons.push(pollButtonRow3(uuid));
 	}
+
 	if ((interaction.options.getString("option-4")) != null && (interaction.options.getString("option-4")) != undefined) {
 		button4exists = true;
+		pollButton4 = interaction.options.getString("option-4");
+		if (pollButton4.length > 80) pollButton4 = pollButton4.slice(0, 80);
+		pollButton4 = JSON.parse('"' + pollButton4.replace(/"/g, '\\"') + '"');
+
 		pollButtonRow4 = (uuid: string) => new MessageActionRow()
 			.addComponents(
 				new MessageButton()
 					.setCustomId(uuid + "::pollButton4")
-					.setLabel(interaction.options.getString("option-4"))
+					.setLabel(pollButton4)
 					.setStyle("PRIMARY")
 			);
+		pollButtons.push(pollButtonRow4(uuid));
 	}
 
-	let uuid = uuidv4();
+	//Embed
+	let poll = (votingResults: string) => new MessageEmbed()
+		.setColor("#2f3136")
+		.setTitle(question)
+		.setDescription(votingResults + "\n" + "🕑  Closes <t:" + timeToClose + ":R>")
+		.setFooter({ text: "Poll Made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 
-	//Send preview
+	//Send Preview ---
 	await interaction.reply({
 		content: "**Here is your poll:**",
-		embeds: [
-			new MessageEmbed()
-				.setColor("#2f3136")
-				.setTitle(question)
-				.setDescription(results + "\n" + "🕑  Closes <t:" + timeToClose + ":R>")
-				.setFooter({ text: "Poll Made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
-		],
-		components: [
-			buttonRow(uuid),
-		],
+		embeds: [poll(previewResults)],
+		components: [buttons.buttonRow(uuid)],
 		ephemeral: true,
 	});
 
-	//Button Responses
-	let collector = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::pollButton1` || i.customId === `${uuid}::pollButton2` || i.customId === `${uuid}::pollButton3` || i.customId === `${uuid}::pollButton4` || i.customId === `${uuid}::send` || i.customId === `${uuid}::cancel`, time: 60000 });
+	//Start Collector 1 --
+	let collector = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::pollButton1` || i.customId === `${uuid}::pollButton2` || i.customId === `${uuid}::pollButton3` || i.customId === `${uuid}::pollButton4` || i.customId === `${uuid}::send` || i.customId === `${uuid}::cancel`, time: 10000 });
 	collector.on("collect", async (i) => {
-		//Send final
+
+		//Send
 		if (i.customId === uuid + "::send") {
+			//Change Message for Result Visibility
 			if (visibleResults) {
 				results = "```No votes yet.```";
 			} else {
 				results = "\u2800\n\u2800";
 			}
 			try {
-				if (!button3exists && !button4exists) {
-					await (client.channels.cache.find((channel) => (channel as any).id === interaction.channelId) as any).send({
-						embeds: [
-							new MessageEmbed()
-								.setColor("#2f3136")
-								.setTitle(question)
-								.setDescription(results + "\n" + "🕑  Closes <t:" + timeToClose + ":R>")
-								.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
-						],
-						components: [
-							pollButtonRow1(uuid),
-							pollButtonRow2(uuid),
-						],
-					}).then(sentMessage => {
-						pollMessage = sentMessage;
-					});
-				} else if (button3exists && !button4exists) {
-					await (client.channels.cache.find((channel) => (channel as any).id === interaction.channelId) as any).send({
-						embeds: [
-							new MessageEmbed()
-								.setColor("#2f3136")
-								.setTitle(question)
-								.setDescription(results + "\n" + "🕑  Closes <t:" + timeToClose + ":R>")
-								.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
-						],
-						components: [
-							pollButtonRow1(uuid),
-							pollButtonRow2(uuid),
-							pollButtonRow3(uuid),
-						],
-					}).then(sentMessage => {
-						pollMessage = sentMessage;
-					});
-				} else if (!button3exists && button4exists) {
-					await (client.channels.cache.find((channel) => (channel as any).id === interaction.channelId) as any).send({
-						embeds: [
-							new MessageEmbed()
-								.setColor("#2f3136")
-								.setTitle(question)
-								.setDescription(results + "\n" + "🕑  Closes <t:" + timeToClose + ":R>")
-								.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
-						],
-						components: [
-							pollButtonRow1(uuid),
-							pollButtonRow2(uuid),
-							pollButtonRow4(uuid),
-						],
-					}).then(sentMessage => {
-						pollMessage = sentMessage;
-					});
-				} else if (button3exists && button4exists) {
-					await (client.channels.cache.find((channel) => (channel as any).id === interaction.channelId) as any).send({
-						embeds: [
-							new MessageEmbed()
-								.setColor("#2f3136")
-								.setTitle(question)
-								.setDescription(results + "\n" + "🕑  Closes <t:" + timeToClose + ":R>")
-								.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
-						],
-						components: [
-							pollButtonRow1(uuid),
-							pollButtonRow2(uuid),
-							pollButtonRow3(uuid),
-							pollButtonRow4(uuid),
-						],
-					}).then(sentMessage => {
-						pollMessage = sentMessage;
-					});
-				}
-
-				await interaction.editReply({
-					content: "\u200B",
+				await (client.channels.cache.find((channel) => (channel as any).id === interaction.channelId) as any).send({
 					embeds: [
-						new MessageEmbed()
-							.setColor("#3ba55d")
-							.setTitle("Sent!")
+						poll(results)
 					],
-					components: [
-						buttonRowDisabled(uuid),
-					],
+					components: pollButtons,
+				}).then(sentMessage => {
+					pollMessage = sentMessage;
+					pollMessageID = pollMessage.id;
 				});
 
-				await i.deferUpdate();
-			} catch {
-				//Invalid Perms
+				await interaction.editReply({
+					content: "**Sent!**",
+					embeds: [
+						poll(previewResults)
+					],
+					components: [
+						buttons.buttonRowDisabled(uuid),
+					],
+				});
+				startPoll();
+			} catch (error) {
+				console.log(error);
 				await interaction.editReply({
 					content: "\u200B",
 					embeds: [
@@ -245,12 +181,12 @@ export default async function pollInteraction(interaction) {
 							)
 					],
 					components: [
-						buttonRowDisabled(uuid),
+						buttons.buttonRowDisabled(uuid),
 					],
 				});
-				await i.deferUpdate();
-				updateSent = true;
 			}
+			sendUpdate(i, updateSent);
+
 			//Cancel
 		} else if (i.customId === uuid + "::cancel") {
 			await interaction.editReply({
@@ -263,144 +199,86 @@ export default async function pollInteraction(interaction) {
 						.setFooter({ text: "Poll Made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 				],
 				components: [
-					buttonRowDisabled(uuid),
+					buttons.buttonRowDisabled(uuid),
 				],
 			});
-			await i.deferUpdate();
-			updateSent = true;
-			//Buttons
-		} else if (i.customId === uuid + "::pollButton1") {
-			if (!responders.includes(i.user.id)) pollResponses1.push(i.user.id);
-			responders.push(i.user.id);
-			await i.deferUpdate();
-			if (visibleResults) updateMessage();
-		} else if (i.customId === uuid + "::pollButton2") {
-			if (!responders.includes(i.user.id)) pollResponses2.push(i.user.id);
-			responders.push(i.user.id);
-			await i.deferUpdate();
-			if (visibleResults) updateMessage();
-		} else if (i.customId === uuid + "::pollButton3") {
-			if (!responders.includes(i.user.id)) pollResponses3.push(i.user.id);
-			responders.push(i.user.id);
-			await i.deferUpdate();
-			if (visibleResults) updateMessage();
-		} else if (i.customId === uuid + "::pollButton4") {
-			if (!responders.includes(i.user.id)) pollResponses4.push(i.user.id);
-			responders.push(i.user.id);
-			await i.deferUpdate();
-			if (visibleResults) updateMessage();
+			sendUpdate(i, updateSent);
 		}
 	});
 
 	collector.on("end", async i => {
-		if (!updateSent) await interaction.editReply({
-			content: "**Poll Ended!**",
+		if (updateSent) return;
+		await interaction.editReply({
+			content: "**Timed Out!**",
 			embeds: [
 				new MessageEmbed()
 					.setColor("#2f3136")
 					.setTitle(question)
-					.setDescription(results + "\n" + "🕑  Closed on <t:" + + Math.round(new Date().getTime() / 1000) + ">")
+					.setDescription(previewResults + "\n" + "🕑  Closed on <t:" + + Math.round(new Date().getTime() / 1000) + ">")
 					.setFooter({ text: "Poll Made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 			],
 			components: [
-				buttonRowDisabled(uuid),
+				buttons.buttonRowDisabled(uuid),
 			],
 		});
-		if (pollMessage != null && pollMessage != undefined) {
-			updateMessage();
-			await pollMessage.edit({
-				embeds: [
-					new MessageEmbed()
-						.setColor("#2f3136")
-						.setTitle(question)
-						.setDescription(results + "\n" + "🕑  Closed on <t:" + + Math.round(new Date().getTime() / 1000) + ">")
-						.setFooter({ text: "Poll Made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
-				],
-				components: [],
-			});
-		}
 	})
 
-	async function updateMessage() {
-		if (!button3exists && !button4exists) {
-			results = "```" + interaction.options.getString("option-1") + ": \t" + pollResponses1.length + " Votes" +
-				"\n\n" + interaction.options.getString("option-2") + ": \t" + pollResponses2.length + " Votes" +
-				"```";
-			await pollMessage.edit({
-				embeds: [
-					new MessageEmbed()
-						.setColor("#2f3136")
-						.setTitle(question)
-						.setDescription(results + "\n" + "🕑  Closes <t:" + timeToClose + ":R>")
-						.setFooter({ text: "Poll Made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
-				],
-				components: [
-					pollButtonRow1(uuid),
-					pollButtonRow2(uuid),
-				],
-			});
+	async function startPoll() {
 
-		} else if (button3exists && !button4exists) {
-			results = "```" + interaction.options.getString("option-1") + ": \t" + pollResponses1.length + " Votes" +
-				"\n\n" + interaction.options.getString("option-2") + ": \t" + pollResponses2.length + " Votes" +
-				"\n\n" + interaction.options.getString("option-3") + ": \t" + pollResponses3.length + " Votes" +
-				"```";
-			await pollMessage.edit({
-				embeds: [
-					new MessageEmbed()
-						.setColor("#2f3136")
-						.setTitle(question)
-						.setDescription(results + "\n" + "🕑  Closes <t:" + timeToClose + ":R>")
-						.setFooter({ text: "Poll Made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
-				],
-				components: [
-					pollButtonRow1(uuid),
-					pollButtonRow2(uuid),
-					pollButtonRow3(uuid),
-				],
-			});
+		let collector = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::pollButton1` || i.customId === `${uuid}::pollButton2` || i.customId === `${uuid}::pollButton3` || i.customId === `${uuid}::pollButton4` || i.customId === `${uuid}::send` || i.customId === `${uuid}::cancel`, time: 20000 });
 
-		} else if (!button3exists && button4exists) {
-			results = "```" + interaction.options.getString("option-1") + ": \t" + pollResponses1.length + " Votes" +
-				"\n\n" + interaction.options.getString("option-2") + ": \t" + pollResponses2.length + " Votes" +
-				"\n\n" + interaction.options.getString("option-4") + ": \t" + pollResponses4.length + " Votes" +
-				"```";
-			await pollMessage.edit({
-				embeds: [
-					new MessageEmbed()
-						.setColor("#2f3136")
-						.setTitle(question)
-						.setDescription(results + "\n" + "🕑  Closes <t:" + timeToClose + ":R>")
-						.setFooter({ text: "Poll Made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
-				],
-				components: [
-					pollButtonRow1(uuid),
-					pollButtonRow2(uuid),
-					pollButtonRow4(uuid),
-				],
-			});
+		collector.on("collect", async (i) => {
+			if (i.customId === uuid + "::pollButton1") {
+				if (!responders.includes(i.user.id)) pollResponses1.push(i.user.id);
+				responders.push(i.user.id);
+				await i.deferUpdate();
+				if (visibleResults) updateMessage(true);
+			} else if (i.customId === uuid + "::pollButton2") {
+				if (!responders.includes(i.user.id)) pollResponses2.push(i.user.id);
+				responders.push(i.user.id);
+				await i.deferUpdate();
+				if (visibleResults) updateMessage(true);
+			} else if (i.customId === uuid + "::pollButton3") {
+				if (!responders.includes(i.user.id)) pollResponses3.push(i.user.id);
+				responders.push(i.user.id);
+				await i.deferUpdate();
+				if (visibleResults) updateMessage(true);
+			} else if (i.customId === uuid + "::pollButton4") {
+				if (!responders.includes(i.user.id)) pollResponses4.push(i.user.id);
+				responders.push(i.user.id);
+				await i.deferUpdate();
+				if (visibleResults) updateMessage(true);
+			}
+		})
 
-		} else if (button3exists && button4exists) {
-			results = "```" + interaction.options.getString("option-1") + ": \t" + pollResponses1.length + " Votes" +
-				"\n\n" + interaction.options.getString("option-2") + ": \t" + pollResponses2.length + " Votes" +
-				"\n\n" + interaction.options.getString("option-3") + ": \t" + pollResponses3.length + " Votes" +
-				"\n\n" + interaction.options.getString("option-4") + ": \t" + pollResponses4.length + " Votes" +
-				"```";
-			await pollMessage.edit({
-				embeds: [
-					new MessageEmbed()
-						.setColor("#2f3136")
-						.setTitle(question)
-						.setDescription(results + "\n" + "🕑  Closes <t:" + timeToClose + ":R>")
-						.setFooter({ text: "Poll Made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
-				],
-				components: [
-					pollButtonRow1(uuid),
-					pollButtonRow2(uuid),
-					pollButtonRow3(uuid),
-					pollButtonRow4(uuid),
-				],
-			});
-		}
+		collector.on("end", async i => {
+			try {
+				updateMessage();
+				await pollMessage.edit({
+					embeds: [
+						new MessageEmbed()
+							.setColor("#2f3136")
+							.setTitle(question)
+							.setDescription(results + "\n" + "🕑  Closed on <t:" + + Math.round(new Date().getTime() / 1000) + ">")
+							.setFooter({ text: "Poll Made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+					],
+					components: [],
+				});
+			} finally { }
+		})
+	}
+
+	async function updateMessage(updateMessage?: boolean) {
+		results = "```" + pollButton1 + ": \t" + pollResponses1.length + " Votes" + "\n\n" + pollButton2 + ": \t" + pollResponses2.length + " Votes"
+		if (button3exists) results += "\n\n" + pollButton3 + ": \t" + pollResponses3.length + " Votes"
+		if (button4exists) results += "\n\n" + pollButton4 + ": \t" + pollResponses4.length + " Votes"
+		results += "```";
+
+		try {
+			if (updateMessage) await pollMessage.edit({
+				embeds: [poll(results)],
+				components: pollButtons
+			})
+		} finally { }
 	}
 }

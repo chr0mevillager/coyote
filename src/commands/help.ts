@@ -39,19 +39,19 @@ let help: CustomCommand = {
 						},
 						{
 							name: "`Question 1`",
-							value: "Type in a response to your question that is less than 100 charicters."
+							value: "Type in a response to your question that is less than 80 charicters."
 						},
 						{
 							name: "`Question 2`",
-							value: "Type in a response to your question that is less than 100 charicters."
+							value: "Type in a response to your question that is less than 80 charicters."
 						},
 						{
 							name: "`Question 3`",
-							value: "Type in a response to your question that is less than 100 charicters."
+							value: "Type in a response to your question that is less than 80 charicters."
 						},
 						{
 							name: "`Question 4`",
-							value: "Type in a response to your question that is less than 100 charicters."
+							value: "Type in a response to your question that is less than 80 charicters."
 						},
 						{
 							name: "`Visible Results`",
