@@ -15,13 +15,13 @@ let send: CustomCommand = {
 				options: [
 					{
 						name: "title",
-						description: "What do you want the message to be titled? (>256 charicters)",
+						description: "What do you want the message to be titled? (>256 characters)",
 						type: 3,
 						required: true,
 					},
 					{
 						name: "description",
-						description: "What do you want the description to be? (>4000 charicters)",
+						description: "What do you want the description to be? (>4000 characters)",
 						type: 3,
 						required: true,
 					},
@@ -43,20 +43,7 @@ let send: CustomCommand = {
 				options: [
 					{
 						name: "question",
-						description: "What do you want the message to be titled? (>256 charicters)",
-						type: 3,
-						required: true,
-					},
-					{
-						name: "option-1",
-						description: "What should the first option be? (>80 charicters)",
-						type: 3,
-						required: true,
-
-					},
-					{
-						name: "option-2",
-						description: "What should the second option be? (>80 charicters)",
+						description: "What do you want the message to be titled? (>256 characters)",
 						type: 3,
 						required: true,
 					},
@@ -67,14 +54,27 @@ let send: CustomCommand = {
 						required: true,
 					},
 					{
+						name: "option-1",
+						description: "What should the first option be? (>80 characters)",
+						type: 3,
+						required: true,
+
+					},
+					{
+						name: "option-2",
+						description: "What should the second option be? (>80 characters)",
+						type: 3,
+						required: true,
+					},
+					{
 						name: "option-3",
-						description: "What should the third option be? (>80 charicters)",
+						description: "What should the third option be? (>80 characters)",
 						type: 3,
 						required: false,
 					},
 					{
 						name: "option-4",
-						description: "What should the fourth option be? (>80 charicters)",
+						description: "What should the fourth option be? (>80 characters)",
 						type: 3,
 						required: false,
 					},

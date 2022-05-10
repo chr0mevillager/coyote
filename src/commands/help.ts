@@ -16,11 +16,11 @@ let help: CustomCommand = {
 					.addFields(
 						{
 							name: "`Title`",
-							value: "Type in a word or phrase that is less than 256 charicters."
+							value: "Type in a word or phrase that is less than 256 characters."
 						},
 						{
 							name: "`Description`",
-							value: "Type in a main description that is less than 4000 charicters. Use `\\n\` to create an enter, `\\u2800` to create an empty feild, and to create a link, type `( Your Text )[ URL ]`"
+							value: "Type in a main description that is less than 4000 characters. Use `\\n\` to create an enter, `\\u2800` to create an empty feild, and to create a link, type `( Your Text )[ URL ]`"
 						},
 						{
 							name: "`Image`",
@@ -35,23 +35,23 @@ let help: CustomCommand = {
 					.addFields(
 						{
 							name: "`Question`",
-							value: "Type in the poll question in less than 256 charicters. Use `\\n\` to create an enter, `\\u2800` to create an empty feild, and to create a link, type `( Your Text )[ URL ]`"
+							value: "Type in the poll question in less than 256 characters. Use `\\n\` to create an enter, `\\u2800` to create an empty feild, and to create a link, type `( Your Text )[ URL ]`"
 						},
 						{
 							name: "`Question 1`",
-							value: "Type in a response to your question that is less than 80 charicters."
+							value: "Type in a response to your question that is less than 80 characters."
 						},
 						{
 							name: "`Question 2`",
-							value: "Type in a response to your question that is less than 80 charicters."
+							value: "Type in a response to your question that is less than 80 characters."
 						},
 						{
 							name: "`Question 3`",
-							value: "Type in a response to your question that is less than 80 charicters."
+							value: "Type in a response to your question that is less than 80 characters."
 						},
 						{
 							name: "`Question 4`",
-							value: "Type in a response to your question that is less than 80 charicters."
+							value: "Type in a response to your question that is less than 80 characters."
 						},
 						{
 							name: "`Visible Results`",

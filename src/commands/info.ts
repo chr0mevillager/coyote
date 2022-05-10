@@ -12,6 +12,7 @@ let info: CustomCommand = {
 				new MessageEmbed()
 					.setColor("#389af0")
 					.setTitle("Embeds bot")
+					.setDescription("```Version\t 3.0\n\nCommit:\t #15```")
 			],
 			components: [
 				new MessageActionRow()
@@ -27,7 +28,7 @@ let info: CustomCommand = {
 						new MessageButton()
 							.setLabel("Github")
 							.setStyle("LINK")
-							.setURL("https://github.com/chr0mevillager/embed-bot"),
+							.setURL("https://github.com/chr0mevillager/embeds-bot"),
 					)
 			],
 			ephemeral: true,
