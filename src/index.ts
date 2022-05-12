@@ -5,6 +5,7 @@ import { Routes } from "discord-api-types";
 import { REST } from "@discordjs/rest";
 import logMessage from "./exports/error";
 import setBotActivity from "./exports/activity";
+import { MessageEmbed } from "discord.js";
 
 //Commands
 client.on("interactionCreate", async (interaction) => {
@@ -13,8 +14,8 @@ client.on("interactionCreate", async (interaction) => {
 		try {
 			await command.execute(interaction);
 		} catch (error) {
-			console.error(error);
 			await logMessage(error, "index");
+			console.error(error);
 		}
 	}
 });
@@ -23,8 +24,15 @@ client.on("interactionCreate", async (interaction) => {
 client.once('ready', () => {
 
 	setBotActivity("help");
-	console.log("It's alive! (Probably)");
-
+	(client.channels.cache.find((channel) => (channel as any).id === process.env.LOGGING_CHANNEL) as any).send({
+		content: "@everyone",
+		embeds: [
+			new MessageEmbed()
+				.setColor("#389af0")
+				.setTitle("Bot Online!")
+				.setDescription("Online <t:" + Math.round(new Date().getTime() / 1000) + ":R>.")
+		],
+	});
 
 	//Creates commands in testing guild
 	const guild = client.guilds.cache.get(process.env.SLASH_COMMAND_TESTING_GUILD);

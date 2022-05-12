@@ -20,20 +20,35 @@ export default async function messageInteraction(interaction) {
 	if (title.length > 256) title = title.slice(0, 256);
 	if (description.length > 4000) description = description.slice(0, 4000);
 
-	description = JSON.parse('"' + description.replace(/"/g, '\\"') + '"');
-	title = JSON.parse('"' + title.replace(/"/g, '\\"') + '"');
+	try {
+		description = JSON.parse('"' + description.replace(/"/g, '\\"') + '"');
+	} catch { }
+	try {
+		title = JSON.parse('"' + title.replace(/"/g, '\\"') + '"');
+	} catch { }
 
 	//Other Variables
 	let updateSent = false;
 	let uuid = interaction.id;
 
 	//Embed
-	const userMessage = (color: string) => new MessageEmbed()
-		.setColor(color as ColorResolvable)
-		.setTitle(title)
-		.setDescription(description + "\n" + "\u200B")
-		.setImage(image)
-		.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+	let userMessage;
+	if (description != "\u2800" && description != "\u200B") {
+		userMessage = (color: string) => new MessageEmbed()
+			.setColor(color as ColorResolvable)
+			.setTitle(title)
+			.setDescription(description + "\n" + "\u200B")
+			.setImage(image)
+			.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+	} else {
+		userMessage = (color: string) => new MessageEmbed()
+			.setColor(color as ColorResolvable)
+			.setTitle(title)
+			.setDescription("\u200B")
+			.setImage(image)
+			.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+	}
+
 
 	//Send Preview ---
 	await interaction.reply({

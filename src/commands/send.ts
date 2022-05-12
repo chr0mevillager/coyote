@@ -15,13 +15,13 @@ let send: CustomCommand = {
 				options: [
 					{
 						name: "title",
-						description: "What do you want the message to be titled? (>256 characters)",
+						description: "What do you want the message to be titled? (≤ 256 characters)",
 						type: 3,
 						required: true,
 					},
 					{
 						name: "description",
-						description: "What do you want the description to be? (>4000 characters)",
+						description: "What do you want the description to be? (≤ 4000 characters)",
 						type: 3,
 						required: true,
 					},
@@ -43,38 +43,38 @@ let send: CustomCommand = {
 				options: [
 					{
 						name: "question",
-						description: "What do you want the message to be titled? (>256 characters)",
+						description: "What do you want the message to be titled? (≤ 256 characters)",
 						type: 3,
 						required: true,
 					},
 					{
 						name: "visible-results",
-						description: "Should users be able to see the total number of votes during or after the poll?",
+						description: "Should users be able to see the total number of votes during the poll?",
 						type: "BOOLEAN",
 						required: true,
 					},
 					{
 						name: "option-1",
-						description: "What should the first option be? (>80 characters)",
+						description: "What should the first option be? (≤ 80 characters)",
 						type: 3,
 						required: true,
 
 					},
 					{
 						name: "option-2",
-						description: "What should the second option be? (>80 characters)",
+						description: "What should the second option be? (≤ 80 characters)",
 						type: 3,
 						required: true,
 					},
 					{
 						name: "option-3",
-						description: "What should the third option be? (>80 characters)",
+						description: "What should the third option be? (≤ 80 characters)",
 						type: 3,
 						required: false,
 					},
 					{
 						name: "option-4",
-						description: "What should the fourth option be? (>80 characters)",
+						description: "What should the fourth option be? (≤ 80 characters)",
 						type: 3,
 						required: false,
 					},
@@ -89,14 +89,13 @@ let send: CustomCommand = {
 				messageInteraction(interaction);
 			} catch (error) {
 				logMessage(error, "/send message command", interaction);
-				return;
+				console.log(error);
 			}
 		} else if (interaction.options.getSubcommand() === "poll") {
 			try {
 				pollInteraction(interaction);
 			} catch (error) {
 				logMessage(error, "/send poll command", interaction);
-				return;
 			}
 		}
 

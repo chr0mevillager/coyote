@@ -35,7 +35,7 @@ let help: CustomCommand = {
 					.addFields(
 						{
 							name: "`Question`",
-							value: "Type in the poll question in less than 256 characters. Use `\\n\` to create an enter, `\\u2800` to create an empty feild, and to create a link, type `( Your Text )[ URL ]`"
+							value: "Type in the poll question in less than 256 characters. Use `\\n\` to create an enter, `\\u200B` to create an empty feild, and to create a link, type `( Your Text )[ URL ]`"
 						},
 						{
 							name: "`Question 1`",
@@ -55,7 +55,7 @@ let help: CustomCommand = {
 						},
 						{
 							name: "`Visible Results`",
-							value: "Decide if poll should show its results live or after the poll is complete."
+							value: "Decide if poll should show live results. Results will always be shown after the poll is over."
 						},
 					),
 				new MessageEmbed()
