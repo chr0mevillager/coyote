@@ -5,6 +5,7 @@ import {
 import sendUpdate from "../../exports/send_update";
 import { client } from "../../exports/client";
 import * as buttons from "../../exports/send_buttons";
+import * as questionEmbeds from "../../exports/question_embeds";
 
 export default async function messageInteraction(interaction) {
 
@@ -52,8 +53,7 @@ export default async function messageInteraction(interaction) {
 
 	//Send Preview ---
 	await interaction.reply({
-		content: "**Here is your message:**",
-		embeds: [userMessage("#2f3136")],
+		embeds: [questionEmbeds.question("Message"), userMessage("#2f3136")],
 		components: [buttons.buttonRow(uuid)],
 		ephemeral: true,
 	});
@@ -70,33 +70,13 @@ export default async function messageInteraction(interaction) {
 				});
 
 				await interaction.editReply({
-					content: "**Sent!**",
-					embeds: [userMessage("#3ba55d")],
+					embeds: [questionEmbeds.send, userMessage("#2f3136")],
 					components: [buttons.buttonRowDisabled(uuid)],
 				});
 			} catch {
 				await interaction.editReply({
 					content: "\u200B",
-					embeds: [
-						new MessageEmbed()
-							.setColor("#ed4245")
-							.setTitle("Invalid permissions")
-							.setDescription("Please make sure I have the correct permissions to:")
-							.addFields(
-								{
-									name: "See this channel properly",
-									value: "`View Channels` Permission"
-								},
-								{
-									name: "Send messages",
-									value: "`Send Messages` Permission"
-								},
-								{
-									name: "Send embeded messages",
-									value: "`Embed Links` Permission"
-								},
-							)
-					],
+					embeds: [questionEmbeds.invalidPerms, userMessage("#2f3136")],
 					components: [buttons.buttonRowDisabled(uuid)],
 				});
 			}
@@ -105,8 +85,7 @@ export default async function messageInteraction(interaction) {
 			//Cancel
 		} else if (i.customId === uuid + "::cancel") {
 			await interaction.editReply({
-				content: "**Canceled!**",
-				embeds: [userMessage("#2f3136")],
+				embeds: [questionEmbeds.cancel, userMessage("#2f3136")],
 				components: [buttons.buttonRowDisabled(uuid)],
 			});
 			sendUpdate(i, updateSent);
@@ -116,8 +95,7 @@ export default async function messageInteraction(interaction) {
 	collector.on("end", async i => {
 		if (updateSent) return;
 		await interaction.editReply({
-			content: "**Timed Out!**",
-			embeds: [userMessage("#2f3136")],
+			embeds: [questionEmbeds.timedOut, userMessage("#2f3136")],
 			components: [buttons.buttonRowDisabled(uuid)],
 		});
 	})

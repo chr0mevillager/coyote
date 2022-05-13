@@ -7,6 +7,7 @@ import { client } from "../../exports/client";
 import generateTimeStamp from "../../exports/timestamp";
 import * as buttons from "../../exports/send_buttons";
 import sendUpdate from "../../exports/send_update";
+import * as questionEmbeds from "../../exports/question_embeds";
 
 export default async function pollInteraction(interaction) {
 
@@ -119,8 +120,7 @@ export default async function pollInteraction(interaction) {
 
 	//Send Preview ---
 	await interaction.reply({
-		content: "**Here is your poll:**",
-		embeds: [poll(previewResults)],
+		embeds: [questionEmbeds.question("Poll"), poll(previewResults)],
 		components: [buttons.buttonRow(uuid)],
 		ephemeral: true,
 	});
@@ -148,39 +148,15 @@ export default async function pollInteraction(interaction) {
 				});
 
 				await interaction.editReply({
-					content: "**Sent!**",
-					embeds: [
-						poll(previewResults)
-					],
+					embeds: [questionEmbeds.send, poll(previewResults)],
 					components: [
 						buttons.buttonRowDisabled(uuid),
 					],
 				});
 				startPoll();
-			} catch (error) {
-				console.log(error);
+			} catch {
 				await interaction.editReply({
-					content: "\u200B",
-					embeds: [
-						new MessageEmbed()
-							.setColor("#ed4245")
-							.setTitle("Invalid permissions")
-							.setDescription("Please make sure I have the correct permissions to:")
-							.addFields(
-								{
-									name: "See this channel properly",
-									value: "`View Channels` Permission"
-								},
-								{
-									name: "Send messages",
-									value: "`Send Messages` Permission"
-								},
-								{
-									name: "Send embeded messages",
-									value: "`Embed Links` Permission"
-								},
-							)
-					],
+					embeds: [questionEmbeds.invalidPerms, poll(previewResults)],
 					components: [
 						buttons.buttonRowDisabled(uuid),
 					],
@@ -191,8 +167,8 @@ export default async function pollInteraction(interaction) {
 			//Cancel
 		} else if (i.customId === uuid + "::cancel") {
 			await interaction.editReply({
-				content: "**Canceled!**",
 				embeds: [
+					questionEmbeds.cancel,
 					new MessageEmbed()
 						.setColor("#2f3136")
 						.setTitle(question)
@@ -210,8 +186,8 @@ export default async function pollInteraction(interaction) {
 	collector.on("end", async i => {
 		if (updateSent) return;
 		await interaction.editReply({
-			content: "**Timed Out!**",
 			embeds: [
+				questionEmbeds.timedOut,
 				new MessageEmbed()
 					.setColor("#2f3136")
 					.setTitle(question)

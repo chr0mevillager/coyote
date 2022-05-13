@@ -16,6 +16,7 @@ export default async function logMessage(error: string, errorLocation: string, i
 			});
 		}
 		await (client.channels.cache.find((channel) => (channel as any).id === process.env.LOGGING_CHANNEL) as any).send({
+			content: "@everyone",
 			embeds: [
 				new MessageEmbed()
 					.setColor("#2f3136")

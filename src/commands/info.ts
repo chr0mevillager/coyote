@@ -12,7 +12,7 @@ let info: CustomCommand = {
 				new MessageEmbed()
 					.setColor("#389af0")
 					.setTitle("Embeds bot")
-					.setDescription("```Version\t 3.1```")
+					.setDescription("```Version\t 3.2```")
 			],
 			components: [
 				new MessageActionRow()
