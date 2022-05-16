@@ -1,8 +1,6 @@
 import "./exports/vars";
 import { client } from "./exports/client";
 import commands from "./commands";
-import { Routes } from "discord-api-types";
-import { REST } from "@discordjs/rest";
 import logMessage from "./exports/error";
 import setBotActivity from "./exports/activity";
 import { MessageEmbed } from "discord.js";
@@ -15,7 +13,6 @@ client.on("interactionCreate", async (interaction) => {
 			await command.execute(interaction);
 		} catch (error) {
 			await logMessage(error, "index");
-			console.error(error);
 		}
 	}
 });

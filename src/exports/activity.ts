@@ -4,6 +4,6 @@ import { client } from "./client";
 export default function setBotActivity(activyType: string) {
 	if (activyType == "help") {
 		client.user.setActivity('/help', { type: 'LISTENING' });
-		setInterval(setBotActivity, 1200000, "help");
+		setInterval(setBotActivity, 7200000, "help");
 	}
 }
