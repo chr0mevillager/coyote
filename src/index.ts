@@ -20,7 +20,7 @@ client.on("interactionCreate", async (interaction) => {
 //On login
 client.once('ready', () => {
 
-	setBotActivity("help");
+	setBotActivity(0);
 	(client.channels.cache.find((channel) => (channel as any).id === process.env.LOGGING_CHANNEL) as any).send({
 		content: "@everyone",
 		embeds: [
