@@ -24,6 +24,7 @@ export default async function logMessage(error: string, errorLocation: string, i
 					.setDescription("```" + error + "```")
 			],
 		});
+		console.error(error);
 	} catch (error) {
 		console.error(error);
 	}

@@ -128,8 +128,8 @@ export default async function pollInteraction(interaction) {
 		});
 
 		//Start Collector 1 --
-		let collector = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::pollButton1` || i.customId === `${uuid}::pollButton2` || i.customId === `${uuid}::pollButton3` || i.customId === `${uuid}::pollButton4` || i.customId === `${uuid}::send` || i.customId === `${uuid}::cancel`, time: 60000 });
-		collector.on("collect", async (i) => {
+		let collector1 = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::pollButton1` || i.customId === `${uuid}::pollButton2` || i.customId === `${uuid}::pollButton3` || i.customId === `${uuid}::pollButton4` || i.customId === `${uuid}::send` || i.customId === `${uuid}::cancel`, time: 60000 });
+		collector1.on("collect", async (i) => {
 
 			//Send
 			if (i.customId === uuid + "::send") {
@@ -185,7 +185,7 @@ export default async function pollInteraction(interaction) {
 			}
 		});
 
-		collector.on("end", async i => {
+		collector1.on("end", async i => {
 			if (updateSent) return;
 			await interaction.editReply({
 				embeds: [
@@ -204,9 +204,10 @@ export default async function pollInteraction(interaction) {
 
 		async function startPoll() {
 
-			let collector = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::pollButton1` || i.customId === `${uuid}::pollButton2` || i.customId === `${uuid}::pollButton3` || i.customId === `${uuid}::pollButton4` || i.customId === `${uuid}::send` || i.customId === `${uuid}::cancel`, time: 86400000 });
+			//Collector 2 --
+			let collector2 = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::pollButton1` || i.customId === `${uuid}::pollButton2` || i.customId === `${uuid}::pollButton3` || i.customId === `${uuid}::pollButton4` || i.customId === `${uuid}::send` || i.customId === `${uuid}::cancel`, time: 86400000 });
 
-			collector.on("collect", async (i) => {
+			collector2.on("collect", async (i) => {
 				if (pollOver) return;
 				if (i.customId === uuid + "::pollButton1") {
 					if (!responders.includes(i.user.id)) pollResponses1.push(i.user.id);
@@ -231,7 +232,7 @@ export default async function pollInteraction(interaction) {
 				}
 			})
 
-			collector.on("end", async i => {
+			collector2.on("end", async i => {
 				try {
 					pollOver = true;
 					updateMessage(false);
@@ -246,6 +247,7 @@ export default async function pollInteraction(interaction) {
 						components: [],
 					});
 				} catch { }
+
 			})
 		}
 
