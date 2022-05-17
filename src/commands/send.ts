@@ -85,17 +85,17 @@ let send: CustomCommand = {
 
 	async execute(interaction) {
 
-		await interaction.reply({
-			embeds: [
-				new MessageEmbed()
-					.setTitle("Error")
-					.setDescription("Due to a memorly leak, the `/send` commands have been temporarily disabled. This issue is being worked on and should be fixed soon.")
-					.setColor("#ff6c08")
-			],
-			ephemeral: true,
-		});
+		// await interaction.reply({
+		// 	embeds: [
+		// 		new MessageEmbed()
+		// 			.setTitle("Error")
+		// 			.setDescription("Due to a memorly leak, the `/send` commands have been temporarily disabled. This issue is being worked on and should be fixed soon.")
+		// 			.setColor("#ff6c08")
+		// 	],
+		// 	ephemeral: true,
+		// });
+		// return;
 
-		return;
 		if (interaction.options.getSubcommand() === "message") {
 			messageInteraction(interaction);
 		} else if (interaction.options.getSubcommand() === "poll") {
