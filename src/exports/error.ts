@@ -9,7 +9,7 @@ export default async function logMessage(error: string, errorLocation: string, i
 				ephemeral: true,
 				embeds: [
 					new MessageEmbed()
-						.setColor("#2f3136")
+						.setColor("#ff6c08")
 						.setTitle("An error has occured!")
 						.setDescription("The developers were notified of this error and it will be fixed shortly.")
 				],
@@ -19,7 +19,7 @@ export default async function logMessage(error: string, errorLocation: string, i
 			content: "@everyone",
 			embeds: [
 				new MessageEmbed()
-					.setColor("#2f3136")
+					.setColor("#ff6c08")
 					.setTitle("An error has occured in the `" + errorLocation + "`!")
 					.setDescription("```" + error + "```")
 			],

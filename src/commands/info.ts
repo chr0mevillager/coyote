@@ -1,4 +1,5 @@
 import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
+import { client } from "../exports/client";
 import { CustomCommand } from "../exports/types";
 
 let info: CustomCommand = {
@@ -12,7 +13,7 @@ let info: CustomCommand = {
 				new MessageEmbed()
 					.setColor("#389af0")
 					.setTitle("Embeds bot")
-					.setDescription("```Version\t 3.2```")
+					.setDescription("```Version\t 3.2\n\nPing\t \u2800\u2800 " + client.ws.ping + "```")
 			],
 			components: [
 				new MessageActionRow()
