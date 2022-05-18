@@ -7,7 +7,6 @@ let send: CustomCommand = {
 	data: {
 		name: "send",
 		description: "Send an embeded message!",
-		defaultPermission: false,
 		options: [
 			{
 				name: "message",

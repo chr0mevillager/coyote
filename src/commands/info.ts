@@ -12,8 +12,9 @@ let info: CustomCommand = {
 			embeds: [
 				new MessageEmbed()
 					.setColor("#389af0")
+					.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/info.png?raw=true")
 					.setTitle("Embeds Bot")
-					.setDescription("```Version:\u200b\u200b\u200b\u200b\u2800\u2800\u2800\u2800\u28003.2\n\nPing:\u2800\u2800\u2800\u2800\u2800 \u2800 " + client.ws.ping + "```")
+					.setDescription("```Version:\u200b\u200b\u200b\u200b\u2800\u2800\u2800\u2800\u28003.3\n\nPing:\u2800\u2800\u2800\u2800\u2800 \u2800 " + client.ws.ping + "ms```")
 			],
 			components: [
 				new MessageActionRow()
