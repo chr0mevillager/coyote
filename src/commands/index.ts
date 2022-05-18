@@ -5,11 +5,13 @@ import info from "./info";
 import send from "./send";
 
 import set from "./set";
+import bot from "./bot";
 //import data from "./data"
 
 /**A list of developer slash commands*/
 export const developerCommands: Record<string, CustomCommand> = {
 	set,
+	bot,
 	//	data,
 };
 
