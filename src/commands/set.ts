@@ -7,28 +7,28 @@ import { CustomCommand } from "../exports/types";
 let set: CustomCommand = {
 	data: {
 		name: "set",
-		description: "Set the status of the bot",
+		description: "Set the status of the bot.",
 		options: [
-			// {
-			// 	name: "rotating_status",
-			// 	description: "Should the status of the bot rotate?",
-			// 	type: 1,
-			// 	options: [
-			// 		{
-			// 			name: "rotate",
-			// 			description: "Should the bot's status rotate?",
-			// 			type: 5,
-			// 			required: true,
-			// 		},
-			// 		{
-			// 			name: "index",
-			// 			description: "What status (index) should the bot have?",
-			// 			type: 10,
-			// 			required: false,
-			// 			minValue: 0,
-			// 		},
-			// 	],
-			// },
+			{
+				name: "rotating_status",
+				description: "Should the status of the bot rotate?",
+				type: 1,
+				options: [
+					{
+						name: "rotate",
+						description: "Should the bot's status rotate?",
+						type: 5,
+						required: true,
+					},
+					{
+						name: "index",
+						description: "What status (index) should the bot have?",
+						type: 4,
+						required: false,
+						minValue: 0,
+					},
+				],
+			},
 			{
 				name: "status",
 				description: "Set the bot's status!",
@@ -100,8 +100,10 @@ let set: CustomCommand = {
 				if (interaction.options.getString("status")) client.user.setStatus(interaction.options.getString("status") as PresenceStatusData);
 				if (interaction.options.getString("activity") && interaction.options.getString("action")) client.user.setActivity(interaction.options.getString("action").toString(), { type: interaction.options.getString("activity") as any });
 			} else if (interaction.options.getSubcommand() === "rotating_status") {
+
+				activity.setRotateStatus(true);
+				if (interaction.options.getInteger("index")) await activity.setNextStatus(interaction.options.getInteger("index"));
 				activity.setRotateStatus(interaction.options.getBoolean("rotate"));
-				if (interaction.options.getInteger("index")) activity.setNextStatus((interaction.options.getNumber("index") - 1))
 			}
 			await interaction.reply({
 				embeds: [

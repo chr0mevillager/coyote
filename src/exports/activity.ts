@@ -27,4 +27,6 @@ export function setRotateStatus(rotate: boolean) {
 
 export function setNextStatus(index: number) {
 	activityIndex = index;
+	setRotateStatus(true);
+	setBotActivity();
 }

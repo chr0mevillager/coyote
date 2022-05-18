@@ -34,7 +34,6 @@ client.once('ready', () => {
 
 	activity.setRotateStatus(true);
 	activity.setNextStatus(0);
-	activity.setBotActivity();
 
 	(client.channels.cache.find((channel) => (channel as any).id === process.env.LOGGING_CHANNEL) as any).send({
 		content: "@everyone",
