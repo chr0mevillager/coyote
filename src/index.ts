@@ -43,7 +43,7 @@ client.once('ready', () => {
 			new MessageEmbed()
 				.setColor("#389af0")
 				.setTitle("Bot Online!")
-				.setDescription("Online <t:" + Math.round(new Date().getTime() / 1000) + ":R>.")
+				.setDescription("Online <t:" + Math.floor(client.readyAt.getTime() / 1000) + ":R>.")
 		],
 	});
 

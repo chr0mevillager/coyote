@@ -12,7 +12,7 @@ let info: CustomCommand = {
 			embeds: [
 				new MessageEmbed()
 					.setColor("#389af0")
-					.setTitle("Embeds bot")
+					.setTitle("Embeds Bot")
 					.setDescription("```Version:\u200b\u200b\u200b\u200b\u2800\u2800\u2800\u2800\u28003.2\n\nPing:\u2800\u2800\u2800\u2800\u2800 \u2800 " + client.ws.ping + "```")
 			],
 			components: [
