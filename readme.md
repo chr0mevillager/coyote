@@ -21,6 +21,6 @@ Sends easy-to-use embeds in Discord.
 
 ## Add To Server
 
-- [Add bot to server](https://discord.com/oauth2/authorize?client_id=942083941307912193&scope=bot%20applications.commands&permissions=18432)
+- [Add bot to server](https://discord.com/oauth2/authorize?client_id=942083941307912193&scope=bot%20applications.commands&permissions=150528)
 
-- [Add beta bot to server](https://discord.com/oauth2/authorize?client_id=968997421726195832&scope=bot%20applications.commands&permissions=18432)
+- [Add beta bot to server](https://discord.com/oauth2/authorize?client_id=968997421726195832&scope=bot%20applications.commands&permissions=150528)

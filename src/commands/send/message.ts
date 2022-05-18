@@ -9,11 +9,11 @@ import * as questionEmbeds from "../../exports/question_embeds";
 import logMessage from "../../exports/error";
 
 export default async function messageInteraction(interaction) {
-	
+
 	try {
 		//Inputs ---
 		let title: string = "\u200B";
-		let description: string = "\u200B";
+		let description = "";
 		let image: string = "";
 
 		title = interaction.options.getString("title");
@@ -21,36 +21,35 @@ export default async function messageInteraction(interaction) {
 		if (interaction.options.getString("image") && interaction.options.getString("image").match(/^((https:\/\/)|(http:\/\/))\w{2,100}(\.{1,10}\w{1,100}){1,100}(\/\w{0,100}){0,100}/gm)) image = interaction.options.getString("image");
 
 		if (title.length > 256) title = title.slice(0, 256);
-		if (description.length > 4000) description = description.slice(0, 4000);
+		if (description.length > 3998) description = description.slice(0, 3998);
 
 		try {
-		description = JSON.parse('"' + description.replace(/"/g, '\\"') + '"');
+			description = JSON.parse('"' + description.replace(/"/g, '\\"') + '"');
 		} catch { }
 		try {
-		title = JSON.parse('"' + title.replace(/"/g, '\\"') + '"');
+			title = JSON.parse('"' + title.replace(/"/g, '\\"') + '"');
 		} catch { }
+
+		if (image == "") description += "\n" + "\u200B";
+		if (description.match(/^[\n\u2800\u200b\s]*$/s)) {
+			if (image == "") {
+				description = "\n\u200B"
+			} else {
+				description = "";
+			}
+		}
 
 		//Other Variables
 		let updateSent = false;
 		let uuid = interaction.id;
 
 		//Embed
-		let userMessage;
-		if (description != "\u2800" && description != "\u200B") {
-			userMessage = (color: string) => new MessageEmbed()
-				.setColor(color as ColorResolvable)
-				.setTitle(title)
-				.setDescription(description + "\n" + "\u200B")
-				.setImage(image)
-				.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
-		} else {
-			userMessage = (color: string) => new MessageEmbed()
-				.setColor(color as ColorResolvable)
-				.setTitle(title)
-				.setDescription("\u200B")
-				.setImage(image)
-				.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
-		}
+		const userMessage = (color: string) => new MessageEmbed()
+			.setColor(color as ColorResolvable)
+			.setTitle(title)
+			.setDescription(description)
+			.setImage(image)
+			.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 
 
 		//Send Preview ---
