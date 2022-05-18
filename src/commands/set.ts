@@ -96,20 +96,39 @@ let set: CustomCommand = {
 	async execute(interaction) {
 		try {
 			if (interaction.options.getSubcommand() === "status") {
-
 				if (interaction.options.getString("status")) client.user.setStatus(interaction.options.getString("status") as PresenceStatusData);
 				if (interaction.options.getString("activity") && interaction.options.getString("action")) client.user.setActivity(interaction.options.getString("action").toString(), { type: interaction.options.getString("activity") as any });
+				await interaction.reply({
+					embeds: [
+						new MessageEmbed()
+							.setColor("#389af0")
+							.setTitle("Updated status!")
+							.setDescription("```Status:\t " + interaction.options.getString("status") + "\nActivity:\t " + interaction.options.getString("activity") + " " + interaction.options.getString("action") + "```")
+					],
+					ephemeral: true,
+				});
+				return;
 			} else if (interaction.options.getSubcommand() === "rotating_status") {
 
 				activity.setRotateStatus(true);
 				if (interaction.options.getInteger("index")) await activity.setNextStatus(interaction.options.getInteger("index"));
-				activity.setRotateStatus(interaction.options.getBoolean("rotate"));
+				await activity.setRotateStatus(interaction.options.getBoolean("rotate"));
+				await interaction.reply({
+					embeds: [
+						new MessageEmbed()
+							.setColor("#389af0")
+							.setTitle("Updated status!")
+							.setDescription("```Should Rotate:\t " + interaction.options.getBoolean("rotate") + "\nIndex:\t " + (activity.activityIndex - 1) + "```")
+					],
+					ephemeral: true,
+				});
+				return;
 			}
 			await interaction.reply({
 				embeds: [
 					new MessageEmbed()
-						.setColor("#389af0")
-						.setTitle("Updated status!")
+						.setColor("#ff6c08")
+						.setTitle("Please provide an input")
 				],
 				ephemeral: true,
 			});

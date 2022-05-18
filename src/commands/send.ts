@@ -7,6 +7,7 @@ let send: CustomCommand = {
 	data: {
 		name: "send",
 		description: "Send an embeded message!",
+		defaultPermission: false,
 		options: [
 			{
 				name: "message",
@@ -33,9 +34,6 @@ let send: CustomCommand = {
 					},
 				]
 			},
-
-			//Polls may be added in the future
-
 			{
 				name: "poll",
 				description: "Send a poll!",

@@ -32,9 +32,11 @@ client.on("interactionCreate", async (interaction) => {
 //On login
 client.once('ready', () => {
 
+	//Set activity
 	activity.setRotateStatus(true);
 	activity.setNextStatus(0);
 
+	//Log login
 	(client.channels.cache.find((channel) => (channel as any).id === process.env.LOGGING_CHANNEL) as any).send({
 		content: "@everyone",
 		embeds: [
