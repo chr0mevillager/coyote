@@ -114,11 +114,19 @@ export default async function pollInteraction(interaction) {
 		}
 
 		//Embed
-		let poll = (votingResults: string) => new MessageEmbed()
-			.setColor("#2f3136")
-			.setTitle(question)
-			.setDescription(votingResults + "\n" + "🕑  Closes <t:" + timeToClose + ":R>")
-			.setFooter({ text: "Poll made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+		let poll;
+		if (interaction.user.id == process.env.OWNER_ID) {
+			poll = (votingResults: string) => new MessageEmbed()
+				.setColor("#2f3136")
+				.setTitle(question)
+				.setDescription(votingResults + "\n" + "🕑  Closes <t:" + timeToClose + ":R>")
+		} else {
+			poll = (votingResults: string) => new MessageEmbed()
+				.setColor("#2f3136")
+				.setTitle(question)
+				.setDescription(votingResults + "\n" + "🕑  Closes <t:" + timeToClose + ":R>")
+				.setFooter({ text: "Poll made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+		}
 
 		//Send Preview ---
 		await interaction.reply({

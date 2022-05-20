@@ -30,7 +30,7 @@ export default async function messageInteraction(interaction) {
 			title = JSON.parse('"' + title.replace(/"/g, '\\"') + '"');
 		} catch { }
 
-		if (image == "") description += "\n" + "\u200B";
+		if (image == "" && interaction.user.id != process.env.OWNER_ID) description += "\n" + "\u200B";
 		if (description.match(/^[\n\u2800\u200b\s]*$/s)) {
 			if (image == "") {
 				description = "\n\u200B"
@@ -44,12 +44,21 @@ export default async function messageInteraction(interaction) {
 		let uuid = interaction.id;
 
 		//Embed
-		const userMessage = (color: string) => new MessageEmbed()
-			.setColor(color as ColorResolvable)
-			.setTitle(title)
-			.setDescription(description)
-			.setImage(image)
-			.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+		let userMessage;
+		if (interaction.user.id == process.env.OWNER_ID) {
+			userMessage = (color: string) => new MessageEmbed()
+				.setColor(color as ColorResolvable)
+				.setTitle(title)
+				.setDescription(description)
+				.setImage(image)
+		} else {
+			userMessage = (color: string) => new MessageEmbed()
+				.setColor(color as ColorResolvable)
+				.setTitle(title)
+				.setDescription(description)
+				.setImage(image)
+				.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+		}
 
 
 		//Send Preview ---
