@@ -82,16 +82,18 @@ let send: CustomCommand = {
 
 	async execute(interaction) {
 
-		// await interaction.reply({
-		// 	embeds: [
-		// 		new MessageEmbed()
-		// 			.setTitle("Error")
-		// 			.setDescription("Due to a memorly leak, the `/send` commands have been temporarily disabled. This issue is being worked on and should be fixed soon.")
-		// 			.setColor("#ff6c08")
-		// 	],
-		// 	ephemeral: true,
-		// });
-		// return;
+		if (!interaction.channel) {
+			await interaction.reply({
+				embeds: [
+					new MessageEmbed()
+					// .setTitle("This command can only be used in servers!")
+					// .setDescription("")
+					// .setColor("#ff6c08")
+				],
+				ephemeral: true,
+			});
+			return;
+		}
 
 		if (interaction.options.getSubcommand() === "message") {
 			messageInteraction(interaction);
