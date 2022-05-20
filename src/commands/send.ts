@@ -86,9 +86,9 @@ let send: CustomCommand = {
 			await interaction.reply({
 				embeds: [
 					new MessageEmbed()
-					// .setTitle("This command can only be used in servers!")
-					// .setDescription("")
-					// .setColor("#ff6c08")
+						.setTitle("This command can only be used in servers!")
+						.setDescription("")
+						.setColor("#ff6c08")
 				],
 				ephemeral: true,
 			});

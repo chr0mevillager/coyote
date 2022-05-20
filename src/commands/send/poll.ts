@@ -220,22 +220,22 @@ export default async function pollInteraction(interaction) {
 				if (i.customId === uuid + "::pollButton1") {
 					if (!responders.includes(i.user.id)) pollResponses1.push(i.user.id);
 					responders.push(i.user.id);
-					await i.deferUpdate();
+					sendUpdate(i);
 					if (visibleResults && !pollOver) updateMessage(true);
 				} else if (i.customId === uuid + "::pollButton2") {
 					if (!responders.includes(i.user.id)) pollResponses2.push(i.user.id);
 					responders.push(i.user.id);
-					await i.deferUpdate();
+					sendUpdate(i);
 					if (visibleResults && !pollOver) updateMessage(true);
 				} else if (i.customId === uuid + "::pollButton3") {
 					if (!responders.includes(i.user.id)) pollResponses3.push(i.user.id);
 					responders.push(i.user.id);
-					await i.deferUpdate();
+					sendUpdate(i);
 					if (visibleResults && !pollOver) updateMessage(true);
 				} else if (i.customId === uuid + "::pollButton4") {
 					if (!responders.includes(i.user.id)) pollResponses4.push(i.user.id);
 					responders.push(i.user.id);
-					await i.deferUpdate();
+					sendUpdate(i);
 					if (visibleResults && !pollOver) updateMessage(true);
 				}
 			})
