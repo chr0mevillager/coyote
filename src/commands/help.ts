@@ -31,7 +31,7 @@ let help: CustomCommand = {
 				//.setImage("https://cdn.discordapp.com/attachments/945889704375627807/946566904187875388/send-command.gif") Finding a new alternative for img urls, as Discord deletes old images.
 				new MessageEmbed()
 					.setColor("#389af0")
-					.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/poll.png?raw=true")
+					.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/poll.png?raw=true")
 					.setTitle("/send poll < Question > < Option 1 > < Option 2 > [ Option 3 ] [ Option 4 ] < Visible Results >")
 					.setDescription("Send a simple, anonymous poll! Polls are open for 1 day.")
 					.addFields(
@@ -62,7 +62,7 @@ let help: CustomCommand = {
 					),
 				new MessageEmbed()
 					.setColor("#389af0")
-					.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/info.png?raw=true")
+					.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/info.png?raw=true")
 					.setTitle("/info")
 					.setDescription("Get information about the bot!"),
 			],

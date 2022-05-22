@@ -1,31 +1,28 @@
 import { MessageEmbed } from "discord.js";
 
-//Increases the size of the embed for consistency
-const width = "\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800";
-
-export const question = (content: string) => new MessageEmbed()
-	.setTitle("Here is Your " + content + ":")
-	.setDescription("Would you like to send?\n" + width)
-	.setColor("#389af0")
-	.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/send.png?raw=true")
+export const question = new MessageEmbed()
+	.setTitle("")
+	.setDescription("")
+	.setColor("#2f3136")
+	.setImage("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/send/ready_to_send.png?raw=true");
 
 export const send = new MessageEmbed()
-	.setTitle("Sent")
-	.setDescription(width)
-	.setColor("#3aef3a")
-	.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/send_success.png?raw=true")
+	.setTitle("")
+	.setDescription("")
+	.setColor("#2f3136")
+	.setImage("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/send/message_sent.png?raw=true");
 
 export const cancel = new MessageEmbed()
-	.setTitle("Canceled")
-	.setDescription(width)
-	.setColor("#ff6c08")
-	.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/send_cancel.png?raw=true")
+	.setTitle("")
+	.setDescription("")
+	.setColor("#2f3136")
+	.setImage("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/send/canceled.png?raw=true");
 
 export const timedOut = new MessageEmbed()
-	.setTitle("Timed Out")
-	.setDescription(width)
-	.setColor("#ff6c08")
-	.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/timed_out.png?raw=true")
+	.setTitle("")
+	.setDescription("")
+	.setColor("#2f3136")
+	.setImage("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/send/timed_out.png?raw=true");
 
 export const invalidPerms = new MessageEmbed()
 	.setTitle("Invalid Permissions")
@@ -45,4 +42,4 @@ export const invalidPerms = new MessageEmbed()
 		},
 	)
 	.setColor("#ff6c08")
-	.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/invalid_perms.png?raw=true")
+	.setImage("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/send/invalid_perms.png?raw=true");
