@@ -15,19 +15,25 @@ let send: CustomCommand = {
 				options: [
 					{
 						name: "title",
-						description: "What do you want the message to be titled? (≤ 256 characters)",
+						description: "What would you like the message to be titled? (≤ 256 characters)",
 						type: 3,
 						required: true,
 					},
 					{
 						name: "description",
-						description: "What do you want the description to be? (≤ 4000 characters)",
+						description: "What would you like the description to be? (≤ 4000 characters)",
 						type: 3,
 						required: true,
 					},
 					{
+						name: "ping-group",
+						description: "Who would you like to ping with this message? (Role || User)",
+						type: 9,
+						required: false,
+					},
+					{
 						name: "image",
-						description: "What do you want the image to be? (Link)",
+						description: "What would you like the image to be? (Link)",
 						type: 3,
 						required: false,
 					},
@@ -40,7 +46,7 @@ let send: CustomCommand = {
 				options: [
 					{
 						name: "question",
-						description: "What do you want the message to be titled? (≤ 256 characters)",
+						description: "What would you like the message to be titled? (≤ 256 characters)",
 						type: 3,
 						required: true,
 					},

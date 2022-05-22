@@ -1,6 +1,8 @@
 import {
 	ColorResolvable,
 	MessageEmbed,
+	Role,
+	RoleMention,
 } from "discord.js";
 import sendUpdate from "../../exports/send_update";
 import { client } from "../../exports/client";
@@ -12,9 +14,10 @@ export default async function messageInteraction(interaction) {
 
 	try {
 		//Inputs ---
-		let title: string = "\u200B";
+		let title: string = "\u200b";
 		let description = "";
 		let image: string = "";
+		let ping: string = "";
 
 		title = interaction.options.getString("title");
 		description = interaction.options.getString("description");
@@ -39,10 +42,6 @@ export default async function messageInteraction(interaction) {
 			}
 		}
 
-		//Other Variables
-		let updateSent = false;
-		let uuid = interaction.id;
-
 		//Embed
 		let userMessage;
 		if (interaction.user.id == process.env.OWNER_ID) {
@@ -60,13 +59,34 @@ export default async function messageInteraction(interaction) {
 				.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 		}
 
+		if (interaction.options.getMentionable("ping-group")) {
+			if (!(interaction.options.getMentionable("ping-group") as Role).members) {
+				ping = "<@" + interaction.options.getMentionable("ping-group") + ">"
+			} else {
+				ping = "<@&" + interaction.options.getMentionable("ping-group") + ">"
+			}
+		}
+
+		//Other Variables
+		let updateSent = false;
+		let uuid = interaction.id;
 
 		//Send Preview ---
-		await interaction.reply({
-			embeds: [questionEmbeds.question, userMessage("#2f3136")],
-			components: [buttons.buttonRow(uuid)],
-			ephemeral: true,
-		});
+		if (ping == "") {
+			await interaction.reply({
+				embeds: [questionEmbeds.question, userMessage("#2f3136")],
+				components: [buttons.buttonRow(uuid)],
+				ephemeral: true,
+			});
+		} else {
+			await interaction.reply({
+				content: ping,
+				embeds: [questionEmbeds.question, userMessage("#2f3136")],
+				components: [buttons.buttonRow(uuid)],
+				ephemeral: true,
+			});
+		}
+
 
 		//Start Collector ---
 		let collector = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::send` || i.customId === `${uuid}::cancel`, time: 60000 });
@@ -76,9 +96,16 @@ export default async function messageInteraction(interaction) {
 			if (i.customId === uuid + "::send") {
 				sendUpdate(i);
 				try {
-					await (client.channels.cache.find((channel) => (channel as any).id === interaction.channelId) as any).send({
-						embeds: [userMessage("#2f3136")],
-					});
+					if (ping == "") {
+						await (client.channels.cache.find((channel) => (channel as any).id === interaction.channelId) as any).send({
+							embeds: [userMessage("#2f3136")],
+						});
+					} else {
+						await (client.channels.cache.find((channel) => (channel as any).id === interaction.channelId) as any).send({
+							content: ping,
+							embeds: [userMessage("#2f3136")],
+						});
+					}
 
 					await interaction.editReply({
 						embeds: [questionEmbeds.send, userMessage("#2f3136")],
@@ -86,7 +113,6 @@ export default async function messageInteraction(interaction) {
 					});
 				} catch {
 					await interaction.editReply({
-						content: "\u200B",
 						embeds: [questionEmbeds.invalidPerms, userMessage("#2f3136")],
 						components: [buttons.buttonRowDisabled(uuid)],
 					});
