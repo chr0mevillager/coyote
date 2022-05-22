@@ -130,7 +130,7 @@ export default async function pollInteraction(interaction) {
 
 		//Send Preview ---
 		await interaction.reply({
-			embeds: [questionEmbeds.question("Poll"), poll(previewResults)],
+			embeds: [questionEmbeds.question, poll(previewResults)],
 			components: [buttons.buttonRow(uuid)],
 			ephemeral: true,
 		});
@@ -141,6 +141,7 @@ export default async function pollInteraction(interaction) {
 
 			//Send
 			if (i.customId === uuid + "::send") {
+				sendUpdate(i);
 				//Change Message for Result Visibility
 				if (visibleResults) {
 					results = "```No votes yet.```";
@@ -172,10 +173,11 @@ export default async function pollInteraction(interaction) {
 						],
 					});
 				}
-				sendUpdate(i, updateSent);
+				updateSent = true;
 
 				//Cancel
 			} else if (i.customId === uuid + "::cancel") {
+				sendUpdate(i);
 				await interaction.editReply({
 					embeds: [
 						questionEmbeds.cancel,
@@ -189,7 +191,7 @@ export default async function pollInteraction(interaction) {
 						buttons.buttonRowDisabled(uuid),
 					],
 				});
-				sendUpdate(i, updateSent);
+				updateSent = true;
 			}
 		});
 
@@ -218,24 +220,24 @@ export default async function pollInteraction(interaction) {
 			collector2.on("collect", async (i) => {
 				if (pollOver) return;
 				if (i.customId === uuid + "::pollButton1") {
+					sendUpdate(i);
 					if (!responders.includes(i.user.id)) pollResponses1.push(i.user.id);
 					responders.push(i.user.id);
-					sendUpdate(i);
 					if (visibleResults && !pollOver) updateMessage(true);
 				} else if (i.customId === uuid + "::pollButton2") {
+					sendUpdate(i);
 					if (!responders.includes(i.user.id)) pollResponses2.push(i.user.id);
 					responders.push(i.user.id);
-					sendUpdate(i);
 					if (visibleResults && !pollOver) updateMessage(true);
 				} else if (i.customId === uuid + "::pollButton3") {
+					sendUpdate(i);
 					if (!responders.includes(i.user.id)) pollResponses3.push(i.user.id);
 					responders.push(i.user.id);
-					sendUpdate(i);
 					if (visibleResults && !pollOver) updateMessage(true);
 				} else if (i.customId === uuid + "::pollButton4") {
+					sendUpdate(i);
 					if (!responders.includes(i.user.id)) pollResponses4.push(i.user.id);
 					responders.push(i.user.id);
-					sendUpdate(i);
 					if (visibleResults && !pollOver) updateMessage(true);
 				}
 			})

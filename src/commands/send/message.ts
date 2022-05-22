@@ -63,7 +63,7 @@ export default async function messageInteraction(interaction) {
 
 		//Send Preview ---
 		await interaction.reply({
-			embeds: [questionEmbeds.question("Message"), userMessage("#2f3136")],
+			embeds: [questionEmbeds.question, userMessage("#2f3136")],
 			components: [buttons.buttonRow(uuid)],
 			ephemeral: true,
 		});
@@ -74,6 +74,7 @@ export default async function messageInteraction(interaction) {
 
 			//Send
 			if (i.customId === uuid + "::send") {
+				sendUpdate(i);
 				try {
 					await (client.channels.cache.find((channel) => (channel as any).id === interaction.channelId) as any).send({
 						embeds: [userMessage("#2f3136")],
@@ -90,15 +91,16 @@ export default async function messageInteraction(interaction) {
 						components: [buttons.buttonRowDisabled(uuid)],
 					});
 				}
-				sendUpdate(i, updateSent);
+				updateSent = true;
 
 				//Cancel
 			} else if (i.customId === uuid + "::cancel") {
+				sendUpdate(i);
 				await interaction.editReply({
 					embeds: [questionEmbeds.cancel, userMessage("#2f3136")],
 					components: [buttons.buttonRowDisabled(uuid)],
 				});
-				sendUpdate(i, updateSent);
+				updateSent = true;
 			}
 		});
 		//Timed Out ---
