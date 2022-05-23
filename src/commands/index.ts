@@ -11,7 +11,7 @@ import data from "./data"
 /**A list of developer slash commands*/
 export const developerCommands: Record<string, CustomCommand> = {
 	set,
-	//bot,
+	bot,
 	data,
 	send,
 };

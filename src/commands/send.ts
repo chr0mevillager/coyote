@@ -81,6 +81,12 @@ let send: CustomCommand = {
 						type: 3,
 						required: false,
 					},
+					{
+						name: "ping-group",
+						description: "Who would you like to ping with this message? (Role || User)",
+						type: 9,
+						required: false,
+					},
 				]
 			},
 		],

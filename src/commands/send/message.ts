@@ -1,8 +1,6 @@
 import {
-	ColorResolvable,
 	MessageEmbed,
 	Role,
-	RoleMention,
 } from "discord.js";
 import sendUpdate from "../../exports/send_update";
 import { client } from "../../exports/client";
@@ -14,13 +12,11 @@ export default async function messageInteraction(interaction) {
 
 	try {
 		//Inputs ---
-		let title: string = "\u200b";
-		let description = "";
+		let title: string = interaction.options.getString("title");
+		let description = interaction.options.getString("description");
 		let image: string = "";
 		let ping: string = "";
 
-		title = interaction.options.getString("title");
-		description = interaction.options.getString("description");
 		if (interaction.options.getString("image") && interaction.options.getString("image").match(/^((https:\/\/)|(http:\/\/))\w{2,100}(\.{1,10}\w{1,100}){1,100}(\/\w{0,100}){0,100}/gm)) image = interaction.options.getString("image");
 
 		if (title.length > 256) title = title.slice(0, 256);
@@ -45,14 +41,14 @@ export default async function messageInteraction(interaction) {
 		//Embed
 		let userMessage;
 		if (interaction.user.id == process.env.OWNER_ID) {
-			userMessage = (color: string) => new MessageEmbed()
-				.setColor(color as ColorResolvable)
+			userMessage = new MessageEmbed()
+				.setColor("#2f3136")
 				.setTitle(title)
 				.setDescription(description)
 				.setImage(image)
 		} else {
-			userMessage = (color: string) => new MessageEmbed()
-				.setColor(color as ColorResolvable)
+			userMessage = new MessageEmbed()
+				.setColor("#2f3136")
 				.setTitle(title)
 				.setDescription(description)
 				.setImage(image)
@@ -60,7 +56,9 @@ export default async function messageInteraction(interaction) {
 		}
 
 		if (interaction.options.getMentionable("ping-group")) {
-			if (!(interaction.options.getMentionable("ping-group") as Role).members) {
+			if (interaction.options.getMentionable("ping-group").name == "@everyone") {
+				ping = "@everyone";
+			} else if (!(interaction.options.getMentionable("ping-group") as Role).members) {
 				ping = "<@" + interaction.options.getMentionable("ping-group") + ">"
 			} else {
 				ping = "<@&" + interaction.options.getMentionable("ping-group") + ">"
@@ -74,14 +72,14 @@ export default async function messageInteraction(interaction) {
 		//Send Preview ---
 		if (ping == "") {
 			await interaction.reply({
-				embeds: [questionEmbeds.question, userMessage("#2f3136")],
+				embeds: [questionEmbeds.question, userMessage],
 				components: [buttons.buttonRow(uuid)],
 				ephemeral: true,
 			});
 		} else {
 			await interaction.reply({
 				content: ping,
-				embeds: [questionEmbeds.question, userMessage("#2f3136")],
+				embeds: [questionEmbeds.question, userMessage],
 				components: [buttons.buttonRow(uuid)],
 				ephemeral: true,
 			});
@@ -98,22 +96,22 @@ export default async function messageInteraction(interaction) {
 				try {
 					if (ping == "") {
 						await (client.channels.cache.find((channel) => (channel as any).id === interaction.channelId) as any).send({
-							embeds: [userMessage("#2f3136")],
+							embeds: [userMessage],
 						});
 					} else {
 						await (client.channels.cache.find((channel) => (channel as any).id === interaction.channelId) as any).send({
 							content: ping,
-							embeds: [userMessage("#2f3136")],
+							embeds: [userMessage],
 						});
 					}
 
 					await interaction.editReply({
-						embeds: [questionEmbeds.send, userMessage("#2f3136")],
+						embeds: [questionEmbeds.send, userMessage],
 						components: [buttons.buttonRowDisabled(uuid)],
 					});
 				} catch {
 					await interaction.editReply({
-						embeds: [questionEmbeds.invalidPerms, userMessage("#2f3136")],
+						embeds: [questionEmbeds.invalidPerms, userMessage],
 						components: [buttons.buttonRowDisabled(uuid)],
 					});
 				}
@@ -123,7 +121,7 @@ export default async function messageInteraction(interaction) {
 			} else if (i.customId === uuid + "::cancel") {
 				sendUpdate(i);
 				await interaction.editReply({
-					embeds: [questionEmbeds.cancel, userMessage("#2f3136")],
+					embeds: [questionEmbeds.cancel, userMessage],
 					components: [buttons.buttonRowDisabled(uuid)],
 				});
 				updateSent = true;
@@ -133,7 +131,7 @@ export default async function messageInteraction(interaction) {
 		collector.on("end", async i => {
 			if (updateSent) return;
 			await interaction.editReply({
-				embeds: [questionEmbeds.timedOut, userMessage("#2f3136")],
+				embeds: [questionEmbeds.timedOut, userMessage],
 				components: [buttons.buttonRowDisabled(uuid)],
 			});
 		})
