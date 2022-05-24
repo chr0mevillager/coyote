@@ -13,8 +13,21 @@ let info: CustomCommand = {
 				new MessageEmbed()
 					.setColor("#389af0")
 					.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/info.png?raw=true")
-					.setTitle("Embeds Bot")
-					.setDescription("```Version:\u200b\u200b\u200b\u200b\u2800\u2800\u2800\u2800\u28004.0\n\nPing:\u2800\u2800\u2800\u2800\u2800 \u2800 " + client.ws.ping + "ms```")
+					.setTitle("Embeds Bot#7040")
+					.addFields(
+						{
+							name: "`Version`",
+							value: "4.0"
+						},
+						{
+							name: "`Ping`",
+							value: client.ws.ping + "ms"
+						},
+						{
+							name: "`Release Notes (v4)`",
+							value: "・Visual Update\n・Many Bug Fixes & Extra Features\n・Improved Reliability"
+						},
+					)
 			],
 			components: [
 				new MessageActionRow()
