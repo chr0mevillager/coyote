@@ -60,7 +60,3 @@ let bot: CustomCommand = {
 	},
 };
 export default bot;
-
-function login() {
-	client.login(process.env.DISCORD_AUTH);
-}

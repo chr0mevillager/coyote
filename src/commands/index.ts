@@ -6,14 +6,15 @@ import send from "./send";
 
 import set from "./set";
 import bot from "./bot";
-import data from "./data"
+import data from "./data";
+import mode from "./mode"
 
 /**A list of developer slash commands*/
 export const developerCommands: Record<string, CustomCommand> = {
 	set,
 	bot,
 	data,
-	send,
+	mode,
 };
 
 /**A list of slash commands*/

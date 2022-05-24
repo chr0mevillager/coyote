@@ -8,3 +8,5 @@ export interface CustomCommand {
 	data: ApplicationCommandDataResolvable;
 	execute(interaction: CommandInteraction<CacheType>): void | Promise<void>;
 }
+
+export type mode = "normal" | "update" | "warning";

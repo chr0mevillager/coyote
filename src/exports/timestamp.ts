@@ -1,5 +1,5 @@
 /** Returns the current time plus the days, hours, and minutes to the event */
-export default function generateTimeStamp(daystoTime, hoursToTime, minutesToTime) {
+export default function generateTimeStamp(daystoTime: number, hoursToTime: number, minutesToTime: number) {
 	if (!daystoTime) daystoTime = 0;
 	if (!hoursToTime) hoursToTime = 0;
 	if (!minutesToTime) minutesToTime = 0;
