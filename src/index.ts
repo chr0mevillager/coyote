@@ -9,7 +9,6 @@ import { MessageEmbed } from "discord.js";
 client.on("interactionCreate", async (interaction) => {
 
 	if (interaction.isCommand()) {
-
 		const publicCommands = commands.publicCommands[interaction.commandName];
 		const developerCommand = commands.developerCommands[interaction.commandName];
 
@@ -26,6 +25,9 @@ client.on("interactionCreate", async (interaction) => {
 				await logMessage(error, "index");
 			}
 		}
+	} else if (interaction.isModalSubmit()) {
+		console.log("Modal Submitted!");
+		interaction.deferReply();
 	}
 });
 
