@@ -4,6 +4,7 @@ import * as commands from "./commands";
 import logMessage from "./exports/error";
 import * as activity from "./exports/activity";
 import { MessageEmbed } from "discord.js";
+import { setMode } from "./exports/mode";
 
 //Commands
 client.on("interactionCreate", async (interaction) => {
@@ -33,6 +34,9 @@ client.on("interactionCreate", async (interaction) => {
 
 //On login
 client.once('ready', () => {
+
+	//Set mode
+	setMode("normal", "");
 
 	//Set activity
 	activity.setRotateStatus(true);

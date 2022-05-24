@@ -1,10 +1,12 @@
 import { MessageEmbed } from "discord.js";
 
-export const question = new MessageEmbed()
+export const question = (image: string, extraText: string) => new MessageEmbed()
 	.setTitle("")
 	.setDescription("")
 	.setColor("#2f3136")
-	.setImage("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/send/ready_to_send.png?raw=true");
+	.setImage(image)
+	.setFooter({ text: extraText })
+
 
 export const send = new MessageEmbed()
 	.setTitle("")
@@ -40,6 +42,16 @@ export const invalidPerms = new MessageEmbed()
 			name: "Send embeded messages",
 			value: "`Embed Links` Permission"
 		},
+		{
+			name: "Ping all roles",
+			value: "`Mention @everyone, @here, and All Roles` Permission"
+		},
 	)
 	.setColor("#ff6c08")
 	.setImage("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/send/invalid_perms.png?raw=true");
+
+export const warning = new MessageEmbed()
+	.setTitle("")
+	.setDescription("")
+	.setColor("#2f3136")
+	.setImage("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/send/ready_to_send.png?raw=true");

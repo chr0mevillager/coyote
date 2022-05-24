@@ -29,10 +29,10 @@ export default async function messageInteraction(interaction) {
 			title = JSON.parse('"' + title.replace(/"/g, '\\"') + '"');
 		} catch { }
 
-		if (image == "" && interaction.user.id != process.env.OWNER_ID) description += "\n" + "\u200B";
+		if (image == "" && interaction.user.id != process.env.OWNER_ID) description += "\n" + "\u200b";
 		if (description.match(/^[\n\u2800\u200b\s]*$/s)) {
 			if (image == "") {
-				description = "\n\u200B"
+				description = "\n\u200b"
 			} else {
 				description = "";
 			}
@@ -72,14 +72,14 @@ export default async function messageInteraction(interaction) {
 		//Send Preview ---
 		if (ping == "") {
 			await interaction.reply({
-				embeds: [questionEmbeds.question, userMessage],
+				embeds: [questionEmbeds.question("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/send/ready_to_send.png?raw=true", ""), userMessage],
 				components: [buttons.buttonRow(uuid)],
 				ephemeral: true,
 			});
 		} else {
 			await interaction.reply({
 				content: ping,
-				embeds: [questionEmbeds.question, userMessage],
+				embeds: [questionEmbeds.question("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/send/ready_to_send.png?raw=true", ""), userMessage],
 				components: [buttons.buttonRow(uuid)],
 				ephemeral: true,
 			});

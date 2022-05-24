@@ -10,6 +10,7 @@ import * as buttons from "../../exports/send_buttons";
 import sendUpdate from "../../exports/send_update";
 import * as questionEmbeds from "../../exports/question_embeds";
 import logMessage from "../../exports/error";
+import * as mode from "../../exports/mode";
 
 export default async function pollInteraction(interaction) {
 
@@ -155,7 +156,7 @@ export default async function pollInteraction(interaction) {
 		//Send Preview ---
 		if (ping == "") {
 			await interaction.reply({
-				embeds: [questionEmbeds.question, poll(previewResults)],
+				embeds: [questionEmbeds.question(mode.image, mode.description), poll(previewResults)],
 				components: [buttons.buttonRow(uuid)],
 				ephemeral: true,
 			});
