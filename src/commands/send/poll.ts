@@ -163,7 +163,7 @@ export default async function pollInteraction(interaction) {
 		} else {
 			await interaction.reply({
 				content: ping,
-				embeds: [questionEmbeds.question, poll(previewResults)],
+				embeds: [questionEmbeds.question(mode.image, mode.description), poll(previewResults)],
 				components: [buttons.buttonRow(uuid)],
 				ephemeral: true,
 			});
@@ -300,7 +300,7 @@ export default async function pollInteraction(interaction) {
 		async function startPoll() {
 
 			//Collector 2 --
-			let collector2 = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::pollButton1` || i.customId === `${uuid}::pollButton2` || i.customId === `${uuid}::pollButton3` || i.customId === `${uuid}::pollButton4` || i.customId === `${uuid}::send` || i.customId === `${uuid}::cancel`, time: 86400000 /*15000*/ });
+			let collector2 = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::pollButton1` || i.customId === `${uuid}::pollButton2` || i.customId === `${uuid}::pollButton3` || i.customId === `${uuid}::pollButton4` || i.customId === `${uuid}::send` || i.customId === `${uuid}::cancel`, time: /*86400000*/ 15000 });
 
 			collector2.on("collect", async (i) => {
 				if (pollOver) return;
