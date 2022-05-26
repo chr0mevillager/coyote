@@ -1,8 +1,8 @@
 # Embeds Bot
 
-Sends easy-to-use embeds in Discord.
+## Send easy-to-use embeds in Discord
 
-![Embeds Bot Icon](https://github.com/chr0mevillager/embed-bot/blob/master/src/artwork/profile.png?raw=true)
+![Embeds Bot Icon](https://github.com/chr0mevillager/embed-bot/blob/master/src/artwork/profile/profile.png?raw=true)
 
 ## Send Embed Messages Easily
 
@@ -21,6 +21,6 @@ Sends easy-to-use embeds in Discord.
 
 ## Add To Server
 
-- [Add bot to server](https://discord.com/oauth2/authorize?client_id=942083941307912193&scope=bot%20applications.commands&permissions=150528)
+- [Add Bot to Server](https://discord.com/oauth2/authorize?client_id=942083941307912193&scope=bot%20applications.commands&permissions=150528)
 
-- [Add beta bot to server](https://discord.com/oauth2/authorize?client_id=968997421726195832&scope=bot%20applications.commands&permissions=150528)
+- [Top.gg Page](https://top.gg/bot/942083941307912193?s=05178588d8001)
