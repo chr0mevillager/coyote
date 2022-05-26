@@ -12,7 +12,7 @@ let help: CustomCommand = {
 				new MessageEmbed()
 					.setColor("#389af0")
 					.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/message.png?raw=true")
-					.setTitle("/send message < Title > < Description > [ Image URL ]")
+					.setTitle("/send message < Title > < Description > [ Ping Group ] [ Image URL ]")
 					.setDescription("Send a fancy message!")
 					.addFields(
 						{
@@ -27,12 +27,16 @@ let help: CustomCommand = {
 							name: "`Image`",
 							value: "Type in a link to an image."
 						},
+						{
+							name: "`Ping Group`",
+							value: "Select who you want to ping with the message."
+						},
 					),
 				//.setImage("https://cdn.discordapp.com/attachments/945889704375627807/946566904187875388/send-command.gif") Finding a new alternative for img urls, as Discord deletes old images.
 				new MessageEmbed()
 					.setColor("#389af0")
 					.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/poll.png?raw=true")
-					.setTitle("/send poll < Question > < Option 1 > < Option 2 > [ Option 3 ] [ Option 4 ] < Visible Results >")
+					.setTitle("/send poll < Question > < Option 1 > < Option 2 > [ Option 3 ] [ Option 4 ] [ Ping Group ] < Visible Results >")
 					.setDescription("Send a simple, anonymous poll! Polls are open for 1 day.")
 					.addFields(
 						{
@@ -58,6 +62,10 @@ let help: CustomCommand = {
 						{
 							name: "`Visible Results`",
 							value: "Decide if poll should show live results. Results will always be shown after the poll is over."
+						},
+						{
+							name: "`Ping Group`",
+							value: "Select who you want to ping with the message."
 						},
 					),
 				new MessageEmbed()
