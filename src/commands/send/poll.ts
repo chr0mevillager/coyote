@@ -2,6 +2,8 @@ import {
 	MessageActionRow,
 	MessageButton,
 	MessageEmbed,
+	MessageSelectMenu,
+	Options,
 	Role,
 } from "discord.js";
 import { client } from "../../exports/client";
@@ -91,42 +93,123 @@ export default async function pollInteraction(interaction) {
 		let pollButtonRow4;
 		let button4exists = false;
 
-		let pollButtons = [
-			pollButtonRow1(uuid),
-			pollButtonRow2(uuid),
-		];
+		// let pollButtons = [
+		// 	pollButtonRow1(uuid),
+		// 	pollButtonRow2(uuid),
+		// ];
+
+		let dropdown = (uuid: string) => new MessageActionRow()
+			.addComponents(
+				new MessageSelectMenu()
+					.setCustomId(uuid + "::vote")
+					.setPlaceholder("Select Your Vote")
+					.addOptions([
+						{
+							label: (interaction.options.getString("option-1")),
+							description: "",
+							value: "option-1",
+						},
+						{
+							label: (interaction.options.getString("option-2")),
+							description: "",
+							value: "option-2",
+						},
+					])
+			);
 
 		if ((interaction.options.getString("option-3")) != null && (interaction.options.getString("option-3")) != undefined) {
 			button3exists = true;
 			pollButton3 = interaction.options.getString("option-3");
 			if (pollButton3.length > 80) pollButton3 = pollButton3.slice(0, 80);
 			pollButton3 = JSON.parse('"' + pollButton3.replace(/"/g, '\\"') + '"');
-
-			pollButtonRow3 = (uuid: string) => new MessageActionRow()
+			dropdown = (uuid: string) => new MessageActionRow()
 				.addComponents(
-					new MessageButton()
-						.setCustomId(uuid + "::pollButton3")
-						.setLabel(pollButton3)
-						.setStyle("PRIMARY")
+					new MessageSelectMenu()
+						.setCustomId(uuid + "::vote")
+						.setPlaceholder("Select Your Vote")
+						.addOptions([
+							{
+								label: (interaction.options.getString("option-1")),
+								description: "",
+								value: "option-1",
+							},
+							{
+								label: (interaction.options.getString("option-2")),
+								description: "",
+								value: "option-2",
+							},
+							{
+								label: (interaction.options.getString("option-3")),
+								description: "",
+								value: "option-3",
+							},
+						])
 				);
-			pollButtons.push(pollButtonRow3(uuid));
-		}
-
-		if ((interaction.options.getString("option-4")) != null && (interaction.options.getString("option-4")) != undefined) {
+			if ((interaction.options.getString("option-4")) != null && (interaction.options.getString("option-4")) != undefined) {
+				button4exists = true;
+				pollButton4 = interaction.options.getString("option-4");
+				if (pollButton4.length > 80) pollButton4 = pollButton4.slice(0, 80);
+				pollButton4 = JSON.parse('"' + pollButton4.replace(/"/g, '\\"') + '"');
+				dropdown = (uuid: string) => new MessageActionRow()
+					.addComponents(
+						new MessageSelectMenu()
+							.setCustomId(uuid + "::vote")
+							.setPlaceholder("Select Your Vote")
+							.addOptions([
+								{
+									label: (interaction.options.getString("option-1")),
+									description: "",
+									value: "option-1",
+								},
+								{
+									label: (interaction.options.getString("option-2")),
+									description: "",
+									value: "option-2",
+								},
+								{
+									label: (interaction.options.getString("option-3")),
+									description: "",
+									value: "option-3",
+								},
+								{
+									label: (interaction.options.getString("option-4")),
+									description: "",
+									value: "option-4",
+								},
+							])
+					);
+			}
+		} else if ((interaction.options.getString("option-4")) != null && (interaction.options.getString("option-4")) != undefined && !button3exists) {
 			button4exists = true;
 			pollButton4 = interaction.options.getString("option-4");
 			if (pollButton4.length > 80) pollButton4 = pollButton4.slice(0, 80);
 			pollButton4 = JSON.parse('"' + pollButton4.replace(/"/g, '\\"') + '"');
-
-			pollButtonRow4 = (uuid: string) => new MessageActionRow()
+			dropdown = (uuid: string) => new MessageActionRow()
 				.addComponents(
-					new MessageButton()
-						.setCustomId(uuid + "::pollButton4")
-						.setLabel(pollButton4)
-						.setStyle("PRIMARY")
+					new MessageSelectMenu()
+						.setCustomId(uuid + "::vote")
+						.setPlaceholder("Select Your Vote")
+						.addOptions([
+							{
+								label: (interaction.options.getString("option-1")),
+								description: "",
+								value: "option-1",
+							},
+							{
+								label: (interaction.options.getString("option-2")),
+								description: "",
+								value: "option-2",
+							},
+							{
+								label: (interaction.options.getString("option-4")),
+								description: "",
+								value: "option-4",
+							},
+						])
 				);
-			pollButtons.push(pollButtonRow4(uuid));
 		}
+
+		const pollButtons = [dropdown(uuid)];
 
 		//Embed
 		let poll;
@@ -300,11 +383,11 @@ export default async function pollInteraction(interaction) {
 		async function startPoll() {
 
 			//Collector 2 --
-			let collector2 = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::pollButton1` || i.customId === `${uuid}::pollButton2` || i.customId === `${uuid}::pollButton3` || i.customId === `${uuid}::pollButton4` || i.customId === `${uuid}::send` || i.customId === `${uuid}::cancel`, time: 86400000 });
+			let collector2 = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::vote` || i.customId === `${uuid}::pollButton1` || i.customId === `${uuid}::pollButton2` || i.customId === `${uuid}::pollButton3` || i.customId === `${uuid}::pollButton4` || i.customId === `${uuid}::send` || i.customId === `${uuid}::cancel`, time: 86400000 });
 
 			collector2.on("collect", async (i) => {
 				if (pollOver) return;
-				if (i.customId === uuid + "::pollButton1") {
+				if (i.customId === uuid + "::vote") {
 					if (responders.includes(i.user.id)) {
 						i.reply({
 							embeds: [deniedResponseMessage],
@@ -316,55 +399,79 @@ export default async function pollInteraction(interaction) {
 						embeds: [responseMessage],
 						ephemeral: true,
 					});
-					pollResponses1++;
-					responders.push(i.user.id);
-					if (visibleResults && !pollOver) updateMessage(true);
-				} else if (i.customId === uuid + "::pollButton2") {
-					if (responders.includes(i.user.id)) {
-						i.reply({
-							embeds: [deniedResponseMessage],
-							ephemeral: true,
-						});
-						return;
+					if (i.values == "option-1") {
+						pollResponses1++;
+					} else if (i.values == "option-2") {
+						pollResponses2++;
+					} else if (i.values == "option-3") {
+						pollResponses3++;
+					} else if (i.values == "option-4") {
+						pollResponses4++;
 					}
-					i.reply({
-						embeds: [responseMessage],
-						ephemeral: true,
-					});
-					pollResponses2++;
-					responders.push(i.user.id);
-					if (visibleResults && !pollOver) updateMessage(true);
-				} else if (i.customId === uuid + "::pollButton3") {
-					if (responders.includes(i.user.id)) {
-						i.reply({
-							embeds: [deniedResponseMessage],
-							ephemeral: true,
-						});
-						return;
-					}
-					i.reply({
-						embeds: [responseMessage],
-						ephemeral: true,
-					});
-					pollResponses3++;
-					responders.push(i.user.id);
-					if (visibleResults && !pollOver) updateMessage(true);
-				} else if (i.customId === uuid + "::pollButton4") {
-					if (responders.includes(i.user.id)) {
-						i.reply({
-							embeds: [deniedResponseMessage],
-							ephemeral: true,
-						});
-						return;
-					}
-					i.reply({
-						embeds: [responseMessage],
-						ephemeral: true,
-					});
-					pollResponses4++;
 					responders.push(i.user.id);
 					if (visibleResults && !pollOver) updateMessage(true);
 				}
+				// if (i.customId === uuid + "::pollButton1") {
+				// 	if (responders.includes(i.user.id)) {
+				// 		i.reply({
+				// 			embeds: [deniedResponseMessage],
+				// 			ephemeral: true,
+				// 		});
+				// 		return;
+				// 	}
+				// 	i.reply({
+				// 		embeds: [responseMessage],
+				// 		ephemeral: true,
+				// 	});
+				// 	pollResponses1++;
+				// 	responders.push(i.user.id);
+				// 	if (visibleResults && !pollOver) updateMessage(true);
+				// } else if (i.customId === uuid + "::pollButton2") {
+				// 	if (responders.includes(i.user.id)) {
+				// 		i.reply({
+				// 			embeds: [deniedResponseMessage],
+				// 			ephemeral: true,
+				// 		});
+				// 		return;
+				// 	}
+				// 	i.reply({
+				// 		embeds: [responseMessage],
+				// 		ephemeral: true,
+				// 	});
+				// 	pollResponses2++;
+				// 	responders.push(i.user.id);
+				// 	if (visibleResults && !pollOver) updateMessage(true);
+				// } else if (i.customId === uuid + "::pollButton3") {
+				// 	if (responders.includes(i.user.id)) {
+				// 		i.reply({
+				// 			embeds: [deniedResponseMessage],
+				// 			ephemeral: true,
+				// 		});
+				// 		return;
+				// 	}
+				// 	i.reply({
+				// 		embeds: [responseMessage],
+				// 		ephemeral: true,
+				// 	});
+				// 	pollResponses3++;
+				// 	responders.push(i.user.id);
+				// 	if (visibleResults && !pollOver) updateMessage(true);
+				// } else if (i.customId === uuid + "::pollButton4") {
+				// 	if (responders.includes(i.user.id)) {
+				// 		i.reply({
+				// 			embeds: [deniedResponseMessage],
+				// 			ephemeral: true,
+				// 		});
+				// 		return;
+				// 	}
+				// 	i.reply({
+				// 		embeds: [responseMessage],
+				// 		ephemeral: true,
+				// 	});
+				// 	pollResponses4++;
+				// 	responders.push(i.user.id);
+				// 	if (visibleResults && !pollOver) updateMessage(true);
+				// }
 			})
 
 			collector2.on("end", async i => {
@@ -387,11 +494,17 @@ export default async function pollInteraction(interaction) {
 		}
 
 		async function updateMessage(updateActualMessage: boolean) {
-			if (!updateActualMessage) updateActualMessage = true;
+			let votes1 = " Votes", votes2 = " Votes", votes3 = " Votes", votes4 = " Votes";
 
-			results = "```" + pollButton1 + ": \t" + pollResponses1 + " Votes" + "\n\n" + pollButton2 + ": \t" + pollResponses2 + " Votes"
-			if (button3exists) results += "\n\n" + pollButton3 + ": \t" + pollResponses3 + " Votes"
-			if (button4exists) results += "\n\n" + pollButton4 + ": \t" + pollResponses4 + " Votes"
+			if (pollResponses1 == 1) votes1 = " Vote";
+			if (pollResponses2 == 1) votes2 = " Vote";
+			if (pollResponses3 == 1) votes3 = " Vote";
+			if (pollResponses4 == 1) votes4 = " Vote";
+
+
+			results = "```" + pollButton1 + ": \t" + pollResponses1 + votes1 + "\n\n" + pollButton2 + ": \t" + pollResponses2 + votes2
+			if (button3exists) results += "\n\n" + pollButton3 + ": \t" + pollResponses3 + votes3
+			if (button4exists) results += "\n\n" + pollButton4 + ": \t" + pollResponses4 + votes4
 			results += "```";
 
 			try {
