@@ -5,6 +5,7 @@ import logMessage from "./exports/error";
 import * as activity from "./exports/activity";
 import { MessageEmbed } from "discord.js";
 import { setMode } from "./exports/mode";
+import { logData } from "./exports/daily_data";
 
 //Commands
 client.on("interactionCreate", async (interaction) => {
@@ -42,6 +43,9 @@ client.once('ready', () => {
 	activity.setRotateStatus(true);
 	activity.setNextStatus(0);
 
+	//Start daily logging in 24 hours
+	setTimeout(logData, 86400000);
+
 	//Log login
 	(client.channels.cache.find((channel) => (channel as any).id === process.env.LOGGING_CHANNEL) as any).send({
 		content: "@everyone",
@@ -65,7 +69,6 @@ client.once('ready', () => {
 	Object.values(commands.publicCommands).forEach((command) => {
 		client.application.commands.create(command.data);
 	});
-
 });
 
 //Login

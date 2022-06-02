@@ -3,6 +3,7 @@ import { client } from "./client";
 
 export let activityRotation;
 export let activityIndex;
+
 /** Set the activity of the bot.*/
 export function setBotActivity() {
 	if (!activityRotation) return;
@@ -15,11 +16,11 @@ export function setBotActivity() {
 
 	if (activityIndex == 0) {
 		activityIndex++;
-		setTimeout(setBotActivity, 300000 /* 15 Seconds for testing 15000*/, activityIndex);
+		setTimeout(setBotActivity, 300000 /* 15 Seconds for testing (15000)*/, activityIndex);
 	} else {
 		activityIndex++;
 		if (activityIndex > 3) activityIndex = 1;
-		setTimeout(setBotActivity, 600000 /* 30 Seconds for testing 30000*/, activityIndex);
+		setTimeout(setBotActivity, 600000 /* 30 Seconds for testing (30000)*/, activityIndex);
 	}
 }
 
