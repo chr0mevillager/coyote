@@ -7,10 +7,12 @@ import { client } from "../../exports/client";
 import * as buttons from "../../exports/send_buttons";
 import * as questionEmbeds from "../../exports/question_embeds";
 import logMessage from "../../exports/error";
+import * as data from "../../exports/data";
 
 export default async function messageInteraction(interaction) {
-
 	try {
+		data.commandUsed("message");
+
 		//Inputs ---
 		let title: string = interaction.options.getString("title");
 		let description = interaction.options.getString("description");
@@ -92,6 +94,7 @@ export default async function messageInteraction(interaction) {
 
 			//Send
 			if (i.customId === uuid + "::send") {
+				data.buttonUsed("message", "send");
 				sendUpdate(i);
 				try {
 					if (ping == "") {
@@ -119,6 +122,7 @@ export default async function messageInteraction(interaction) {
 
 				//Cancel
 			} else if (i.customId === uuid + "::cancel") {
+				data.buttonUsed("message", "cancel");
 				sendUpdate(i);
 				await interaction.editReply({
 					embeds: [questionEmbeds.cancel, userMessage],

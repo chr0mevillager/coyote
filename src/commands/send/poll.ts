@@ -3,7 +3,6 @@ import {
 	MessageButton,
 	MessageEmbed,
 	MessageSelectMenu,
-	Options,
 	Role,
 } from "discord.js";
 import { client } from "../../exports/client";
@@ -13,10 +12,12 @@ import sendUpdate from "../../exports/send_update";
 import * as questionEmbeds from "../../exports/question_embeds";
 import logMessage from "../../exports/error";
 import * as mode from "../../exports/mode";
+import * as data from "../../exports/data";
 
 export default async function pollInteraction(interaction) {
-
 	try {
+		data.commandUsed("poll");
+
 		//Inputs ---
 		let question: string = interaction.options.getString("question");
 		let results: string = "\u200B";
@@ -258,6 +259,7 @@ export default async function pollInteraction(interaction) {
 
 			//Send
 			if (i.customId === uuid + "::send") {
+				data.buttonUsed("poll", "send");
 				sendUpdate(i);
 				//Change Message for Result Visibility
 				if (visibleResults) {
@@ -312,6 +314,7 @@ export default async function pollInteraction(interaction) {
 
 				//Cancel
 			} else if (i.customId === uuid + "::cancel") {
+				data.buttonUsed("poll", "cancel");
 				sendUpdate(i);
 				if (ping == "") {
 					await interaction.editReply({
@@ -395,6 +398,7 @@ export default async function pollInteraction(interaction) {
 						});
 						return;
 					}
+					data.buttonUsed("poll", "response");
 					i.reply({
 						embeds: [responseMessage],
 						ephemeral: true,

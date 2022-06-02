@@ -1,5 +1,6 @@
-import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
+import { MessageEmbed } from "discord.js";
 import { CustomCommand } from "../exports/types";
+import * as data from "../exports/data";
 
 let help: CustomCommand = {
 	data: {
@@ -7,6 +8,7 @@ let help: CustomCommand = {
 		description: "See documentation about my commands and find my support server!",
 	},
 	async execute(interaction) {
+		data.commandUsed("help");
 		await interaction.reply({
 			embeds: [
 				new MessageEmbed()
