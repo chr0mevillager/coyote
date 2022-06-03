@@ -51,7 +51,7 @@ let send: CustomCommand = {
 						required: true,
 					},
 					{
-						name: "visible-results",
+						name: "live-results",
 						description: "Should users be able to see the total number of votes during the poll?",
 						type: "BOOLEAN",
 						required: true,

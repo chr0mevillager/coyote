@@ -38,7 +38,7 @@ let help: CustomCommand = {
 				new MessageEmbed()
 					.setColor("#389af0")
 					.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/poll.png?raw=true")
-					.setTitle("/send poll < Question > < Option 1 > < Option 2 > [ Option 3 ] [ Option 4 ] [ Ping Group ] < Visible Results >")
+					.setTitle("/send poll < Question > < Option 1 > < Option 2 > [ Option 3 ] [ Option 4 ] [ Ping Group ] < Live Results >")
 					.setDescription("Send a simple, anonymous poll! Polls are open for 1 day.")
 					.addFields(
 						{
@@ -62,8 +62,8 @@ let help: CustomCommand = {
 							value: "Type in a response to your question that is less than 80 characters."
 						},
 						{
-							name: "`Visible Results`",
-							value: "Decide if poll should show live results. Results will always be shown after the poll is over."
+							name: "`Live Results`",
+							value: "Decide if poll should show results as users vote. Results will always be shown after the poll is over."
 						},
 						{
 							name: "`Ping Group`",

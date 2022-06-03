@@ -33,8 +33,8 @@ let data: CustomCommand = {
 						{ name: "`Send Button Uses:`", value: commandData.data.message.buttonUses.send + "", inline: true },
 						{ name: "`Cancel Button Uses:`", value: commandData.data.message.buttonUses.cancel + "", inline: true },
 						{ name: "`Timeout:`", value: (commandData.data.message.uses - (commandData.data.message.buttonUses.send + commandData.data.message.buttonUses.cancel)) + "", inline: true },
-						{ name: "`Intuition Score:`", value: (commandData.data.message.buttonUses.send / commandData.data.message.uses).toFixed(4) + "", inline: true },
-						{ name: "`Popularity per Server:`", value: (commandData.data.message.buttonUses.send / client.guilds.cache.size).toFixed(4) + "", inline: true },
+						{ name: "`Intuition Score:`", value: (commandData.data.message.buttonUses.send / commandData.data.message.uses).toFixed(4) as any * 100 + "%", inline: true },
+						{ name: "`Popularity per Server:`", value: (commandData.data.message.buttonUses.send / client.guilds.cache.size).toFixed(4) as any * 100 + "%", inline: true },
 
 						{ name: "\u2800\n\/send poll", value: "\u2800" },
 						{ name: "`Command Uses:`", value: commandData.data.poll.uses + "", inline: true },
@@ -42,8 +42,8 @@ let data: CustomCommand = {
 						{ name: "`Cancel Button Uses:`", value: commandData.data.poll.buttonUses.cancel + "", inline: true },
 						{ name: "`Replies:`", value: commandData.data.poll.buttonUses.response + "", inline: true },
 						{ name: "`Timeout:`", value: (commandData.data.poll.uses - (commandData.data.poll.buttonUses.send + commandData.data.poll.buttonUses.cancel)) + "", inline: true },
-						{ name: "`Intuition Score:`", value: (commandData.data.poll.buttonUses.send / commandData.data.poll.uses).toFixed(4) + "", inline: true },
-						{ name: "`Popularity per Server:`", value: (commandData.data.poll.buttonUses.send / client.guilds.cache.size).toFixed(4) + "", inline: true },
+						{ name: "`Intuition Score:`", value: (commandData.data.poll.buttonUses.send / commandData.data.poll.uses).toFixed(4) as any * 100 + "%", inline: true },
+						{ name: "`Popularity per Server:`", value: (commandData.data.poll.buttonUses.send / client.guilds.cache.size).toFixed(4) as any * 100 + "%", inline: true },
 
 						{ name: "\u2800\n\/help", value: "\u2800" },
 						{ name: "`Command Uses:`", value: commandData.data.help.uses + "", inline: true },
