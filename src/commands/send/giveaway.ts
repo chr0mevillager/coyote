@@ -331,6 +331,7 @@ export async function giveawayInteraction(interaction) {
 						new MessageEmbed()
 							.setColor("#2f3136")
 							.setTitle("Congratulations on winning the " + item + " giveaway!")
+							.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/giveaway.png?raw=true")
 					],
 				});
 
@@ -338,6 +339,7 @@ export async function giveawayInteraction(interaction) {
 					let dm = new MessageEmbed()
 						.setColor("#2f3136")
 						.setTitle("Your " + item + " Giveaway Has Ended!")
+						.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/giveaway.png?raw=true")
 						.setFooter({
 							text: "Note:\nOn non-mobile devices, the users above may not be properly displayed.",
 						})
