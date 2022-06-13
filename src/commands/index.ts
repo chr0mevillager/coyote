@@ -15,6 +15,7 @@ export const developerCommands: Record<string, CustomCommand> = {
 	bot,
 	data,
 	mode,
+	send,
 };
 
 /**A list of slash commands*/

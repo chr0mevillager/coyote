@@ -2,6 +2,7 @@ import { MessageEmbed } from "discord.js";
 import { CustomCommand } from "../exports/types";
 import messageInteraction from "./send/message"
 import pollInteraction from "./send/poll";
+import * as giveaway from "./send/giveaway";
 
 let send: CustomCommand = {
 	data: {
@@ -89,11 +90,50 @@ let send: CustomCommand = {
 					},
 				]
 			},
+			{
+				name: "giveaway",
+				description: "Send a giveaway!",
+				type: 1,
+				options: [
+					{
+						name: "item",
+						description: "What would you like to give away? (≤ 200 characters)",
+						type: 3,
+						required: true,
+					},
+					{
+						name: "number-of-winners",
+						description: "How many users should win the poll? (≤ 100 characters)",
+						type: "INTEGER",
+						minValue: 1,
+						maxValue: 100,
+						required: true,
+					},
+					{
+						name: "ping-group",
+						description: "Who would you like to ping with this message? (Role || User)",
+						type: 9,
+						required: false,
+					},
+					{
+						name: "required-input",
+						description: "What (if any) details must the winners provide? (≤ 80 characters)",
+						type: 3,
+						required: false,
+					}
+				]
+			},
 		],
 	},
 
-	async execute(interaction) {
+	async modalExecute(interaction) {
+		const [command, id, data] = (interaction.customId).split("::");
+		if (data == "giveawayEnter") {
+			giveaway.modalInteraction(interaction);
+		}
+	},
 
+	async execute(interaction) {
 		if (!interaction.channel) {
 			await interaction.reply({
 				embeds: [
@@ -111,8 +151,9 @@ let send: CustomCommand = {
 			messageInteraction(interaction);
 		} else if (interaction.options.getSubcommand() === "poll") {
 			pollInteraction(interaction);
+		} else if (interaction.options.getSubcommand() === "giveaway") {
+			giveaway.giveawayInteraction(interaction);
 		}
-
 	},
 };
 
