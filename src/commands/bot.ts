@@ -37,6 +37,10 @@ let bot: CustomCommand = {
 		]
 	},
 
+	async modalExecute(interaction) {
+
+	},
+
 	async execute(interaction) {
 		try {
 			await interaction.reply({

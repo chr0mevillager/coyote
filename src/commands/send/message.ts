@@ -12,7 +12,6 @@ import * as data from "../../exports/data";
 export default async function messageInteraction(interaction) {
 	try {
 		data.commandUsed("message");
-
 		//Inputs ---
 		let title: string = interaction.options.getString("title");
 		let description = interaction.options.getString("description");

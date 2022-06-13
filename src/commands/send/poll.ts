@@ -20,8 +20,8 @@ export default async function pollInteraction(interaction) {
 
 		//Inputs ---
 		let question: string = interaction.options.getString("question");
-		let results: string = "\u200B";
-		let visibleResults = interaction.options.getBoolean("visible-results");
+		let results: string = "";
+		let visibleResults = interaction.options.getBoolean("live-results");
 		let ping: string = "";
 
 		if (question.length > 256) question = question.slice(0, 256);
@@ -52,7 +52,7 @@ export default async function pollInteraction(interaction) {
 		const deniedResponseMessage = new MessageEmbed()
 			.setColor("#ff6c08")
 			.setTitle("You can Only Enter a Poll Once")
-			.setDescription("Your poll results have already been saved.")
+			.setDescription("Your input has already been saved.")
 			.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/poll.png?raw=true")
 
 		let previewResults;
@@ -93,11 +93,6 @@ export default async function pollInteraction(interaction) {
 		let button3exists = false;
 		let pollButtonRow4;
 		let button4exists = false;
-
-		// let pollButtons = [
-		// 	pollButtonRow1(uuid),
-		// 	pollButtonRow2(uuid),
-		// ];
 
 		let dropdown = (uuid: string) => new MessageActionRow()
 			.addComponents(
@@ -254,7 +249,7 @@ export default async function pollInteraction(interaction) {
 		}
 
 		//Start Collector 1 --
-		let collector1 = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::pollButton1` || i.customId === `${uuid}::pollButton2` || i.customId === `${uuid}::pollButton3` || i.customId === `${uuid}::pollButton4` || i.customId === `${uuid}::send` || i.customId === `${uuid}::cancel`, time: 60000 });
+		let collector1 = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::send` || i.customId === `${uuid}::cancel`, time: 60000 });
 		collector1.on("collect", async (i) => {
 
 			//Send
@@ -265,7 +260,7 @@ export default async function pollInteraction(interaction) {
 				if (visibleResults) {
 					results = "```No votes yet.```";
 				} else {
-					results = "\u2800\n\u2800";
+					results = "";
 				}
 				try {
 					if (ping == "") {
@@ -323,7 +318,7 @@ export default async function pollInteraction(interaction) {
 							new MessageEmbed()
 								.setColor("#2f3136")
 								.setTitle(question)
-								.setDescription(results + "\n" + "🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ">")
+								.setDescription(results + "\n" + "🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>")
 								.setFooter({ text: "Poll made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 						],
 						components: [
@@ -338,7 +333,7 @@ export default async function pollInteraction(interaction) {
 							new MessageEmbed()
 								.setColor("#2f3136")
 								.setTitle(question)
-								.setDescription(results + "\n" + "🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ">")
+								.setDescription(results + "\n" + "🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>")
 								.setFooter({ text: "Poll made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 						],
 						components: [
@@ -358,7 +353,7 @@ export default async function pollInteraction(interaction) {
 						new MessageEmbed()
 							.setColor("#2f3136")
 							.setTitle(question)
-							.setDescription(previewResults + "\n" + "🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ">")
+							.setDescription(previewResults + "\n" + "🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>")
 							.setFooter({ text: "Poll made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 					],
 					components: [
@@ -373,7 +368,7 @@ export default async function pollInteraction(interaction) {
 						new MessageEmbed()
 							.setColor("#2f3136")
 							.setTitle(question)
-							.setDescription(previewResults + "\n" + "🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ">")
+							.setDescription(previewResults + "\n" + "🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>")
 							.setFooter({ text: "Poll made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 					],
 					components: [
@@ -384,7 +379,6 @@ export default async function pollInteraction(interaction) {
 		})
 
 		async function startPoll() {
-
 			//Collector 2 --
 			let collector2 = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::vote` || i.customId === `${uuid}::pollButton1` || i.customId === `${uuid}::pollButton2` || i.customId === `${uuid}::pollButton3` || i.customId === `${uuid}::pollButton4` || i.customId === `${uuid}::send` || i.customId === `${uuid}::cancel`, time: 86400000 });
 
@@ -399,7 +393,7 @@ export default async function pollInteraction(interaction) {
 						return;
 					}
 					data.buttonUsed("poll", "response");
-					i.reply({
+					await i.reply({
 						embeds: [responseMessage],
 						ephemeral: true,
 					});
@@ -415,67 +409,6 @@ export default async function pollInteraction(interaction) {
 					responders.push(i.user.id);
 					if (visibleResults && !pollOver) updateMessage(true);
 				}
-				// if (i.customId === uuid + "::pollButton1") {
-				// 	if (responders.includes(i.user.id)) {
-				// 		i.reply({
-				// 			embeds: [deniedResponseMessage],
-				// 			ephemeral: true,
-				// 		});
-				// 		return;
-				// 	}
-				// 	i.reply({
-				// 		embeds: [responseMessage],
-				// 		ephemeral: true,
-				// 	});
-				// 	pollResponses1++;
-				// 	responders.push(i.user.id);
-				// 	if (visibleResults && !pollOver) updateMessage(true);
-				// } else if (i.customId === uuid + "::pollButton2") {
-				// 	if (responders.includes(i.user.id)) {
-				// 		i.reply({
-				// 			embeds: [deniedResponseMessage],
-				// 			ephemeral: true,
-				// 		});
-				// 		return;
-				// 	}
-				// 	i.reply({
-				// 		embeds: [responseMessage],
-				// 		ephemeral: true,
-				// 	});
-				// 	pollResponses2++;
-				// 	responders.push(i.user.id);
-				// 	if (visibleResults && !pollOver) updateMessage(true);
-				// } else if (i.customId === uuid + "::pollButton3") {
-				// 	if (responders.includes(i.user.id)) {
-				// 		i.reply({
-				// 			embeds: [deniedResponseMessage],
-				// 			ephemeral: true,
-				// 		});
-				// 		return;
-				// 	}
-				// 	i.reply({
-				// 		embeds: [responseMessage],
-				// 		ephemeral: true,
-				// 	});
-				// 	pollResponses3++;
-				// 	responders.push(i.user.id);
-				// 	if (visibleResults && !pollOver) updateMessage(true);
-				// } else if (i.customId === uuid + "::pollButton4") {
-				// 	if (responders.includes(i.user.id)) {
-				// 		i.reply({
-				// 			embeds: [deniedResponseMessage],
-				// 			ephemeral: true,
-				// 		});
-				// 		return;
-				// 	}
-				// 	i.reply({
-				// 		embeds: [responseMessage],
-				// 		ephemeral: true,
-				// 	});
-				// 	pollResponses4++;
-				// 	responders.push(i.user.id);
-				// 	if (visibleResults && !pollOver) updateMessage(true);
-				// }
 			})
 
 			collector2.on("end", async i => {
@@ -487,7 +420,7 @@ export default async function pollInteraction(interaction) {
 							new MessageEmbed()
 								.setColor("#2f3136")
 								.setTitle(question)
-								.setDescription(results + "\n" + "🕑  Closed on <t:" + + Math.round(new Date().getTime() / 1000) + ">")
+								.setDescription(results + "\n" + "🕑  Closed on <t:" + + Math.round(new Date().getTime() / 1000) + ":D>")
 								.setFooter({ text: "Poll made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 						],
 						components: [],

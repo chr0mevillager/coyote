@@ -7,6 +7,11 @@ let help: CustomCommand = {
 		name: "help",
 		description: "See documentation about my commands and find my support server!",
 	},
+
+	async modalExecute(interaction) {
+		
+	},
+	
 	async execute(interaction) {
 		data.commandUsed("help");
 		await interaction.reply({

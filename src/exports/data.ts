@@ -13,6 +13,14 @@ let poll = {
 		response: 0,
 	}
 };
+let giveaway = {
+	uses: 0,
+	buttonUses: {
+		send: 0,
+		cancel: 0,
+		entry: 0,
+	}
+};
 let help = {
 	uses: 0,
 };
@@ -23,6 +31,7 @@ let info = {
 export let data = {
 	message,
 	poll,
+	giveaway,
 	help,
 	info,
 };

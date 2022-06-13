@@ -93,6 +93,10 @@ let set: CustomCommand = {
 		]
 	},
 
+	async modalExecute(interaction) {
+
+	},
+
 	async execute(interaction) {
 		try {
 			if (interaction.options.getSubcommand() === "status") {

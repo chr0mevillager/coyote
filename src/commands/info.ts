@@ -8,6 +8,11 @@ let info: CustomCommand = {
 		name: "info",
 		description: "See information about me!",
 	},
+
+	async modalExecute(interaction) {
+
+	},
+
 	async execute(interaction) {
 		data.commandUsed("info");
 		await interaction.reply({
