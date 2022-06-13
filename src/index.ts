@@ -9,7 +9,6 @@ import { logData } from "./exports/daily_data";
 
 //Commands
 client.on("interactionCreate", async (interaction) => {
-
 	if (interaction.isCommand()) {
 		const publicCommands = commands.publicCommands[interaction.commandName];
 		const developerCommand = commands.developerCommands[interaction.commandName];
@@ -24,12 +23,26 @@ client.on("interactionCreate", async (interaction) => {
 			try {
 				await developerCommand.execute(interaction);
 			} catch (error) {
-				await logMessage(error, "index");
+				await logMessage(error, "index & dev command");
 			}
 		}
 	} else if (interaction.isModalSubmit()) {
-		console.log("Modal Submitted!");
-		interaction.deferReply();
+		const publicCommands = commands.publicCommands[(interaction.customId).substring(0, (interaction.customId).indexOf(':'))];
+		const developerCommand = commands.developerCommands[(interaction.customId).substring(0, (interaction.customId).indexOf(':'))];
+
+		if (publicCommands && publicCommands.data.name == ((interaction.customId).substring(0, (interaction.customId).indexOf(':')))) {
+			try {
+				await publicCommands.modalExecute(interaction);
+			} catch (error) {
+				await logMessage(error, "index (modal response)");
+			}
+		} else {
+			try {
+				await developerCommand.modalExecute(interaction);
+			} catch (error) {
+				await logMessage(error, "index (modal response) & dev command");
+			}
+		}
 	}
 });
 
