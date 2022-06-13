@@ -83,7 +83,7 @@ let help: CustomCommand = {
 					.addFields(
 						{
 							name: "`Item`",
-							value: "Type in the item you would like to give away in less than 200 charicters.`"
+							value: "Type in the item you would like to give away in less than 200 charicters."
 						},
 						{
 							name: "`# of Winners`",

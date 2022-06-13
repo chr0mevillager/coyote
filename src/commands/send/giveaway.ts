@@ -266,7 +266,7 @@ export async function giveawayInteraction(interaction) {
 		async function startGiveaway() {
 
 			//Collector 2 ---
-			let collector2 = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::enter`, time: 8640 /*0000*/ });
+			let collector2 = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::enter`, time: 86400000 /*0000*/ });
 			collector2.on("collect", async (i) => {
 
 				if (giveawayOver) return;
@@ -308,24 +308,30 @@ export async function giveawayInteraction(interaction) {
 
 					}
 				}
-				await giveawayMessage.edit({
-					embeds: [
-						new MessageEmbed()
-							.setColor("#2f3136")
-							.setTitle(item + " Giveaway")
-							.setDescription("```" + winnerNumber + " winners```\n" + results + "🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>")
-							.setFooter({ text: "Giveaway made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+				let messageAlive = true;
+				try {
+					await giveawayMessage.edit({
+						embeds: [
+							new MessageEmbed()
+								.setColor("#2f3136")
+								.setTitle(item + " Giveaway")
+								.setDescription("```" + winnerNumber + " winners```\n" + results + "🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>")
+								.setFooter({ text: "Giveaway made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
 
-					],
-					components: [],
-				});
+						],
+						components: [],
+					});
+				} catch {
+					messageAlive = false;
+				}
 
 				let formattedWinners = [];
 				winners.forEach(winner => {
 					formattedWinners.push(" <@" + winner + ">");
 				});
 
-				await (client.channels.cache.find((channel) => (channel as any).id === interaction.channelId) as any).send({
+				if ((giveawayData[uuid].entries).length == 0) return;
+				if (messageAlive) await (client.channels.cache.find((channel) => (channel as any).id === interaction.channelId) as any).send({
 					content: formattedWinners + "",
 					embeds: [
 						new MessageEmbed()

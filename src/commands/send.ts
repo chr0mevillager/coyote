@@ -28,7 +28,7 @@ let send: CustomCommand = {
 					},
 					{
 						name: "ping-group",
-						description: "Who would you like to ping with this message? (Role || User)",
+						description: "Who would you like to ping with this message? (Role | User)",
 						type: 9,
 						required: false,
 					},
@@ -84,7 +84,7 @@ let send: CustomCommand = {
 					},
 					{
 						name: "ping-group",
-						description: "Who would you like to ping with this message? (Role || User)",
+						description: "Who would you like to ping with this message? (Role | User)",
 						type: 9,
 						required: false,
 					},
@@ -111,7 +111,7 @@ let send: CustomCommand = {
 					},
 					{
 						name: "ping-group",
-						description: "Who would you like to ping with this message? (Role || User)",
+						description: "Who would you like to ping with this message? (Role | User)",
 						type: 9,
 						required: false,
 					},
