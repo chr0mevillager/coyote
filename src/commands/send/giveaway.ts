@@ -271,7 +271,6 @@ export async function giveawayInteraction(interaction) {
 
 				if (giveawayOver) return;
 				if (i.customId === uuid + "::enter") {
-					data.buttonUsed("giveaway", "entry");
 					if ((giveawayData[uuid].entries).includes(i.user.id)) {
 						i.reply({
 							embeds: [deniedResponseMessage],
@@ -279,6 +278,7 @@ export async function giveawayInteraction(interaction) {
 						});
 						return;
 					}
+					data.buttonUsed("giveaway", "entry");
 					if (input == "") {
 						i.reply({
 							embeds: [responseMessage],
@@ -288,7 +288,6 @@ export async function giveawayInteraction(interaction) {
 					} else {
 						await i.showModal(modal(uuid));
 					}
-					data.buttonUsed("giveaway", "entry");
 				}
 			})
 
@@ -373,15 +372,19 @@ export async function giveawayInteraction(interaction) {
 }
 
 export async function modalInteraction(interaction) {
-	const [command, id, data] = (interaction.customId).split("::");
+	try {
+		const [command, id, data] = (interaction.customId).split("::");
 
-	giveawayData[id].data[interaction.user.id] = interaction.fields.getTextInputValue("text");
+		giveawayData[id].data[interaction.user.id] = interaction.fields.getTextInputValue("text");
 
-	(giveawayData[id].entries).push(interaction.user.id);
+		(giveawayData[id].entries).push(interaction.user.id);
 
-	interaction.reply({
-		embeds: [responseMessage],
-		ephemeral: true,
-	});
+		interaction.reply({
+			embeds: [responseMessage],
+			ephemeral: true,
+		});
+	} catch (error) {
+		logMessage(error, "/send giveaway command (modal received)", interaction);
+	}
 
 }

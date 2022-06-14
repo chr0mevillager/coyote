@@ -1,6 +1,5 @@
 import { MessageEmbed } from "discord.js";
 import { client } from "./client";
-import * as activity from "../exports/activity";
 import * as commandData from "../exports/data";
 
 /**Start logging data regarding the bot every 24 hours */

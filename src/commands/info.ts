@@ -24,15 +24,15 @@ let info: CustomCommand = {
 					.addFields(
 						{
 							name: "`Version`",
-							value: "4.0"
+							value: "5.0"
 						},
 						{
 							name: "`Ping`",
 							value: client.ws.ping + "ms"
 						},
 						{
-							name: "`Release Notes (v4)`",
-							value: "・Visual Update\n・Many Bug Fixes & Extra Features\n・Improved Reliability"
+							name: "`Release Notes (v5.0)`",
+							value: "🎁⠀• Added Giveaways!\n🐛⠀• Bug Fixes\n📈⠀• Improved Reliability"
 						},
 					)
 			],
