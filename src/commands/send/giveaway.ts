@@ -106,6 +106,7 @@ export async function giveawayInteraction(interaction) {
 					.setLabel("If you win, this will be sent to the author.")
 					.setStyle("PARAGRAPH")
 					.setPlaceholder("Please provide:\n\n" + input)
+					.setRequired(true)
 			);
 		const modal = (uuid) => new Modal()
 			.setTitle("Giveaway Details")
