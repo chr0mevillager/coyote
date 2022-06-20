@@ -1,7 +1,7 @@
 import { Activity, MessageEmbed, PresenceStatusData } from "discord.js";
-import logMessage from "../exports/error";
-import { client } from "../exports/client";
-import { CustomCommand } from "../exports/types";
+import logMessage from "../../exports/error";
+import { client } from "../../exports/client";
+import { CustomCommand } from "../../exports/types";
 
 let bot: CustomCommand = {
 	data: {

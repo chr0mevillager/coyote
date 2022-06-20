@@ -5,14 +5,14 @@ import {
 	MessageSelectMenu,
 	Role,
 } from "discord.js";
-import { client } from "../../exports/client";
-import generateTimeStamp from "../../exports/timestamp";
-import * as buttons from "../../exports/send_buttons";
-import sendUpdate from "../../exports/send_update";
-import * as questionEmbeds from "../../exports/question_embeds";
-import logMessage from "../../exports/error";
-import * as mode from "../../exports/mode";
-import * as data from "../../exports/data";
+import { client } from "../../../exports/client";
+import generateTimeStamp from "../../../exports/timestamp";
+import * as buttons from "../../../exports/send_buttons";
+import sendUpdate from "../../../exports/send_update";
+import * as questionEmbeds from "../../../exports/question_embeds";
+import logMessage from "../../../exports/error";
+import * as mode from "../../../exports/mode";
+import * as data from "../../../exports/data";
 
 export default async function pollInteraction(interaction) {
 	try {

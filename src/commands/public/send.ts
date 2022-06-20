@@ -1,5 +1,5 @@
 import { MessageEmbed } from "discord.js";
-import { CustomCommand } from "../exports/types";
+import { CustomCommand } from "../../exports/types";
 import messageInteraction from "./send/message"
 import pollInteraction from "./send/poll";
 import * as giveaway from "./send/giveaway";

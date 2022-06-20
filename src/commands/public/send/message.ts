@@ -2,12 +2,12 @@ import {
 	MessageEmbed,
 	Role,
 } from "discord.js";
-import sendUpdate from "../../exports/send_update";
-import { client } from "../../exports/client";
-import * as buttons from "../../exports/send_buttons";
-import * as questionEmbeds from "../../exports/question_embeds";
-import logMessage from "../../exports/error";
-import * as data from "../../exports/data";
+import sendUpdate from "../../../exports/send_update";
+import { client } from "../../../exports/client";
+import * as buttons from "../../../exports/send_buttons";
+import * as questionEmbeds from "../../../exports/question_embeds";
+import logMessage from "../../../exports/error";
+import * as data from "../../../exports/data";
 
 export default async function messageInteraction(interaction) {
 	try {

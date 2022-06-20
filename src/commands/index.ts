@@ -1,13 +1,13 @@
 import { CustomCommand } from "../exports/types";
 
-import help from "./help";
-import info from "./info";
-import send from "./send";
+import help from "./public/help";
+import info from "./public/info";
+import send from "./public/send";
 
-import set from "./set";
-import bot from "./bot";
-import data from "./data";
-import mode from "./mode"
+import set from "./developer/set";
+import bot from "./developer/bot";
+import data from "./developer/data";
+import mode from "./developer/mode"
 
 /**A list of developer slash commands*/
 export const developerCommands: Record<string, CustomCommand> = {

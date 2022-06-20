@@ -1,8 +1,8 @@
 import { MessageEmbed } from "discord.js";
-import * as activity from "../exports/activity";
-import { client } from "../exports/client";
-import { CustomCommand } from "../exports/types";
-import * as commandData from "../exports/data";
+import * as activity from "../../exports/activity";
+import { client } from "../../exports/client";
+import { CustomCommand } from "../../exports/types";
+import * as commandData from "../../exports/data";
 
 let data: CustomCommand = {
 	data: {

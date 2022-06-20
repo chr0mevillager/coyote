@@ -1,6 +1,6 @@
 import { MessageEmbed } from "discord.js";
-import { CustomCommand } from "../exports/types";
-import * as data from "../exports/data";
+import { CustomCommand } from "../../exports/types";
+import * as data from "../../exports/data";
 
 let help: CustomCommand = {
 	data: {

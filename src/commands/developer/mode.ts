@@ -1,9 +1,9 @@
 import { Activity, MessageEmbed, PresenceStatusData } from "discord.js";
-import logMessage from "../exports/error";
-import { client } from "../exports/client";
-import { CustomCommand, mode } from "../exports/types";
-import { setMode } from "../exports/mode";
-import generateTimeStamp from "../exports/timestamp";
+import logMessage from "../../exports/error";
+import { client } from "../../exports/client";
+import { CustomCommand, mode } from "../../exports/types";
+import { setMode } from "../../exports/mode";
+import generateTimeStamp from "../../exports/timestamp";
 
 let mode: CustomCommand = {
 	data: {

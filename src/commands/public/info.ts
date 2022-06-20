@@ -1,7 +1,7 @@
 import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
-import { client } from "../exports/client";
-import { CustomCommand } from "../exports/types";
-import * as data from "../exports/data";
+import { client } from "../../exports/client";
+import { CustomCommand } from "../../exports/types";
+import * as data from "../../exports/data";
 
 let info: CustomCommand = {
 	data: {
