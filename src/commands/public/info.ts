@@ -2,6 +2,7 @@ import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
 import { client } from "../../exports/client";
 import { CustomCommand } from "../../exports/types";
 import * as data from "../../exports/data";
+import * as profileInfo from "../../exports/profile_info";
 
 let info: CustomCommand = {
 	data: {
@@ -24,15 +25,15 @@ let info: CustomCommand = {
 					.addFields(
 						{
 							name: "`Version`",
-							value: "5.0"
+							value: profileInfo.versionNumber,
 						},
 						{
 							name: "`Ping`",
-							value: client.ws.ping + "ms"
+							value: client.ws.ping + "ms",
 						},
 						{
-							name: "`Release Notes (v5.0)`",
-							value: "🎁⠀• Added Giveaways!\n🐛⠀• Bug Fixes\n📈⠀• Improved Reliability"
+							name: "`Release Notes`",
+							value: profileInfo.releaseNotes,
 						},
 					)
 			],

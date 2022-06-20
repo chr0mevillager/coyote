@@ -6,6 +6,7 @@ import * as activity from "./exports/activity";
 import { MessageEmbed } from "discord.js";
 import { setMode } from "./exports/mode";
 import { logData } from "./exports/daily_data";
+import * as profileInfo from "./exports/profile_info";
 
 //Commands
 client.on("interactionCreate", async (interaction) => {

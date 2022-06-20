@@ -267,7 +267,7 @@ export async function giveawayInteraction(interaction) {
 		async function startGiveaway() {
 
 			//Collector 2 ---
-			let collector2 = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::enter`, time: 86400000 /*0000*/ });
+			let collector2 = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::enter`, time: 8640 /*0000*/ });
 			collector2.on("collect", async (i) => {
 
 				if (giveawayOver) return;
@@ -347,13 +347,13 @@ export async function giveawayInteraction(interaction) {
 						.setTitle("Your " + item + " Giveaway Has Ended!")
 						.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/giveaway.png?raw=true")
 						.setFooter({
-							text: "Note:\nOn non-mobile devices, the users above may not be properly displayed.",
+							text: "Note:\nOn non-mobile devices, the winners above may not be properly displayed.",
 						})
 
 					for (let i = 0; i < formattedWinners.length; i++) {
 						dm.addField(
 							"<@" + winners[i] + ">",
-							(giveawayData[uuid].data[winners[i]] + ""),
+							(giveawayData[uuid].data[winners[i]] + "\u200b"),
 							true)
 					}
 					try {
