@@ -103,7 +103,7 @@ export async function giveawayInteraction(interaction) {
 			.addComponents(
 				new TextInputComponent()
 					.setCustomId("text")
-					.setLabel("If you win, this will be sent to the author.")
+					.setLabel("If you win, this will be sent to the author")
 					.setStyle("PARAGRAPH")
 					.setPlaceholder("Please provide:\n\n" + input)
 					.setRequired(true)
@@ -267,7 +267,7 @@ export async function giveawayInteraction(interaction) {
 		async function startGiveaway() {
 
 			//Collector 2 ---
-			let collector2 = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::enter`, time: 8640 /*0000*/ });
+			let collector2 = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::enter`, time: 86400000 /*0000*/ });
 			collector2.on("collect", async (i) => {
 
 				if (giveawayOver) return;
