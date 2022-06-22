@@ -50,6 +50,11 @@ client.on("interactionCreate", async (interaction) => {
 //On login
 client.once('ready', () => {
 
+	//Run functions on start
+	for (let i = 0; i < Object.keys(commands.publicCommands).length; i++) {
+		commands.publicCommands[Object.keys(commands.publicCommands)[i]].onReadyExecute();
+	}
+
 	//Set mode
 	setMode("normal", "");
 

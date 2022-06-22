@@ -13,6 +13,9 @@ let data: CustomCommand = {
 	async modalExecute(interaction) {
 
 	},
+	async onReadyExecute() {
+
+	},
 
 	async execute(interaction) {
 		await interaction.reply({

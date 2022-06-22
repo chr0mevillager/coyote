@@ -13,6 +13,9 @@ let info: CustomCommand = {
 	async modalExecute(interaction) {
 
 	},
+	async onReadyExecute() {
+
+	},
 
 	async execute(interaction) {
 		data.commandUsed("info");
