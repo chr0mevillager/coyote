@@ -1,7 +1,7 @@
 import { MessageEmbed } from "discord.js";
-import { CustomCommand } from "../../exports/types";
-import messageInteraction from "./send/message"
-import pollInteraction from "./send/poll";
+import { commandHelp, CustomCommand } from "../../exports/types";
+import * as message from "./send/message";
+import * as poll from "./send/poll";
 import * as giveaway from "./send/giveaway";
 
 let send: CustomCommand = {
@@ -126,6 +126,12 @@ let send: CustomCommand = {
 		],
 	},
 
+	commandHelp: [
+		message.help,
+		poll.help,
+		giveaway.help
+	],
+
 	async modalExecute(interaction) {
 		const [command, id, data] = (interaction.customId).split("::");
 		if (data == "giveawayEnter") {
@@ -148,11 +154,11 @@ let send: CustomCommand = {
 		}
 
 		if (interaction.options.getSubcommand() === "message") {
-			messageInteraction(interaction);
+			message.interaction(interaction);
 		} else if (interaction.options.getSubcommand() === "poll") {
-			pollInteraction(interaction);
+			poll.interaction(interaction);
 		} else if (interaction.options.getSubcommand() === "giveaway") {
-			giveaway.giveawayInteraction(interaction);
+			giveaway.interaction(interaction);
 		}
 	},
 };

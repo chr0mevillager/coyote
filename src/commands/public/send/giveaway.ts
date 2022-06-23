@@ -17,29 +17,17 @@ import * as mode from "../../../exports/mode";
 import * as data from "../../../exports/data";
 import { commandHelp } from "src/exports/types";
 
-let giveawayData = {};
-
-const responseMessage = new MessageEmbed()
-	.setColor("#3aef3a")
-	.setTitle("Entered Giveaway")
-	.setDescription("Your entry has been saved.\n\nRemember, you can enter once.")
-	.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/giveaway.png?raw=true")
-
-const deniedResponseMessage = new MessageEmbed()
-	.setColor("#ff6c08")
-	.setTitle("You can Only Enter a Giveaway Once")
-	.setDescription("Your entry has already been saved.")
-	.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/giveaway.png?raw=true")
-
-export const giveawayHelp: commandHelp = {
+export const help: commandHelp = {
 	name: "giveaway",
+	fullName: "send giveaway",
+	module: "embeds",
 	keywords: [
 		"giveaway",
 		"give",
 		"away",
 		"embed",
-		"giveaways",
 		"gift",
+		"send",
 	],
 	helpMessage: new MessageEmbed()
 		.setColor("#389af0")
@@ -78,7 +66,23 @@ export const giveawayHelp: commandHelp = {
 		),
 }
 
-export async function giveawayInteraction(interaction) {
+let giveawayData = {};
+
+const responseMessage = new MessageEmbed()
+	.setColor("#3aef3a")
+	.setTitle("Entered Giveaway")
+	.setDescription("Your entry has been saved.\n\nRemember, you can enter once.")
+	.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/giveaway.png?raw=true")
+
+const deniedResponseMessage = new MessageEmbed()
+	.setColor("#ff6c08")
+	.setTitle("You can Only Enter a Giveaway Once")
+	.setDescription("Your entry has already been saved.")
+	.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/giveaway.png?raw=true")
+
+
+
+export async function interaction(interaction) {
 	try {
 		data.commandUsed("giveaway");
 

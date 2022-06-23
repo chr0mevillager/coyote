@@ -13,8 +13,61 @@ import * as questionEmbeds from "../../../exports/question_embeds";
 import logMessage from "../../../exports/error";
 import * as mode from "../../../exports/mode";
 import * as data from "../../../exports/data";
+import { commandHelp } from "src/exports/types";
 
-export default async function pollInteraction(interaction) {
+export const help: commandHelp = {
+	name: "poll",
+	fullName: "/send poll",
+	module: "embeds",
+	keywords: [
+		"poll",
+		"ballot",
+		"vote",
+		"embed",
+		"survey",
+		"question",
+		"ask",
+		"sample",
+		"send",
+	],
+	helpMessage: new MessageEmbed()
+		.setColor("#389af0")
+		.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/poll.png?raw=true")
+		.setTitle("/send poll < Question > < Option 1 > < Option 2 > [ Option 3 ] [ Option 4 ] [ Ping Group ] < Live Results >")
+		.setDescription("Send a simple, anonymous poll! Polls are open for 1 day.")
+		.addFields(
+			{
+				name: "`Question`",
+				value: "Type in the poll question in less than 256 characters. Use `\\n\` to create an enter, `\\u200B` to create an empty feild, and to create a link, type `( Your Text )[ URL ]`"
+			},
+			{
+				name: "`Question 1`",
+				value: "Type in a response to your question that is less than 80 characters."
+			},
+			{
+				name: "`Question 2`",
+				value: "Type in a response to your question that is less than 80 characters."
+			},
+			{
+				name: "`Question 3`",
+				value: "Type in a response to your question that is less than 80 characters."
+			},
+			{
+				name: "`Question 4`",
+				value: "Type in a response to your question that is less than 80 characters."
+			},
+			{
+				name: "`Ping Group`",
+				value: "Select who you want to ping with the message."
+			},
+			{
+				name: "`Live Results`",
+				value: "Decide if poll should show results as users vote. Results will always be shown after the poll is over."
+			},
+		),
+}
+
+export async function interaction(interaction) {
 	try {
 		data.commandUsed("poll");
 

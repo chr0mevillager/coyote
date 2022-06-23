@@ -17,7 +17,7 @@ export const developerCommands: Record<string, CustomCommand> = {
 	mode,
 };
 
-/**A list of slash commands*/
+/**A list of global, public slash commands*/
 export const publicCommands: Record<string, CustomCommand> = {
 	help,
 	info,

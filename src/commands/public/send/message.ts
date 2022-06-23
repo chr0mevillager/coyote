@@ -8,8 +8,49 @@ import * as buttons from "../../../exports/send_buttons";
 import * as questionEmbeds from "../../../exports/question_embeds";
 import logMessage from "../../../exports/error";
 import * as data from "../../../exports/data";
+import { commandHelp } from "src/exports/types";
 
-export default async function messageInteraction(interaction) {
+export const help: commandHelp = {
+	name: "message",
+	fullName: "/send message",
+	module: "embeds",
+	keywords: [
+		"message",
+		"text",
+		"word",
+		"embed",
+		"note",
+		"email",
+		"memo",
+		"communication",
+		"send",
+	],
+	helpMessage: new MessageEmbed()
+		.setColor("#389af0")
+		.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/message.png?raw=true")
+		.setTitle("/send message < Title > < Description > [ Ping Group ] [ Image URL ]")
+		.setDescription("Send a fancy message!")
+		.addFields(
+			{
+				name: "`Title`",
+				value: "Type in a word or phrase that is less than 256 characters."
+			},
+			{
+				name: "`Description`",
+				value: "Type in a main description that is less than 4000 characters. Use `\\n\` to create an enter, `\\u200A` to create an empty feild, and to create a link, type `( Your Text )[ URL ]`"
+			},
+			{
+				name: "`Image`",
+				value: "Type in a link to an image."
+			},
+			{
+				name: "`Ping Group`",
+				value: "Select who you want to ping with the message."
+			},
+		),
+}
+
+export async function interaction(interaction) {
 	try {
 		data.commandUsed("message");
 		//Inputs ---
