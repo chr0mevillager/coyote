@@ -12,7 +12,7 @@ import * as profileInfo from "./exports/profile_info";
 client.on("interactionCreate", async (interaction) => {
 	if (interaction.isCommand()) {
 		const publicCommands = commands.publicCommands[interaction.commandName];
-		const developerCommand = commands.developerCommands[interaction.commandName];
+		const developerCommands = commands.developerCommands[interaction.commandName];
 
 		if (publicCommands && publicCommands.data.name == (interaction.commandName)) {
 			try {
@@ -22,14 +22,14 @@ client.on("interactionCreate", async (interaction) => {
 			}
 		} else {
 			try {
-				await developerCommand.execute(interaction);
+				await developerCommands.execute(interaction);
 			} catch (error) {
 				await logMessage(error, "index & dev command");
 			}
 		}
 	} else if (interaction.isModalSubmit()) {
 		const publicCommands = commands.publicCommands[(interaction.customId).substring(0, (interaction.customId).indexOf(':'))];
-		const developerCommand = commands.developerCommands[(interaction.customId).substring(0, (interaction.customId).indexOf(':'))];
+		const developerCommands = commands.developerCommands[(interaction.customId).substring(0, (interaction.customId).indexOf(':'))];
 
 		if (publicCommands && publicCommands.data.name == ((interaction.customId).substring(0, (interaction.customId).indexOf(':')))) {
 			try {
@@ -39,9 +39,28 @@ client.on("interactionCreate", async (interaction) => {
 			}
 		} else {
 			try {
-				await developerCommand.modalExecute(interaction);
+				await developerCommands.modalExecute(interaction);
 			} catch (error) {
 				await logMessage(error, "index (modal response) & dev command");
+			}
+		}
+	} else if (interaction.isButton() || interaction.isSelectMenu()) {
+		const publicCommands = commands.publicCommands[(interaction.customId).substring(0, (interaction.customId).indexOf(':'))];
+		const developerCommands = commands.developerCommands[(interaction.customId).substring(0, (interaction.customId).indexOf(':'))];
+
+		if (publicCommands && publicCommands.data.name == ((interaction.customId).substring(0, (interaction.customId).indexOf(':')))) {
+			try {
+				if (publicCommands.globalButtonExecute) return;
+				await publicCommands.globalButtonExecute(interaction);
+			} catch (error) {
+				await logMessage(error, "index (button response)");
+			}
+		} else if (developerCommands && developerCommands.data.name == ((interaction.customId).substring(0, (interaction.customId).indexOf(':')))) {
+			try {
+				if (!developerCommands.globalButtonExecute) return;
+				await developerCommands.globalButtonExecute(interaction);
+			} catch (error) {
+				await logMessage(error, "index (global button response) & dev command");
 			}
 		}
 	}
@@ -52,7 +71,7 @@ client.once('ready', () => {
 
 	//Run functions on start
 	for (let i = 0; i < Object.keys(commands.publicCommands).length; i++) {
-		commands.publicCommands[Object.keys(commands.publicCommands)[i]].onReadyExecute();
+		if (commands.publicCommands[Object.keys(commands.publicCommands)[i]].onReadyExecute) commands.publicCommands[Object.keys(commands.publicCommands)[i]].onReadyExecute();
 	}
 
 	//Set mode

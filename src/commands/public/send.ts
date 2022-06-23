@@ -126,10 +126,6 @@ let send: CustomCommand = {
 		],
 	},
 
-	async onReadyExecute() {
-
-	},
-
 	async modalExecute(interaction) {
 		const [command, id, data] = (interaction.customId).split("::");
 		if (data == "giveawayEnter") {

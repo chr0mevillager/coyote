@@ -10,13 +10,6 @@ let data: CustomCommand = {
 		description: "See a detailed log of information about me!",
 	},
 
-	async modalExecute(interaction) {
-
-	},
-	async onReadyExecute() {
-
-	},
-
 	async execute(interaction) {
 		await interaction.reply({
 			embeds: [

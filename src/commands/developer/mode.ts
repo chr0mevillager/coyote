@@ -58,13 +58,6 @@ let mode: CustomCommand = {
 		]
 	},
 
-	async modalExecute(interaction) {
-
-	},
-	async onReadyExecute() {
-
-	},
-
 	async execute(interaction) {
 		try {
 			await interaction.reply({
