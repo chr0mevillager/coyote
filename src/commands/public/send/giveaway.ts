@@ -19,7 +19,7 @@ import { commandHelp } from "src/exports/types";
 
 export const help: commandHelp = {
 	name: "giveaway",
-	fullName: "send giveaway",
+	fullName: "/send giveaway",
 	module: "embeds",
 	keywords: [
 		"giveaway",

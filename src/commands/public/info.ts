@@ -4,26 +4,26 @@ import { commandHelp, CustomCommand } from "../../exports/types";
 import * as data from "../../exports/data";
 import * as profileInfo from "../../exports/profile_info";
 
-export const messageHelp: commandHelp = {
-	name: "info",
-	module: "general",
-	keywords: [
-		"info",
-		"detail",
-		"data",
-		"general",
-	],
-	helpMessage: new MessageEmbed()
-			.setColor("#389af0")
-			.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/info.png?raw=true")
-			.setTitle("/info")
-			.setDescription("Get information about me!"),
-}
-
 let info: CustomCommand = {
 	data: {
 		name: "info",
 		description: "See information about me!",
+	},
+
+	commandHelp: {
+		name: "info",
+		module: "general",
+		keywords: [
+			"info",
+			"detail",
+			"data",
+			"general",
+		],
+		helpMessage: new MessageEmbed()
+			.setColor("#389af0")
+			.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/info.png?raw=true")
+			.setTitle("/info")
+			.setDescription("Get information about me!"),
 	},
 
 	async execute(interaction) {

@@ -127,21 +127,6 @@ export async function interaction(interaction) {
 		if (pollButton1.length > 80) pollButton1 = pollButton1.slice(0, 80);
 		if (pollButton2.length > 80) pollButton2 = pollButton2.slice(0, 80);
 
-		const pollButtonRow1 = (uuid: string) => new MessageActionRow()
-			.addComponents(
-				new MessageButton()
-					.setCustomId(uuid + "::pollButton1")
-					.setLabel(pollButton1)
-					.setStyle("PRIMARY")
-			);
-		const pollButtonRow2 = (uuid: string) => new MessageActionRow()
-			.addComponents(
-				new MessageButton()
-					.setCustomId(uuid + "::pollButton2")
-					.setLabel(pollButton2)
-					.setStyle("PRIMARY")
-			);
-
 		let pollButtonRow3;
 		let button3exists = false;
 		let pollButtonRow4;
