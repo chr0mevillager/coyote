@@ -29,9 +29,10 @@ export const help: commandHelp = {
 		"ask",
 		"sample",
 		"send",
+		"message",
 	],
 	helpMessage: new MessageEmbed()
-		.setColor("#389af0")
+		.setColor("#2f3136")
 		.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/poll.png?raw=true")
 		.setTitle("/send poll < Question > < Option 1 > < Option 2 > [ Option 3 ] [ Option 4 ] [ Ping Group ] < Live Results >")
 		.setDescription("Send a simple, anonymous poll! Polls are open for 1 day.")

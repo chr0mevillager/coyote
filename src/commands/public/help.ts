@@ -1,4 +1,4 @@
-import { InteractionCollector, MessageActionRow, MessageButton, MessageCollector, MessageEmbed, MessageSelectMenu, Modal } from "discord.js";
+import { InteractionCollector, MessageActionRow, MessageButton, MessageCollector, MessageEmbed, MessageSelectMenu, Modal, ModalActionRowComponent, TextInputComponent } from "discord.js";
 import { commandHelp, CustomCommand } from "../../exports/types";
 import * as data from "../../exports/data";
 import { publicCommands } from "../index";
@@ -11,6 +11,23 @@ let fullName = "";
 let modules = [];
 let commands = [];
 
+const inputModal = new MessageActionRow<ModalActionRowComponent>()
+	.addComponents(
+		new TextInputComponent()
+			.setCustomId("search")
+			.setLabel("What do you want to search for?")
+			.setStyle("SHORT")
+			.setPlaceholder("Ex: message")
+			.setRequired(true)
+			.setMaxLength(20)
+			.setMinLength(3)
+	);
+const modal = new Modal()
+	.setTitle("Search")
+	.setCustomId("help::modal")
+	.setComponents(inputModal)
+
+
 let help: CustomCommand = {
 	data: {
 		name: "help",
@@ -21,18 +38,23 @@ let help: CustomCommand = {
 		name: "help",
 		keywords: [
 			"help",
+			"info",
+			"what",
+			"why",
+			"how",
 		],
 		module: "general",
 		helpMessage: new MessageEmbed()
-			.setTitle("i need a title")
-			.setDescription("i need a description")
+			.setTitle("/help")
+			.setDescription("Get help with ")
+			.setColor("#2f3136")
 	},
 
 	async modalExecute(interaction) {
-		// interaction.reply({
-		// 	embeds: findCommand(interaction.something),
-		// 	ephemeral: true,
-		// })
+		interaction.reply({
+			embeds: findCommand(interaction.fields.getTextInputValue("search")),
+			ephemeral: true,
+		})
 	},
 
 	async globalButtonExecute(interaction) {
@@ -43,7 +65,7 @@ let help: CustomCommand = {
 				ephemeral: true,
 			})
 		} else if (data == "search") {
-			//send modal
+			interaction.showModal(modal);
 		}
 	},
 
@@ -123,6 +145,7 @@ let help: CustomCommand = {
 		await interaction.reply({
 			embeds: [
 				new MessageEmbed()
+					.setColor("#389af0")
 					.setTitle("Welcome to the help center!")
 					.setDescription("Find what you are looking for by looking through the modules or searching for a command!")
 			],
@@ -138,7 +161,8 @@ function findModule(module: string) {
 	let results = [];
 	results.push(
 		new MessageEmbed()
-			.setTitle("Here are your results:")
+			.setColor("#389af0")
+			.setTitle(module.charAt(0).toUpperCase() + module.slice(1) + " Module")
 			.setDescription("")
 	)
 	commands.forEach(command => {
@@ -150,5 +174,34 @@ function findModule(module: string) {
 }
 
 function findCommand(search: string) {
+	let results = [];
+
+	results.push(
+		new MessageEmbed()
+			.setColor("#389af0")
+			.setTitle("Here are your results:")
+			.setDescription("")
+	)
+	commands.forEach(command => {
+		let match = command.keywords.find(element => {
+			if (element.includes(search) || search.includes(element)) {
+				return true;
+			}
+		});
+
+		if (match !== undefined || command.module == search && search && results.length < 10) {
+			results.push(command.helpMessage);
+		}
+	});
+	if (results.length > 1) {
+		return results;
+	} else {
+		return [
+			new MessageEmbed()
+				.setColor("#ff6c08")
+				.setTitle("No results were found")
+				.setDescription("")
+		]
+	}
 
 }

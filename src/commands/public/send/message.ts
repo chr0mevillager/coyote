@@ -26,7 +26,7 @@ export const help: commandHelp = {
 		"send",
 	],
 	helpMessage: new MessageEmbed()
-		.setColor("#389af0")
+		.setColor("#2f3136")
 		.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/message.png?raw=true")
 		.setTitle("/send message < Title > < Description > [ Ping Group ] [ Image URL ]")
 		.setDescription("Send a fancy message!")

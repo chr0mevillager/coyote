@@ -20,7 +20,7 @@ let info: CustomCommand = {
 			"general",
 		],
 		helpMessage: new MessageEmbed()
-			.setColor("#389af0")
+			.setColor("#2f3136")
 			.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/info.png?raw=true")
 			.setTitle("/info")
 			.setDescription("Get information about me!"),
