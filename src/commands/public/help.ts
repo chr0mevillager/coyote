@@ -1,4 +1,4 @@
-import { InteractionCollector, MessageActionRow, MessageButton, MessageCollector, MessageEmbed, MessageSelectMenu } from "discord.js";
+import { InteractionCollector, MessageActionRow, MessageButton, MessageCollector, MessageEmbed, MessageSelectMenu, Modal } from "discord.js";
 import { commandHelp, CustomCommand } from "../../exports/types";
 import * as data from "../../exports/data";
 import { publicCommands } from "../index";
@@ -8,7 +8,8 @@ let row1;
 let row2
 let moduleNum = 0;
 let fullName = "";
-let modules = []
+let modules = [];
+let commands = [];
 
 let help: CustomCommand = {
 	data: {
@@ -23,28 +24,40 @@ let help: CustomCommand = {
 		],
 		module: "general",
 		helpMessage: new MessageEmbed()
+			.setTitle("i need a title")
+			.setDescription("i need a description")
 	},
 
 	async modalExecute(interaction) {
-
+		// interaction.reply({
+		// 	embeds: findCommand(interaction.something),
+		// 	ephemeral: true,
+		// })
 	},
 
 	async globalButtonExecute(interaction) {
 		const [command, data,] = (interaction.customId).split("::");
-		if (data == "module") {
-			interaction.reply("yooooo")
+		if (data == "module" && interaction.isSelectMenu()) {
+			interaction.reply({
+				embeds: findModule(interaction.values[0]),
+				ephemeral: true,
+			})
 		} else if (data == "search") {
-			interaction.reply("search");
+			//send modal
 		}
 	},
 
 	async onReadyExecute() {
-
-		//Search for modules
 		for (let i = 0; i < Object.keys(publicCommands).length; i++) {
+			//Search for modules
 			moduleNum = i;
 			if (publicCommands[Object.keys(publicCommands)[i]].commandHelp) {
 				if (publicCommands[Object.keys(publicCommands)[i]].commandHelp[1]) {
+					//Commands
+					for (let i = 0; i < (publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>).length; i++) {
+						commands.push((publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>)[i]);
+					}
+					//Modules
 					if (!moduleList.includes((publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>)[0].module)) {
 						moduleList.push((publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>)[0].module);
 						fullName = "";
@@ -58,13 +71,13 @@ let help: CustomCommand = {
 						if (!modules.includes((publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>)[0].module)) modules.push({
 							label: (((publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>)[i]).module).charAt(0).toUpperCase() + (((publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>)[i]).module).slice(1),
 							description: fullName,
-							value: "help::" + ((publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>)[i]).module
+							value: ((publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>)[i]).module
 						});
-					} else {
-						console.log("e");
-						//add to the description of the module
 					}
 				} else {
+					//Commands
+					commands.push(publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp);
+					//Modules
 					if ((publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp).fullName) {
 						fullName = (publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp).fullName;
 					} else {
@@ -76,14 +89,17 @@ let help: CustomCommand = {
 						modules.push({
 							label: ((publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp).module).charAt(0).toUpperCase() + ((publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp).module).slice(1),
 							description: fullName,
-							value: "help::" + (publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp).module,
+							value: (publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp).module,
 						});
 					} else {
-						modules.find(element => element.value == "help::" + (publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp).module).description += "\u2800\u2800" + fullName;
+						modules.find(module => module.value == (publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp).module).description += "\u2800\u2800" + fullName;
 					}
 				}
 			}
+			//Make a list of commands
+
 		}
+
 
 		row1 = new MessageActionRow()
 			.addComponents(
@@ -117,3 +133,22 @@ let help: CustomCommand = {
 };
 
 export default help;
+
+function findModule(module: string) {
+	let results = [];
+	results.push(
+		new MessageEmbed()
+			.setTitle("Here are your results:")
+			.setDescription("")
+	)
+	commands.forEach(command => {
+		if (command.module == module && results.length < 10) {
+			results.push(command.helpMessage);
+		}
+	});
+	return results;
+}
+
+function findCommand(search: string) {
+
+}
