@@ -1,5 +1,5 @@
-export let versionNumber = "5.1";
-export let releaseNotes = "🎁⠀• Added Giveaways!\n🐛⠀• Bug Fixes\n📈⠀• Improved Reliability"
+export let versionNumber = "1.0.0";
+export let releaseNotes = "🎁 • Added Giveaways!\n🐛 • Bug Fixes\n📈 • Improved Reliability"
 
 export let helpText = "**Use `/help` for help.**"
-export let featureText = "📨⠀• Send simple yet fancy Messages\n📊⠀• Post quick, anonymous Polls\n🎁⠀• Post cutting-edge Giveaways"
+export let featureText = "📨 • Send fancy Messages\n📊 • Post simple Polls\n🎁 • Make robust Giveaways"

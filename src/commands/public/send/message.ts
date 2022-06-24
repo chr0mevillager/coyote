@@ -27,25 +27,28 @@ export const help: commandHelp = {
 	],
 	helpMessage: new MessageEmbed()
 		.setColor("#2f3136")
-		.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/message.png?raw=true")
-		.setTitle("/send message < Title > < Description > [ Ping Group ] [ Image URL ]")
-		.setDescription("Send a fancy message!")
+		.setTitle("Message")
+		.setDescription("Send a fancy message!\n\n```/send message < Title > < Description > [ Ping Group ] [ Image URL ]```")
 		.addFields(
 			{
-				name: "`Title`",
-				value: "Type in a word or phrase that is less than 256 characters."
+				name: "Title",
+				value: "```Type in a word or phrase that is less than 256 characters.```",
+				inline: true,
 			},
 			{
-				name: "`Description`",
-				value: "Type in a main description that is less than 4000 characters. Use `\\n\` to create an enter, `\\u200A` to create an empty feild, and to create a link, type `( Your Text )[ URL ]`"
+				name: "Image",
+				value: "```Type in a link to an image.\n\n\u200b```",
+				inline: true,
 			},
 			{
-				name: "`Image`",
-				value: "Type in a link to an image."
+				name: "Ping Group",
+				value: "```Select who you want to ping with the message.\n\u200b```",
+				inline: true,
 			},
 			{
-				name: "`Ping Group`",
-				value: "Select who you want to ping with the message."
+				name: "Description",
+				value: "```Type in a main description that is less than 4000 characters. Use \\n\ to create an enter, \\u200A to create an empty feild, and to create a link, type ( Your Text )[ URL ]```",
+				inline: true,
 			},
 		),
 }

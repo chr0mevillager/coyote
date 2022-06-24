@@ -32,25 +32,28 @@ export const help: commandHelp = {
 	],
 	helpMessage: new MessageEmbed()
 		.setColor("#2f3136")
-		.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/giveaway.png?raw=true")
-		.setTitle("/send giveaway < Item > < # of Winners > [ Ping Group ] [ Required Input ]")
-		.setDescription("Send a quick and rich giveaway! Giveaways are open for 1 day.")
+		.setTitle("Giveaway")
+		.setDescription("Send a robust giveaway! Giveaways are open for 1 day.\n\n```/send giveaway < Item > < # of Winners > [ Ping Group ] [ Required Input ]```")
 		.addFields(
 			{
-				name: "`Item`",
-				value: "Type in the item you would like to give away in less than 200 charicters."
+				name: "Item",
+				value: "```Type in the item you would like to give away in less than 200 charicters.```",
+				inline: true,
 			},
 			{
-				name: "`# of Winners`",
-				value: "Type in how many people you would like to win the giveaway (1-100)."
+				name: "# of Winners",
+				value: "```Type in how many people you would like to win the giveaway (1-100).\n\u200b```",
+				inline: true,
 			},
 			{
-				name: "`Ping Group`",
-				value: "Select who you want to ping with the message."
+				name: "Ping Group",
+				value: "```Select who you want to ping with the message.\n\n\u200b```",
+				inline: true,
 			},
 			{
-				name: "`Required Input`",
-				value: "Type in what information users must provide in less than 80 characters."
+				name: "Required Input",
+				value: "```Type in what information users must provide in less than 80 characters.```",
+				inline: true,
 			},
 		),
 }

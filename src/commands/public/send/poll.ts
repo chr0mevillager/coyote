@@ -33,37 +33,43 @@ export const help: commandHelp = {
 	],
 	helpMessage: new MessageEmbed()
 		.setColor("#2f3136")
-		.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/poll.png?raw=true")
-		.setTitle("/send poll < Question > < Option 1 > < Option 2 > [ Option 3 ] [ Option 4 ] [ Ping Group ] < Live Results >")
-		.setDescription("Send a simple, anonymous poll! Polls are open for 1 day.")
+		.setTitle("Poll")
+		.setDescription("Send a simple poll! Polls are open for 1 day.\n\n```/send poll < Question > < Option 1 > < Option 2 > [ Option 3 ] [ Option 4 ] [ Ping Group ] < Live Results >```")
 		.addFields(
 			{
-				name: "`Question`",
-				value: "Type in the poll question in less than 256 characters. Use `\\n\` to create an enter, `\\u200B` to create an empty feild, and to create a link, type `( Your Text )[ URL ]`"
+				name: "Question",
+				value: "```Type in the poll question in less than 256 characters. Use \\n\ to create an enter, \\u200B to create an empty feild, and to create a link, type ( Your Text )[ URL ]```",
+				inline: false,
 			},
 			{
-				name: "`Question 1`",
-				value: "Type in a response to your question that is less than 80 characters."
+				name: "Question 1",
+				value: "```Type in a response to your question that is less than 80 characters.```",
+				inline: true,
 			},
 			{
-				name: "`Question 2`",
-				value: "Type in a response to your question that is less than 80 characters."
+				name: "Question 2",
+				value: "```Type in a response to your question that is less than 80 characters.```",
+				inline: true,
 			},
 			{
-				name: "`Question 3`",
-				value: "Type in a response to your question that is less than 80 characters."
+				name: "Question 3",
+				value: "```Type in a response to your question that is less than 80 characters.```",
+				inline: true,
 			},
 			{
-				name: "`Question 4`",
-				value: "Type in a response to your question that is less than 80 characters."
+				name: "Question 4",
+				value: "```Type in a response to your question that is less than 80 characters.\n\n\n\u200b```",
+				inline: true,
 			},
 			{
-				name: "`Ping Group`",
-				value: "Select who you want to ping with the message."
+				name: "Ping Group",
+				value: "```Select who you want to ping with the message.\n\n\n\n\u200b```",
+				inline: true,
 			},
 			{
-				name: "`Live Results`",
-				value: "Decide if poll should show results as users vote. Results will always be shown after the poll is over."
+				name: "Live Results",
+				value: "```Decide if poll should show results as users vote. Results will always be shown after the poll is over.```",
+				inline: true,
 			},
 		),
 }

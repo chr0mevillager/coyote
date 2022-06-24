@@ -1,6 +1,5 @@
 import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
-import { client } from "../../exports/client";
-import { commandHelp, CustomCommand } from "../../exports/types";
+import { CustomCommand } from "../../exports/types";
 import * as data from "../../exports/data";
 import * as profileInfo from "../../exports/profile_info";
 
@@ -21,9 +20,8 @@ let info: CustomCommand = {
 		],
 		helpMessage: new MessageEmbed()
 			.setColor("#2f3136")
-			.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/info.png?raw=true")
-			.setTitle("/info")
-			.setDescription("Get information about me!"),
+			.setTitle("Info")
+			.setDescription("```Get information about me!```"),
 	},
 
 	async execute(interaction) {
@@ -32,20 +30,23 @@ let info: CustomCommand = {
 			embeds: [
 				new MessageEmbed()
 					.setColor("#389af0")
-					.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/info.png?raw=true")
 					.setTitle("Embeds Bot#7040")
+					.setDescription("Run `/help` for help.")
 					.addFields(
 						{
-							name: "`Version`",
-							value: profileInfo.versionNumber,
+							name: "Version",
+							value: "```\n" + profileInfo.versionNumber.replaceAll(".", ".\n") + "```",
+							inline: true,
 						},
 						{
-							name: "`Ping`",
-							value: client.ws.ping + "ms",
+							name: "Release Notes",
+							value: "```\n" + profileInfo.releaseNotes + "```",
+							inline: true,
 						},
 						{
-							name: "`Release Notes`",
-							value: profileInfo.releaseNotes,
+							name: "Features",
+							value: "```\n" + profileInfo.featureText + "```",
+							inline: true,
 						},
 					)
 			],

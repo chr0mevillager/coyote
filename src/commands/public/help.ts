@@ -1,4 +1,4 @@
-import { InteractionCollector, MessageActionRow, MessageButton, MessageCollector, MessageEmbed, MessageSelectMenu, Modal, ModalActionRowComponent, TextInputComponent } from "discord.js";
+import { MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, ModalActionRowComponent, TextInputComponent } from "discord.js";
 import { commandHelp, CustomCommand } from "../../exports/types";
 import * as data from "../../exports/data";
 import { publicCommands } from "../index";
@@ -44,14 +44,14 @@ let help: CustomCommand = {
 		],
 		module: "general",
 		helpMessage: new MessageEmbed()
-			.setTitle("/help")
-			.setDescription("Get help with ")
+			.setTitle("Help")
+			.setDescription("```Get help with anything you need!```")
 			.setColor("#2f3136")
 	},
 
 	async modalExecute(interaction) {
 		interaction.reply({
-			embeds: findCommand(interaction.fields.getTextInputValue("search")),
+			embeds: findCommand(interaction.fields.getTextInputValue("search").toLowerCase()),
 			ephemeral: true,
 		})
 	},
@@ -74,18 +74,18 @@ let help: CustomCommand = {
 						.setDescription("Get all of the information you need to start out with the Embeds Bot!")
 						.addFields([
 							{
-								name: "Messages",
-								value: "```Quickly send a fancy message by typing in \"/send command\".\n\n\nThen, type in a title and description. Hit enter, and then hit the send button.```",
+								name: "📨\u2800Messages",
+								value: "```js\nQuickly send a fancy message by typing in \"/send command\".``````Then, type in a title and description. Hit enter, and then hit the send button.\n\u200b```",
 								inline: true,
 							},
 							{
-								name: "Polls",
-								value: "```Quickly send a simple poll by typing in \"/send poll\".\n\n\nThen, type in a question and 2-4 answers. Hit enter, and then hit the send button.```",
+								name: "📊\u2800Polls",
+								value: "```js\nEasily send a simple poll by typing in \"/send poll\".``````Then, type in a question and 2-4 answers. Hit enter, and then hit the send button.\n\u200b```",
 								inline: true,
 							},
 							{
-								name: "Giveaways",
-								value: "```Quickly send a powerful giveaway by typing in \"/send giveaway\".\n\nThen, type in an item and how many winners there should be. Hit enter, and then hit the send button.```",
+								name: "🎁\u2800Giveaways",
+								value: "```js\nEffectively send a robust giveaway by typing in \"/send giveaway\".``````Then, type in an item and how many winners there should be. Hit enter, and then hit the send button.```",
 								inline: true,
 							},
 						])
