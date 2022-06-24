@@ -50,7 +50,7 @@ client.on("interactionCreate", async (interaction) => {
 
 		if (publicCommands && publicCommands.data.name == ((interaction.customId).substring(0, (interaction.customId).indexOf(':')))) {
 			try {
-				if (publicCommands.globalButtonExecute) return;
+				if (!publicCommands.globalButtonExecute) return;
 				await publicCommands.globalButtonExecute(interaction);
 			} catch (error) {
 				await logMessage(error, "index (button response)");

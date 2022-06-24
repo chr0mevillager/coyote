@@ -1,110 +1,117 @@
-import { MessageEmbed } from "discord.js";
-import { CustomCommand } from "../../exports/types";
+import { InteractionCollector, MessageActionRow, MessageButton, MessageCollector, MessageEmbed, MessageSelectMenu } from "discord.js";
+import { commandHelp, CustomCommand } from "../../exports/types";
 import * as data from "../../exports/data";
+import { publicCommands } from "../index";
+
+let moduleList = [];
+let row1;
+let row2
+let moduleNum = 0;
+let fullName = "";
+let modules = []
 
 let help: CustomCommand = {
 	data: {
 		name: "help",
-		description: "See documentation about my commands and find my support server!",
+		description: "See documentation about my commands!",
+	},
+
+	commandHelp: {
+		name: "help",
+		keywords: [
+			"help",
+		],
+		module: "general",
+		helpMessage: new MessageEmbed()
 	},
 
 	async modalExecute(interaction) {
 
 	},
 
+	async globalButtonExecute(interaction) {
+		const [command, data,] = (interaction.customId).split("::");
+		if (data == "module") {
+			interaction.reply("yooooo")
+		} else if (data == "search") {
+			interaction.reply("search");
+		}
+	},
+
+	async onReadyExecute() {
+
+		//Search for modules
+		for (let i = 0; i < Object.keys(publicCommands).length; i++) {
+			moduleNum = i;
+			if (publicCommands[Object.keys(publicCommands)[i]].commandHelp) {
+				if (publicCommands[Object.keys(publicCommands)[i]].commandHelp[1]) {
+					if (!moduleList.includes((publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>)[0].module)) {
+						moduleList.push((publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>)[0].module);
+						fullName = "";
+						for (let i = 0; i < (publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>).length; i++) {
+							if ((publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>)[i].fullName) {
+								fullName += (publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>)[i].fullName + "\u2800\u2800";
+							} else {
+								fullName += "/" + (publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>)[i].name + "\u2800\u2800";
+							}
+						}
+						if (!modules.includes((publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>)[0].module)) modules.push({
+							label: (((publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>)[i]).module).charAt(0).toUpperCase() + (((publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>)[i]).module).slice(1),
+							description: fullName,
+							value: "help::" + ((publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>)[i]).module
+						});
+					} else {
+						console.log("e");
+						//add to the description of the module
+					}
+				} else {
+					if ((publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp).fullName) {
+						fullName = (publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp).fullName;
+					} else {
+						fullName = "/" + (publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp).name;
+					}
+
+					if (!moduleList.includes((publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp).module)) {
+						moduleList.push((publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp).module);
+						modules.push({
+							label: ((publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp).module).charAt(0).toUpperCase() + ((publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp).module).slice(1),
+							description: fullName,
+							value: "help::" + (publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp).module,
+						});
+					} else {
+						modules.find(element => element.value == "help::" + (publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp).module).description += "\u2800\u2800" + fullName;
+					}
+				}
+			}
+		}
+
+		row1 = new MessageActionRow()
+			.addComponents(
+				new MessageSelectMenu()
+					.setCustomId("help::module")
+					.setPlaceholder("Select a Module")
+					.addOptions(modules)
+			)
+		row2 = new MessageActionRow()
+			.addComponents(
+				new MessageButton()
+					.setCustomId("help::search")
+					.setLabel("Search 🔍")
+					.setStyle("PRIMARY")
+			)
+	},
+
 	async execute(interaction) {
 		data.commandUsed("help");
+
 		await interaction.reply({
 			embeds: [
 				new MessageEmbed()
-					.setColor("#389af0")
-					.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/message.png?raw=true")
-					.setTitle("/send message < Title > < Description > [ Ping Group ] [ Image URL ]")
-					.setDescription("Send a fancy message!")
-					.addFields(
-						{
-							name: "`Title`",
-							value: "Type in a word or phrase that is less than 256 characters."
-						},
-						{
-							name: "`Description`",
-							value: "Type in a main description that is less than 4000 characters. Use `\\n\` to create an enter, `\\u200A` to create an empty feild, and to create a link, type `( Your Text )[ URL ]`"
-						},
-						{
-							name: "`Image`",
-							value: "Type in a link to an image."
-						},
-						{
-							name: "`Ping Group`",
-							value: "Select who you want to ping with the message."
-						},
-					),
-				//.setImage("https://cdn.discordapp.com/attachments/945889704375627807/946566904187875388/send-command.gif") Finding a new alternative for img urls, as Discord deletes old images.
-				new MessageEmbed()
-					.setColor("#389af0")
-					.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/poll.png?raw=true")
-					.setTitle("/send poll < Question > < Option 1 > < Option 2 > [ Option 3 ] [ Option 4 ] [ Ping Group ] < Live Results >")
-					.setDescription("Send a simple, anonymous poll! Polls are open for 1 day.")
-					.addFields(
-						{
-							name: "`Question`",
-							value: "Type in the poll question in less than 256 characters. Use `\\n\` to create an enter, `\\u200B` to create an empty feild, and to create a link, type `( Your Text )[ URL ]`"
-						},
-						{
-							name: "`Question 1`",
-							value: "Type in a response to your question that is less than 80 characters."
-						},
-						{
-							name: "`Question 2`",
-							value: "Type in a response to your question that is less than 80 characters."
-						},
-						{
-							name: "`Question 3`",
-							value: "Type in a response to your question that is less than 80 characters."
-						},
-						{
-							name: "`Question 4`",
-							value: "Type in a response to your question that is less than 80 characters."
-						},
-						{
-							name: "`Ping Group`",
-							value: "Select who you want to ping with the message."
-						},
-						{
-							name: "`Live Results`",
-							value: "Decide if poll should show results as users vote. Results will always be shown after the poll is over."
-						},
-					),
-				new MessageEmbed()
-					.setColor("#389af0")
-					.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/giveaway.png?raw=true")
-					.setTitle("/send giveaway < Item > < # of Winners > [ Ping Group ] [ Required Input ]")
-					.setDescription("Send a quick and rich giveaway! Giveaways are open for 1 day.")
-					.addFields(
-						{
-							name: "`Item`",
-							value: "Type in the item you would like to give away in less than 200 charicters."
-						},
-						{
-							name: "`# of Winners`",
-							value: "Type in how many people you would like to win the giveaway (1-100)."
-						},
-						{
-							name: "`Ping Group`",
-							value: "Select who you want to ping with the message."
-						},
-						{
-							name: "`Required Input`",
-							value: "Type in what information users must provide in less than 80 characters."
-						},
-					),
-				new MessageEmbed()
-					.setColor("#389af0")
-					.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/info.png?raw=true")
-					.setTitle("/info")
-					.setDescription("Get information about the bot!"),
+					.setTitle("Welcome to the help center!")
+					.setDescription("Find what you are looking for by looking through the modules or searching for a command!")
 			],
 			ephemeral: true,
+			components: [row1, row2],
 		});
 	},
 };
