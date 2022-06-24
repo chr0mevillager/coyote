@@ -3,10 +3,9 @@ import { commandHelp, CustomCommand } from "../../exports/types";
 import * as data from "../../exports/data";
 import { publicCommands } from "../index";
 
-let moduleList = [];
+let moduleNum;
 let row1;
-let row2
-let moduleNum = 0;
+let row2;
 let fullName = "";
 let modules = [];
 let commands = [];
@@ -66,63 +65,68 @@ let help: CustomCommand = {
 			})
 		} else if (data == "search") {
 			interaction.showModal(modal);
+		} else if (data == "quickStart") {
+			interaction.reply({
+				embeds: [
+					new MessageEmbed()
+						.setColor("#389af0")
+						.setTitle("Quick Start Guide")
+						.setDescription("Get all of the information you need to start out with the Embeds Bot!")
+						.addFields([
+							{
+								name: "Messages",
+								value: "```Quickly send a fancy message by typing in \"/send command\".\n\n\nThen, type in a title and description. Hit enter, and then hit the send button.```",
+								inline: true,
+							},
+							{
+								name: "Polls",
+								value: "```Quickly send a simple poll by typing in \"/send poll\".\n\n\nThen, type in a question and 2-4 answers. Hit enter, and then hit the send button.```",
+								inline: true,
+							},
+							{
+								name: "Giveaways",
+								value: "```Quickly send a powerful giveaway by typing in \"/send giveaway\".\n\nThen, type in an item and how many winners there should be. Hit enter, and then hit the send button.```",
+								inline: true,
+							},
+						])
+				],
+				ephemeral: true,
+			})
 		}
 	},
 
 	async onReadyExecute() {
 		for (let i = 0; i < Object.keys(publicCommands).length; i++) {
-			//Search for modules
+			//Get list of commands
 			moduleNum = i;
 			if (publicCommands[Object.keys(publicCommands)[i]].commandHelp) {
 				if (publicCommands[Object.keys(publicCommands)[i]].commandHelp[1]) {
-					//Commands
 					for (let i = 0; i < (publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>).length; i++) {
 						commands.push((publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>)[i]);
 					}
-					//Modules
-					if (!moduleList.includes((publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>)[0].module)) {
-						moduleList.push((publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>)[0].module);
-						fullName = "";
-						for (let i = 0; i < (publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>).length; i++) {
-							if ((publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>)[i].fullName) {
-								fullName += (publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>)[i].fullName + "\u2800\u2800";
-							} else {
-								fullName += "/" + (publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>)[i].name + "\u2800\u2800";
-							}
-						}
-						if (!modules.includes((publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>)[0].module)) modules.push({
-							label: (((publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>)[i]).module).charAt(0).toUpperCase() + (((publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>)[i]).module).slice(1),
-							description: fullName,
-							value: ((publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>)[i]).module
-						});
-					}
 				} else {
-					//Commands
 					commands.push(publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp);
-					//Modules
-					if ((publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp).fullName) {
-						fullName = (publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp).fullName;
-					} else {
-						fullName = "/" + (publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp).name;
-					}
-
-					if (!moduleList.includes((publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp).module)) {
-						moduleList.push((publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp).module);
-						modules.push({
-							label: ((publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp).module).charAt(0).toUpperCase() + ((publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp).module).slice(1),
-							description: fullName,
-							value: (publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp).module,
-						});
-					} else {
-						modules.find(module => module.value == (publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp).module).description += "\u2800\u2800" + fullName;
-					}
 				}
 			}
-			//Make a list of commands
-
 		}
+		//Make dropdown
+		commands.forEach(command => {
+			if (command.fullName) {
+				fullName = command.fullName
+			} else {
+				fullName = "/" + command.name
+			}
 
-
+			if (!modules.find(module => module.value == command.module)) {
+				modules.push({
+					label: (command.module.charAt(0).toUpperCase() + command.module.slice(1)),
+					description: fullName,
+					value: (command.module),
+				});
+			} else {
+				modules.find(module => module.value == command.module).description += "\u2800\u2800" + fullName;
+			}
+		});
 		row1 = new MessageActionRow()
 			.addComponents(
 				new MessageSelectMenu()
@@ -133,9 +137,13 @@ let help: CustomCommand = {
 		row2 = new MessageActionRow()
 			.addComponents(
 				new MessageButton()
+					.setCustomId("help::quickStart")
+					.setLabel("Quick-Start Guide 🕑")
+					.setStyle("SUCCESS"),
+				new MessageButton()
 					.setCustomId("help::search")
 					.setLabel("Search 🔍")
-					.setStyle("PRIMARY")
+					.setStyle("PRIMARY"),
 			)
 	},
 
