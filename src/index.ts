@@ -3,7 +3,7 @@ import { client } from "./exports/client";
 import * as commands from "./commands";
 import logMessage from "./exports/error";
 import * as activity from "./exports/activity";
-import { MessageEmbed } from "discord.js";
+import { MessageContextMenuInteraction, MessageEmbed } from "discord.js";
 import { setMode } from "./exports/mode";
 import { logData } from "./exports/daily_data";
 import * as profileInfo from "./exports/profile_info";
@@ -11,7 +11,7 @@ import login from "./exports/login";
 
 //Commands
 client.on("interactionCreate", async (interaction) => {
-	if (interaction.isCommand()) {
+	if (interaction.isCommand() || interaction.isMessageContextMenu()) {
 		const publicCommands = commands.publicCommands[interaction.commandName];
 		const developerCommands = commands.developerCommands[interaction.commandName];
 
