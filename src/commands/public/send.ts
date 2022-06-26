@@ -3,6 +3,7 @@ import { commandHelp, CustomCommand } from "../../exports/types";
 import * as message from "./send/message";
 import * as poll from "./send/poll";
 import * as giveaway from "./send/giveaway";
+import { client } from "../../exports/client";
 
 let send: CustomCommand = {
 	data: {
@@ -52,34 +53,34 @@ let send: CustomCommand = {
 						required: true,
 					},
 					{
-						name: "live-results",
-						description: "Should users be able to see the total number of votes during the poll?",
-						type: "BOOLEAN",
-						required: true,
-					},
-					{
 						name: "option-1",
-						description: "What should the first option be? (≤ 80 characters)",
+						description: "What should the first option be? (≤ 100 characters)",
 						type: 3,
 						required: true,
 
 					},
 					{
 						name: "option-2",
-						description: "What should the second option be? (≤ 80 characters)",
+						description: "What should the second option be? (≤ 100 characters)",
 						type: 3,
 						required: true,
 					},
 					{
 						name: "option-3",
-						description: "What should the third option be? (≤ 80 characters)",
+						description: "What should the third option be? (≤ 100 characters)",
 						type: 3,
 						required: false,
 					},
 					{
 						name: "option-4",
-						description: "What should the fourth option be? (≤ 80 characters)",
+						description: "What should the fourth option be? (≤ 100 characters)",
 						type: 3,
+						required: false,
+					},
+					{
+						name: "live-results",
+						description: "Should users be able to see the total number of votes during the poll? (Defaults to True)",
+						type: "BOOLEAN",
 						required: false,
 					},
 					{
@@ -103,7 +104,7 @@ let send: CustomCommand = {
 					},
 					{
 						name: "number-of-winners",
-						description: "How many users should win the poll? (≤ 100 characters)",
+						description: "How many users should win the poll? (≤ 100)",
 						type: "INTEGER",
 						minValue: 1,
 						maxValue: 100,
@@ -139,12 +140,19 @@ let send: CustomCommand = {
 		}
 	},
 
+	async globalMessageInteractionnExecute(interaction) {
+		const [command, messageId, data] = (interaction.customId).split("::");
+		if (data == "giveawayDelete") {
+			giveaway.deletion(interaction);
+		}
+	},
+
 	async execute(interaction) {
 		if (!interaction.channel) {
 			await interaction.reply({
 				embeds: [
 					new MessageEmbed()
-						.setTitle("This command can only be used in servers!")
+						.setTitle("This Command can Only be Used in Servers")
 						.setDescription("")
 						.setColor("#ff6c08")
 				],

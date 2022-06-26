@@ -7,6 +7,7 @@ import { MessageEmbed } from "discord.js";
 import { setMode } from "./exports/mode";
 import { logData } from "./exports/daily_data";
 import * as profileInfo from "./exports/profile_info";
+import login from "./exports/login";
 
 //Commands
 client.on("interactionCreate", async (interaction) => {
@@ -28,10 +29,10 @@ client.on("interactionCreate", async (interaction) => {
 			}
 		}
 	} else if (interaction.isModalSubmit()) {
-		const publicCommands = commands.publicCommands[(interaction.customId).substring(0, (interaction.customId).indexOf(':'))];
-		const developerCommands = commands.developerCommands[(interaction.customId).substring(0, (interaction.customId).indexOf(':'))];
+		const publicCommands = commands.publicCommands[(interaction.customId).substring(0, (interaction.customId).indexOf(":"))];
+		const developerCommands = commands.developerCommands[(interaction.customId).substring(0, (interaction.customId).indexOf(":"))];
 
-		if (publicCommands && publicCommands.data.name == ((interaction.customId).substring(0, (interaction.customId).indexOf(':')))) {
+		if (publicCommands && publicCommands.data.name == ((interaction.customId).substring(0, (interaction.customId).indexOf(":")))) {
 			try {
 				await publicCommands.modalExecute(interaction);
 			} catch (error) {
@@ -45,20 +46,20 @@ client.on("interactionCreate", async (interaction) => {
 			}
 		}
 	} else if (interaction.isButton() || interaction.isSelectMenu()) {
-		const publicCommands = commands.publicCommands[(interaction.customId).substring(0, (interaction.customId).indexOf(':'))];
-		const developerCommands = commands.developerCommands[(interaction.customId).substring(0, (interaction.customId).indexOf(':'))];
+		const publicCommands = commands.publicCommands[(interaction.customId).substring(0, (interaction.customId).indexOf(":"))];
+		const developerCommands = commands.developerCommands[(interaction.customId).substring(0, (interaction.customId).indexOf(":"))];
 
-		if (publicCommands && publicCommands.data.name == ((interaction.customId).substring(0, (interaction.customId).indexOf(':')))) {
+		if (publicCommands && publicCommands.data.name == ((interaction.customId).substring(0, (interaction.customId).indexOf(":")))) {
 			try {
-				if (!publicCommands.globalButtonExecute) return;
-				await publicCommands.globalButtonExecute(interaction);
+				if (!publicCommands.globalMessageInteractionnExecute) return;
+				await publicCommands.globalMessageInteractionnExecute(interaction);
 			} catch (error) {
 				await logMessage(error, "index (button response)");
 			}
-		} else if (developerCommands && developerCommands.data.name == ((interaction.customId).substring(0, (interaction.customId).indexOf(':')))) {
+		} else if (developerCommands && developerCommands.data.name == ((interaction.customId).substring(0, (interaction.customId).indexOf(":")))) {
 			try {
-				if (!developerCommands.globalButtonExecute) return;
-				await developerCommands.globalButtonExecute(interaction);
+				if (!developerCommands.globalMessageInteractionnExecute) return;
+				await developerCommands.globalMessageInteractionnExecute(interaction);
 			} catch (error) {
 				await logMessage(error, "index (global button response) & dev command");
 			}
@@ -67,7 +68,7 @@ client.on("interactionCreate", async (interaction) => {
 });
 
 //On login
-client.once('ready', () => {
+client.once("ready", () => {
 
 	//Run functions on start
 	for (let i = 0; i < Object.keys(commands.publicCommands).length; i++) {
@@ -84,22 +85,6 @@ client.once('ready', () => {
 	//Start daily logging in 24 hours
 	setTimeout(logData, 86400000);
 
-	//Log login
-	if (client.application.id == "942083941307912193") {
-		(client.channels.cache.find((channel) => (channel as any).id === process.env.LOGGING_CHANNEL) as any).send({
-			content: "@everyone",
-			embeds: [
-				new MessageEmbed()
-					.setColor("#389af0")
-					.setTitle("Bot Online!")
-					.setDescription("Online <t:" + Math.floor(client.readyAt.getTime() / 1000) + ":R>.")
-			],
-		});
-	} else {
-		console.log("Bot online!");
-	}
-
-
 	//Creates commands in testing guild
 	const guild = client.guilds.cache.get(process.env.SLASH_COMMAND_TESTING_GUILD);
 	if (guild) {
@@ -115,4 +100,4 @@ client.once('ready', () => {
 });
 
 //Login
-client.login(process.env.DISCORD_AUTH);
+login(process.env.DISCORD_AUTH);

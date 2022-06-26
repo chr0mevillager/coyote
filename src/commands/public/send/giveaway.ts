@@ -1,4 +1,5 @@
 import {
+	Message,
 	MessageActionRow,
 	MessageButton,
 	MessageEmbed,
@@ -63,16 +64,45 @@ let giveawayData = {};
 const responseMessage = new MessageEmbed()
 	.setColor("#3aef3a")
 	.setTitle("Entered Giveaway")
-	.setDescription("Your entry has been saved.\n\nRemember, you can enter once.")
-	.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/giveaway.png?raw=true")
+	.setDescription("```Your entry has been saved.``````Remember, you can enter once.```")
 
 const deniedResponseMessage = new MessageEmbed()
 	.setColor("#ff6c08")
 	.setTitle("You can Only Enter a Giveaway Once")
-	.setDescription("Your entry has already been saved.")
-	.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/giveaway.png?raw=true")
+	.setDescription("```Your entry has already been saved.```")
 
+const deleteButtonRowDisabled = new MessageActionRow()
+	.addComponents(
+		new MessageButton()
+			.setCustomId("send::giveawayDelete")
+			.setLabel("Delete Message 🗑")
+			.setStyle("DANGER")
+			.setDisabled(true)
+	)
 
+const deleteButtonRow = (messageID: string) => new MessageActionRow()
+	.addComponents(
+		new MessageButton()
+			.setCustomId("send::" + messageID + "::giveawayDelete")
+			.setLabel("Delete Message 🗑")
+			.setStyle("DANGER")
+	)
+
+export async function deletion(interaction) {
+	const [command, messageId, data] = (interaction.customId).split("::");
+	const user = client.users.fetch(interaction.user);
+	try {
+		await interaction.deferUpdate();
+		(await user).dmChannel.messages.fetch(messageId).then(message => message.delete());
+	} catch {
+		try {
+			const channel = (await user).createDM();
+			(await channel).messages.fetch(messageId).then(message => message.delete());
+		} catch {
+
+		}
+	}
+}
 
 export async function interaction(interaction) {
 	try {
@@ -123,13 +153,13 @@ export async function interaction(interaction) {
 			giveaway = (results: string) => new MessageEmbed()
 				.setColor("#2f3136")
 				.setTitle(item + " Giveaway")
-				.setDescription("```" + winnerNumber + " winners```\n" + results + "🕑  Closes <t:" + timeToClose + ":R>")
+				.setDescription("🕑  Closes <t:" + timeToClose + ":R>" + "```" + winnerNumber + " winners```\n" + results)
 		} else {
 			giveaway = (results: string) => new MessageEmbed()
 				.setColor("#2f3136")
 				.setTitle(item + " Giveaway")
-				.setDescription("```" + winnerNumber + " winners```\n" + results + "🕑  Closes <t:" + timeToClose + ":R>")
-				.setFooter({ text: "Giveaway made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+				.setDescription("🕑  Closes <t:" + timeToClose + ":R>" + "```" + winnerNumber + " winners```\n" + results)
+				.setFooter({ text: "Giveaway made by: " + (interaction.user.username).slice(0, 250), iconURL: interaction.user.avatarURL() })
 		}
 
 		if (interaction.options.getMentionable("ping-group")) {
@@ -151,6 +181,8 @@ export async function interaction(interaction) {
 					.setStyle("PARAGRAPH")
 					.setPlaceholder("Please provide:\n\n" + input)
 					.setRequired(true)
+					.setMinLength(1)
+					.setMaxLength(300)
 			);
 		const modal = (uuid) => new Modal()
 			.setTitle("Giveaway Details")
@@ -158,6 +190,12 @@ export async function interaction(interaction) {
 			.setComponents(inputModal)
 
 		//Send Preview ---
+
+		//Check for winner number
+		if (winnerNumber > 20 && results != "") {
+
+		}
+
 		if (ping == "") {
 			await interaction.reply({
 				embeds: [questionEmbeds.question(mode.image, inputWarning + mode.description), giveaway(results)],
@@ -174,7 +212,7 @@ export async function interaction(interaction) {
 		}
 
 		//Start Collector 1 ---
-		let collector1 = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::send` || i.customId === `${uuid}::cancel`, time: 60000 });
+		let collector1 = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::send` || i.customId === `${uuid}::cancel`, time: 60000, max: 1 });
 		collector1.on("collect", async (i) => {
 			//Send
 			if (i.customId === uuid + "::send") {
@@ -249,8 +287,8 @@ export async function interaction(interaction) {
 							new MessageEmbed()
 								.setColor("#2f3136")
 								.setTitle(item + " Giveaway")
-								.setDescription("```" + winnerNumber + " winners```\n" + results + "🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>")
-								.setFooter({ text: "Giveaway made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+								.setDescription("🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>" + "```" + winnerNumber + " winners```\n" + results)
+								.setFooter({ text: "Giveaway made by: " + (interaction.user.username).slice(0, 250), iconURL: interaction.user.avatarURL() })
 						],
 						components: [
 							buttons.buttonRowDisabled(uuid),
@@ -264,8 +302,8 @@ export async function interaction(interaction) {
 							new MessageEmbed()
 								.setColor("#2f3136")
 								.setTitle(item + " Giveaway")
-								.setDescription("```" + winnerNumber + " winners```\n" + results + "🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>")
-								.setFooter({ text: "Giveaway made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+								.setDescription("🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>" + "```" + winnerNumber + " winners```\n" + results)
+								.setFooter({ text: "Giveaway made by: " + (interaction.user.username).slice(0, 250), iconURL: interaction.user.avatarURL() })
 						],
 						components: [
 							buttons.buttonRowDisabled(uuid),
@@ -284,8 +322,8 @@ export async function interaction(interaction) {
 						new MessageEmbed()
 							.setColor("#2f3136")
 							.setTitle(item + " Giveaway")
-							.setDescription("```" + winnerNumber + " winners```\n" + results + "🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>")
-							.setFooter({ text: "Giveaway made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+							.setDescription("🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>" + "```" + winnerNumber + " winners```\n" + results)
+							.setFooter({ text: "Giveaway made by: " + (interaction.user.username).slice(0, 250), iconURL: interaction.user.avatarURL() })
 					],
 					components: [
 						buttons.buttonRowDisabled(uuid),
@@ -299,8 +337,8 @@ export async function interaction(interaction) {
 						new MessageEmbed()
 							.setColor("#2f3136")
 							.setTitle(item + " Giveaway")
-							.setDescription("```" + winnerNumber + " winners```\n" + results + "🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>")
-							.setFooter({ text: "Giveaway made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+							.setDescription("🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>" + "```" + winnerNumber + " winners```\n" + results)
+							.setFooter({ text: "Giveaway made by: " + (interaction.user.username).slice(0, 250), iconURL: interaction.user.avatarURL() })
 					],
 					components: [
 						buttons.buttonRowDisabled(uuid),
@@ -311,7 +349,7 @@ export async function interaction(interaction) {
 		async function startGiveaway() {
 
 			//Collector 2 ---
-			let collector2 = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::enter`, time: 86400000 /*0000*/ });
+			let collector2 = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::enter`, time: 8640 /*0000*/ });
 			collector2.on("collect", async (i) => {
 
 				if (giveawayOver) return;
@@ -359,8 +397,8 @@ export async function interaction(interaction) {
 							new MessageEmbed()
 								.setColor("#2f3136")
 								.setTitle(item + " Giveaway")
-								.setDescription("```" + winnerNumber + " winners```\n" + results + "🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>")
-								.setFooter({ text: "Giveaway made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+								.setDescription("🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>" + "```" + winnerNumber + " winners```\n" + results)
+								.setFooter({ text: "Giveaway made by: " + (interaction.user.username).slice(0, 250), iconURL: interaction.user.avatarURL() })
 
 						],
 						components: [],
@@ -391,20 +429,29 @@ export async function interaction(interaction) {
 						.setTitle("Your " + item + " Giveaway Has Ended!")
 						.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/giveaway.png?raw=true")
 						.setFooter({
-							text: "Note:\nOn non-mobile devices, the winners above may not be properly displayed.",
+							text: "Tip:\nIf users provided sensitive information, please delete this information after you are done with it.",
 						})
 
 					for (let i = 0; i < formattedWinners.length; i++) {
 						dm.addField(
-							"<@" + winners[i] + ">",
-							(giveawayData[uuid].data[winners[i]] + "\u200b"),
-							true)
+							"Winner #" + (i + 1),
+							"<@" + winners[i] + ">" + (giveawayData[uuid].data[winners[i]] + "\u200b"),
+							true,
+						)
 					}
 					try {
 						await interaction.user.send({
 							embeds: [dm],
-						});
-					} catch { }
+							components: [deleteButtonRowDisabled],
+						}).then(message =>
+							message.edit({
+								embeds: [dm],
+								components: [deleteButtonRow(message.id)]
+							}))
+
+					} catch {
+
+					}
 
 				}
 
@@ -420,7 +467,7 @@ export async function modalInteraction(interaction) {
 	try {
 		const [command, id, data] = (interaction.customId).split("::");
 
-		giveawayData[id].data[interaction.user.id] = interaction.fields.getTextInputValue("text");
+		giveawayData[id].data[interaction.user.id] = "```" + interaction.fields.getTextInputValue("text") + "```";
 
 		(giveawayData[id].entries).push(interaction.user.id);
 

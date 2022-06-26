@@ -2,6 +2,7 @@ import { MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal
 import { commandHelp, CustomCommand } from "../../exports/types";
 import * as data from "../../exports/data";
 import { publicCommands } from "../index";
+import logMessage from "../../exports/error";
 
 let moduleNum;
 let row1;
@@ -56,42 +57,46 @@ let help: CustomCommand = {
 		})
 	},
 
-	async globalButtonExecute(interaction) {
-		const [command, data,] = (interaction.customId).split("::");
-		if (data == "module" && interaction.isSelectMenu()) {
-			interaction.reply({
-				embeds: findModule(interaction.values[0]),
-				ephemeral: true,
-			})
-		} else if (data == "search") {
-			interaction.showModal(modal);
-		} else if (data == "quickStart") {
-			interaction.reply({
-				embeds: [
-					new MessageEmbed()
-						.setColor("#389af0")
-						.setTitle("Quick Start Guide")
-						.setDescription("Get all of the information you need to start out with the Embeds Bot!")
-						.addFields([
-							{
-								name: "📨\u2800Messages",
-								value: "```js\nQuickly send a fancy message by typing in \"/send command\".``````Then, type in a title and description. Hit enter, and then hit the send button.\n\u200b```",
-								inline: true,
-							},
-							{
-								name: "📊\u2800Polls",
-								value: "```js\nEasily send a simple poll by typing in \"/send poll\".``````Then, type in a question and 2-4 answers. Hit enter, and then hit the send button.\n\u200b```",
-								inline: true,
-							},
-							{
-								name: "🎁\u2800Giveaways",
-								value: "```js\nEffectively send a robust giveaway by typing in \"/send giveaway\".``````Then, type in an item and how many winners there should be. Hit enter, and then hit the send button.```",
-								inline: true,
-							},
-						])
-				],
-				ephemeral: true,
-			})
+	async globalMessageInteractionnExecute(interaction) {
+		try {
+			const [command, data,] = (interaction.customId).split("::");
+			if (data == "module" && interaction.isSelectMenu()) {
+				interaction.reply({
+					embeds: findModule(interaction.values[0]),
+					ephemeral: true,
+				})
+			} else if (data == "search") {
+				interaction.showModal(modal);
+			} else if (data == "quickStart") {
+				interaction.reply({
+					embeds: [
+						new MessageEmbed()
+							.setColor("#389af0")
+							.setTitle("Quick-Start Guide")
+							.setDescription("Get all of the information you need to start out with the Embeds Bot!")
+							.addFields([
+								{
+									name: "📨\u2800Messages",
+									value: "```js\nQuickly send a fancy message by typing \"/send command\".``````Then, type in a title and description. Hit enter, and then hit the send button.\n\u200b```",
+									inline: true,
+								},
+								{
+									name: "📊\u2800Polls",
+									value: "```js\nEasily send a simple poll by typing \"/send poll\".``````Then, type in a question and 2-4 answers. Hit enter, and then hit the send button.\n\u200b```",
+									inline: true,
+								},
+								{
+									name: "🎁\u2800Giveaways",
+									value: "```js\nEffectively send a robust giveaway by typing \"/send giveaway\".``````Then, type in an item and how many winners there should be. Hit enter, and then hit the send button.```",
+									inline: true,
+								},
+							])
+					],
+					ephemeral: true,
+				})
+			}
+		} catch (error) {
+			logMessage(error, "/help button", interaction);
 		}
 	},
 
@@ -148,18 +153,22 @@ let help: CustomCommand = {
 	},
 
 	async execute(interaction) {
-		data.commandUsed("help");
+		try {
+			data.commandUsed("help");
 
-		await interaction.reply({
-			embeds: [
-				new MessageEmbed()
-					.setColor("#389af0")
-					.setTitle("Welcome to the help center!")
-					.setDescription("Find what you are looking for by looking through the modules or searching for a command!")
-			],
-			ephemeral: true,
-			components: [row1, row2],
-		});
+			await interaction.reply({
+				embeds: [
+					new MessageEmbed()
+						.setColor("#389af0")
+						.setTitle("Welcome to the help center!")
+						.setDescription("Find what you are looking for by looking through the modules or searching for a command!")
+				],
+				ephemeral: true,
+				components: [row1, row2],
+			});
+		} catch (error) {
+			logMessage(error, "/help command", interaction);
+		}
 	},
 };
 
@@ -187,7 +196,7 @@ function findCommand(search: string) {
 	results.push(
 		new MessageEmbed()
 			.setColor("#389af0")
-			.setTitle("Here are your results:")
+			.setTitle("Here are your Results")
 			.setDescription("")
 	)
 	commands.forEach(command => {
@@ -207,7 +216,7 @@ function findCommand(search: string) {
 		return [
 			new MessageEmbed()
 				.setColor("#ff6c08")
-				.setTitle("No results were found")
+				.setTitle("No Results were Found")
 				.setDescription("")
 		]
 	}

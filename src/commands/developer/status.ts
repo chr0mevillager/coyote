@@ -6,11 +6,11 @@ import { CustomCommand } from "../../exports/types";
 
 let set: CustomCommand = {
 	data: {
-		name: "set",
+		name: "status",
 		description: "Set the status of the bot.",
 		options: [
 			{
-				name: "rotating_status",
+				name: "set_rotating",
 				description: "Should the status of the bot rotate?",
 				type: 1,
 				options: [
@@ -30,7 +30,7 @@ let set: CustomCommand = {
 				],
 			},
 			{
-				name: "status",
+				name: "set",
 				description: "Set the bot's status!",
 				type: 1,
 				options: [
@@ -95,7 +95,7 @@ let set: CustomCommand = {
 
 	async execute(interaction) {
 		try {
-			if (interaction.options.getSubcommand() === "status") {
+			if (interaction.options.getSubcommand() === "set") {
 				if (interaction.options.getString("status")) client.user.setStatus(interaction.options.getString("status") as PresenceStatusData);
 				if (interaction.options.getString("activity") && interaction.options.getString("action")) client.user.setActivity(interaction.options.getString("action").toString(), { type: interaction.options.getString("activity") as any });
 				await interaction.reply({
@@ -108,8 +108,7 @@ let set: CustomCommand = {
 					ephemeral: true,
 				});
 				return;
-			} else if (interaction.options.getSubcommand() === "rotating_status") {
-
+			} else if (interaction.options.getSubcommand() === "set_rotating") {
 				activity.setRotateStatus(true);
 				if (interaction.options.getInteger("index")) await activity.setNextStatus(interaction.options.getInteger("index"));
 				await activity.setRotateStatus(interaction.options.getBoolean("rotate"));

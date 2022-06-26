@@ -1,6 +1,6 @@
 import { CustomCommand } from "../exports/types";
 
-import set from "./developer/set";
+import status from "./developer/status";
 import bot from "./developer/bot";
 import data from "./developer/data";
 import mode from "./developer/mode";
@@ -11,7 +11,7 @@ import send from "./public/send";
 
 /**A list of developer slash commands*/
 export const developerCommands: Record<string, CustomCommand> = {
-	set,
+	status,
 	bot,
 	data,
 	mode,

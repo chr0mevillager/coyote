@@ -2,6 +2,7 @@ import { MessageEmbed } from "discord.js";
 import logMessage from "../../exports/error";
 import { client } from "../../exports/client";
 import { CustomCommand } from "../../exports/types";
+import login from "../../exports/login";
 
 let bot: CustomCommand = {
 	data: {
@@ -34,6 +35,25 @@ let bot: CustomCommand = {
 					}
 				]
 			},
+			{
+				name: "logout_login",
+				description: "Would you like to restart the bot? (Script continues to run, will pick up as if nothing happened)",
+				type: 1,
+				options: [
+					{
+						name: "offline_duration",
+						description: "How long should I go offline?",
+						type: "INTEGER",
+						required: true,
+					},
+					{
+						name: "confirm",
+						description: "Are you sure you want to logout the bot?",
+						type: 5,
+						required: true,
+					},
+				]
+			},
 		]
 	},
 
@@ -53,9 +73,12 @@ let bot: CustomCommand = {
 				await process.exit(0);
 			} else if (interaction.options.getSubcommand() == "logout") {
 				await client.destroy();
+			} else if (interaction.options.getSubcommand() == "logout_login") {
+				await client.destroy();
+				await setTimeout(login, 3600000 /* 0000 */ * (interaction.options.getInteger("offline_duration") as number), process.env.DISCORD_AUTH);
 			}
 		} catch (error) {
-			logMessage(error, "set developer command", interaction);
+			logMessage(error, "/bot developer command", interaction);
 		}
 	},
 };

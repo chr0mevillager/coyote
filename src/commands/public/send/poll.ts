@@ -34,7 +34,7 @@ export const help: commandHelp = {
 	helpMessage: new MessageEmbed()
 		.setColor("#2f3136")
 		.setTitle("Poll")
-		.setDescription("Send a simple poll! Polls are open for 1 day.\n\n```/send poll < Question > < Option 1 > < Option 2 > [ Option 3 ] [ Option 4 ] [ Ping Group ] < Live Results >```")
+		.setDescription("Send a simple poll! Polls are open for 1 day.\n\n```/send poll < Question > < Option 1 > < Option 2 > [ Option 3 ] [ Option 4 ] [ Ping Group ] [ Live Results ]```")
 		.addFields(
 			{
 				name: "Question",
@@ -43,22 +43,22 @@ export const help: commandHelp = {
 			},
 			{
 				name: "Question 1",
-				value: "```Type in a response to your question that is less than 80 characters.```",
+				value: "```Type in a response to your question that is less than 100 characters.```",
 				inline: true,
 			},
 			{
 				name: "Question 2",
-				value: "```Type in a response to your question that is less than 80 characters.```",
+				value: "```Type in a response to your question that is less than 100 characters.```",
 				inline: true,
 			},
 			{
 				name: "Question 3",
-				value: "```Type in a response to your question that is less than 80 characters.```",
+				value: "```Type in a response to your question that is less than 100 characters.```",
 				inline: true,
 			},
 			{
 				name: "Question 4",
-				value: "```Type in a response to your question that is less than 80 characters.\n\n\n\u200b```",
+				value: "```Type in a response to your question that is less than 100 characters.\n\n\n\u200b```",
 				inline: true,
 			},
 			{
@@ -81,13 +81,16 @@ export async function interaction(interaction) {
 		//Inputs ---
 		let question: string = interaction.options.getString("question");
 		let results: string = "";
-		let visibleResults = interaction.options.getBoolean("live-results");
+		let visibleResults = true;
 		let ping: string = "";
 
 		if (question.length > 256) question = question.slice(0, 256);
 		try {
 			question = JSON.parse('"' + question.replace(/"/g, '\\"') + '"');
 		} catch { }
+		if (interaction.options.getBoolean("live-results") == false) {
+			visibleResults = false;
+		}
 
 		//Poll Results
 		let pollResponses1 = 0;
@@ -106,13 +109,13 @@ export async function interaction(interaction) {
 		const responseMessage = new MessageEmbed()
 			.setColor("#3aef3a")
 			.setTitle("Entered Poll")
-			.setDescription("Your poll results have been saved.\n\nRemember, you can only vote once.")
+			.setDescription("```Your input has been saved.``````Remember, you can only vote once.```")
 			.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/poll.png?raw=true")
 
 		const deniedResponseMessage = new MessageEmbed()
 			.setColor("#ff6c08")
 			.setTitle("You can Only Enter a Poll Once")
-			.setDescription("Your input has already been saved.")
+			.setDescription("```Your input has already been saved.```")
 			.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/poll.png?raw=true")
 
 		let previewResults;
@@ -128,143 +131,82 @@ export async function interaction(interaction) {
 		let pollButton3;
 		let pollButton4;
 
-		pollButton1 = JSON.parse('"' + pollButton1.replace(/"/g, '\\"') + '"');
-		pollButton2 = JSON.parse('"' + pollButton2.replace(/"/g, '\\"') + '"');
+		try {
+			pollButton1 = JSON.parse('"' + pollButton1.replace(/"/g, '\\"') + '"');
+			pollButton2 = JSON.parse('"' + pollButton2.replace(/"/g, '\\"') + '"');
+		} catch { }
 
-		if (pollButton1.length > 80) pollButton1 = pollButton1.slice(0, 80);
-		if (pollButton2.length > 80) pollButton2 = pollButton2.slice(0, 80);
+		if (pollButton1.length > 100) pollButton1 = pollButton1.slice(0, 100);
+		if (pollButton2.length > 100) pollButton2 = pollButton2.slice(0, 100);
 
-		let pollButtonRow3;
 		let button3exists = false;
-		let pollButtonRow4;
 		let button4exists = false;
 
-		let dropdown = (uuid: string) => new MessageActionRow()
-			.addComponents(
-				new MessageSelectMenu()
-					.setCustomId(uuid + "::vote")
-					.setPlaceholder("Select Your Vote")
-					.addOptions([
-						{
-							label: (interaction.options.getString("option-1")),
-							description: "",
-							value: "option-1",
-						},
-						{
-							label: (interaction.options.getString("option-2")),
-							description: "",
-							value: "option-2",
-						},
-					])
-			);
+		let dropdown = new MessageSelectMenu()
+			.setCustomId(uuid + "::vote")
+			.setPlaceholder("Select Your Vote")
+			.addOptions(
+				{
+					label: pollButton1,
+					description: "",
+					value: "option-1",
+				},
+				{
+					label: pollButton2,
+					description: "",
+					value: "option-2",
+				},
+			)
 
 		if ((interaction.options.getString("option-3")) != null && (interaction.options.getString("option-3")) != undefined) {
 			button3exists = true;
 			pollButton3 = interaction.options.getString("option-3");
-			if (pollButton3.length > 80) pollButton3 = pollButton3.slice(0, 80);
-			pollButton3 = JSON.parse('"' + pollButton3.replace(/"/g, '\\"') + '"');
-			dropdown = (uuid: string) => new MessageActionRow()
-				.addComponents(
-					new MessageSelectMenu()
-						.setCustomId(uuid + "::vote")
-						.setPlaceholder("Select Your Vote")
-						.addOptions([
-							{
-								label: (interaction.options.getString("option-1")),
-								description: "",
-								value: "option-1",
-							},
-							{
-								label: (interaction.options.getString("option-2")),
-								description: "",
-								value: "option-2",
-							},
-							{
-								label: (interaction.options.getString("option-3")),
-								description: "",
-								value: "option-3",
-							},
-						])
-				);
-			if ((interaction.options.getString("option-4")) != null && (interaction.options.getString("option-4")) != undefined) {
-				button4exists = true;
-				pollButton4 = interaction.options.getString("option-4");
-				if (pollButton4.length > 80) pollButton4 = pollButton4.slice(0, 80);
-				pollButton4 = JSON.parse('"' + pollButton4.replace(/"/g, '\\"') + '"');
-				dropdown = (uuid: string) => new MessageActionRow()
-					.addComponents(
-						new MessageSelectMenu()
-							.setCustomId(uuid + "::vote")
-							.setPlaceholder("Select Your Vote")
-							.addOptions([
-								{
-									label: (interaction.options.getString("option-1")),
-									description: "",
-									value: "option-1",
-								},
-								{
-									label: (interaction.options.getString("option-2")),
-									description: "",
-									value: "option-2",
-								},
-								{
-									label: (interaction.options.getString("option-3")),
-									description: "",
-									value: "option-3",
-								},
-								{
-									label: (interaction.options.getString("option-4")),
-									description: "",
-									value: "option-4",
-								},
-							])
-					);
-			}
-		} else if ((interaction.options.getString("option-4")) != null && (interaction.options.getString("option-4")) != undefined && !button3exists) {
+			if (pollButton3.length > 100) pollButton3 = pollButton3.slice(0, 100);
+			try {
+				pollButton3 = JSON.parse('"' + pollButton3.replace(/"/g, '\\"') + '"');
+			} catch { }
+			dropdown.addOptions(
+				{
+					label: pollButton3,
+					description: "",
+					value: "option-3",
+				},
+			);
+		}
+		if ((interaction.options.getString("option-4")) != null && (interaction.options.getString("option-4")) != undefined) {
 			button4exists = true;
 			pollButton4 = interaction.options.getString("option-4");
-			if (pollButton4.length > 80) pollButton4 = pollButton4.slice(0, 80);
-			pollButton4 = JSON.parse('"' + pollButton4.replace(/"/g, '\\"') + '"');
-			dropdown = (uuid: string) => new MessageActionRow()
-				.addComponents(
-					new MessageSelectMenu()
-						.setCustomId(uuid + "::vote")
-						.setPlaceholder("Select Your Vote")
-						.addOptions([
-							{
-								label: (interaction.options.getString("option-1")),
-								description: "",
-								value: "option-1",
-							},
-							{
-								label: (interaction.options.getString("option-2")),
-								description: "",
-								value: "option-2",
-							},
-							{
-								label: (interaction.options.getString("option-4")),
-								description: "",
-								value: "option-4",
-							},
-						])
-				);
+			if (pollButton4.length > 100) pollButton4 = pollButton4.slice(0, 100);
+			try {
+				pollButton4 = JSON.parse('"' + pollButton4.replace(/"/g, '\\"') + '"');
+			} catch { }
+			dropdown.addOptions(
+				{
+					label: pollButton4,
+					description: "",
+					value: "option-4",
+				},
+			);
 		}
 
-		const pollButtons = [dropdown(uuid)];
+		let dropdownRow = (uuid: string) => new MessageActionRow()
+			.addComponents(dropdown);
+
+		const pollButtons = [dropdownRow(uuid)];
 
 		//Embed
 		let poll;
 		if (interaction.user.id == process.env.OWNER_ID) {
-			poll = (votingResults: string) => new MessageEmbed()
+			poll = (votingStatus: string) => new MessageEmbed()
 				.setColor("#2f3136")
 				.setTitle(question)
-				.setDescription(votingResults + "\n" + "🕑  Closes <t:" + timeToClose + ":R>")
+				.setDescription("🕑  Closes <t:" + timeToClose + ":R>" + votingStatus)
 		} else {
-			poll = (votingResults: string) => new MessageEmbed()
+			poll = (votingStatus: string) => new MessageEmbed()
 				.setColor("#2f3136")
 				.setTitle(question)
-				.setDescription(votingResults + "\n" + "🕑  Closes <t:" + timeToClose + ":R>")
-				.setFooter({ text: "Poll made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+				.setDescription("🕑  Closes <t:" + timeToClose + ":R>" + votingStatus)
+				.setFooter({ text: "Poll made by: " + (interaction.user.username).slice(0, 250), iconURL: interaction.user.avatarURL() })
 		}
 
 		if (interaction.options.getMentionable("ping-group")) {
@@ -294,11 +236,12 @@ export async function interaction(interaction) {
 		}
 
 		//Start Collector 1 --
-		let collector1 = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::send` || i.customId === `${uuid}::cancel`, time: 60000 });
+		let collector1 = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::send` || i.customId === `${uuid}::cancel`, time: 60000, max: 1 });
 		collector1.on("collect", async (i) => {
 
 			//Send
 			if (i.customId === uuid + "::send") {
+				updateSent = true;
 				data.buttonUsed("poll", "send");
 				sendUpdate(i);
 				//Change Message for Result Visibility
@@ -342,18 +285,19 @@ export async function interaction(interaction) {
 						});
 					}
 					startPoll();
-				} catch {
+				} catch (error) {
 					await interaction.editReply({
 						embeds: [questionEmbeds.invalidPerms, poll(previewResults)],
 						components: [
 							buttons.buttonRowDisabled(uuid),
 						],
 					});
+					console.error(error);
 				}
-				updateSent = true;
 
 				//Cancel
 			} else if (i.customId === uuid + "::cancel") {
+				updateSent = true;
 				data.buttonUsed("poll", "cancel");
 				sendUpdate(i);
 				if (ping == "") {
@@ -363,8 +307,8 @@ export async function interaction(interaction) {
 							new MessageEmbed()
 								.setColor("#2f3136")
 								.setTitle(question)
-								.setDescription(results + "\n" + "🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>")
-								.setFooter({ text: "Poll made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+								.setDescription("🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>" + results)
+								.setFooter({ text: "Poll made by: " + (interaction.user.username).slice(0, 250), iconURL: interaction.user.avatarURL() })
 						],
 						components: [
 							buttons.buttonRowDisabled(uuid),
@@ -378,8 +322,8 @@ export async function interaction(interaction) {
 							new MessageEmbed()
 								.setColor("#2f3136")
 								.setTitle(question)
-								.setDescription(results + "\n" + "🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>")
-								.setFooter({ text: "Poll made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+								.setDescription("🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>" + results)
+								.setFooter({ text: "Poll made by: " + (interaction.user.username).slice(0, 250), iconURL: interaction.user.avatarURL() })
 						],
 						components: [
 							buttons.buttonRowDisabled(uuid),
@@ -398,8 +342,8 @@ export async function interaction(interaction) {
 						new MessageEmbed()
 							.setColor("#2f3136")
 							.setTitle(question)
-							.setDescription(previewResults + "\n" + "🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>")
-							.setFooter({ text: "Poll made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+							.setDescription("🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>" + previewResults)
+							.setFooter({ text: "Poll made by: " + (interaction.user.username).slice(0, 250), iconURL: interaction.user.avatarURL() })
 					],
 					components: [
 						buttons.buttonRowDisabled(uuid),
@@ -413,8 +357,8 @@ export async function interaction(interaction) {
 						new MessageEmbed()
 							.setColor("#2f3136")
 							.setTitle(question)
-							.setDescription(previewResults + "\n" + "🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>")
-							.setFooter({ text: "Poll made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+							.setDescription("🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>" + previewResults)
+							.setFooter({ text: "Poll made by: " + (interaction.user.username).slice(0, 250), iconURL: interaction.user.avatarURL() })
 					],
 					components: [
 						buttons.buttonRowDisabled(uuid),
@@ -425,7 +369,7 @@ export async function interaction(interaction) {
 
 		async function startPoll() {
 			//Collector 2 --
-			let collector2 = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::vote` || i.customId === `${uuid}::pollButton1` || i.customId === `${uuid}::pollButton2` || i.customId === `${uuid}::pollButton3` || i.customId === `${uuid}::pollButton4` || i.customId === `${uuid}::send` || i.customId === `${uuid}::cancel`, time: 86400000 });
+			let collector2 = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::vote` || i.customId === `${uuid}::send` || i.customId === `${uuid}::cancel`, time: 86400000 /* 0000 */ });
 
 			collector2.on("collect", async (i) => {
 				if (pollOver) return;
@@ -452,30 +396,20 @@ export async function interaction(interaction) {
 						pollResponses4++;
 					}
 					responders.push(i.user.id);
-					if (visibleResults && !pollOver) updateMessage(true);
+					if (visibleResults && !pollOver) updateMessage();
 				}
 			})
 
 			collector2.on("end", async i => {
 				try {
 					pollOver = true;
-					updateMessage(false);
-					await pollMessage.edit({
-						embeds: [
-							new MessageEmbed()
-								.setColor("#2f3136")
-								.setTitle(question)
-								.setDescription(results + "\n" + "🕑  Closed on <t:" + + Math.round(new Date().getTime() / 1000) + ":D>")
-								.setFooter({ text: "Poll made by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
-						],
-						components: [],
-					});
+					await updateMessage();
 				} catch { }
 
 			})
 		}
 
-		async function updateMessage(updateActualMessage: boolean) {
+		async function updateMessage() {
 			let votes1 = " Votes", votes2 = " Votes", votes3 = " Votes", votes4 = " Votes";
 
 			if (pollResponses1 == 1) votes1 = " Vote";
@@ -483,26 +417,51 @@ export async function interaction(interaction) {
 			if (pollResponses3 == 1) votes3 = " Vote";
 			if (pollResponses4 == 1) votes4 = " Vote";
 
+			let updatedPoll = poll("");;
+			let dropdownComponents = pollButtons;
+			if (pollOver) {
+				dropdownComponents = [];
+				updatedPoll = new MessageEmbed()
+					.setColor("#2f3136")
+					.setTitle(question)
+					.setDescription("🕑  Closed on <t:" + + Math.round(new Date().getTime() / 1000) + ":D>")
+					.setFooter({ text: "Poll made by: " + (interaction.user.username).slice(0, 250), iconURL: interaction.user.avatarURL() })
+			}
 
-			results = "```" + pollButton1 + ": \t" + pollResponses1 + votes1 + "\n\n" + pollButton2 + ": \t" + pollResponses2 + votes2
-			if (button3exists) results += "\n\n" + pollButton3 + ": \t" + pollResponses3 + votes3
-			if (button4exists) results += "\n\n" + pollButton4 + ": \t" + pollResponses4 + votes4
-			results += "```";
+			updatedPoll.addField(
+				pollButton1,
+				"```" + pollResponses1 + votes1 + "```",
+				true,
+			);
+			updatedPoll.addField(
+				pollButton2,
+				"```" + pollResponses2 + votes2 + "```",
+				true,
+			);
+
+			if (button3exists) updatedPoll.addField(
+				pollButton3,
+				"```" + pollResponses3 + votes3 + "```",
+				true,
+			);
+			if (button4exists) updatedPoll.addField(
+				pollButton4,
+				"```" + pollResponses4 + votes4 + "```",
+				true,
+			);
 
 			try {
-				if (updateActualMessage) {
-					if (ping == "") {
-						await pollMessage.edit({
-							embeds: [poll(results)],
-							components: pollButtons
-						})
-					} else {
-						await pollMessage.edit({
-							content: ping,
-							embeds: [poll(results)],
-							components: pollButtons
-						})
-					}
+				if (ping == "") {
+					await pollMessage.edit({
+						embeds: [updatedPoll],
+						components: dropdownComponents,
+					})
+				} else {
+					await pollMessage.edit({
+						content: ping,
+						embeds: [updatedPoll],
+						components: dropdownComponents,
+					})
 				}
 			} catch { }
 		}

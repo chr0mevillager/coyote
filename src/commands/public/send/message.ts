@@ -97,7 +97,7 @@ export async function interaction(interaction) {
 				.setTitle(title)
 				.setDescription(description)
 				.setImage(image)
-				.setFooter({ text: "Sent by: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+				.setFooter({ text: "Sent by: " + (interaction.user.username).slice(0, 250), iconURL: interaction.user.avatarURL() })
 		}
 
 		if (interaction.options.getMentionable("ping-group")) {
@@ -132,11 +132,12 @@ export async function interaction(interaction) {
 
 
 		//Start Collector ---
-		let collector = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::send` || i.customId === `${uuid}::cancel`, time: 60000 });
+		let collector = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::send` || i.customId === `${uuid}::cancel`, time: 60000, max: 1 });
 		collector.on("collect", async (i) => {
 
 			//Send
 			if (i.customId === uuid + "::send") {
+				updateSent = true;
 				data.buttonUsed("message", "send");
 				sendUpdate(i);
 				try {
@@ -161,17 +162,16 @@ export async function interaction(interaction) {
 						components: [buttons.buttonRowDisabled(uuid)],
 					});
 				}
-				updateSent = true;
 
 				//Cancel
 			} else if (i.customId === uuid + "::cancel") {
+				updateSent = true;
 				data.buttonUsed("message", "cancel");
 				sendUpdate(i);
 				await interaction.editReply({
 					embeds: [questionEmbeds.cancel, userMessage],
 					components: [buttons.buttonRowDisabled(uuid)],
 				});
-				updateSent = true;
 			}
 		});
 		//Timed Out ---

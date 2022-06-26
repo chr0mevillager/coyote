@@ -13,7 +13,7 @@ export interface CustomCommand {
 	commandHelp?: Array<commandHelp> | commandHelp;
 	execute(interaction: CommandInteraction<CacheType>): void | Promise<void>;
 	modalExecute?(interaction: ModalSubmitInteraction<CacheType>): void | Promise<void>;
-	globalButtonExecute?(interaction: ButtonInteraction<CacheType> | SelectMenuInteraction<CacheType>): void | Promise<void>;
+	globalMessageInteractionnExecute?(interaction: ButtonInteraction<CacheType> | SelectMenuInteraction<CacheType>): void | Promise<void>;
 	onReadyExecute?(): void | Promise<void>;
 }
 

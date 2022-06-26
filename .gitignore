@@ -5,4 +5,5 @@ node_modules
 yarn-error.log
 .env
 todo.md
+example_command.ts
 dist
