@@ -206,7 +206,7 @@ function findCommand(search: string) {
 			}
 		});
 
-		if (match !== undefined || command.module == search && search && results.length < 10) {
+		if (match !== undefined || command.module.includes(search) || search.includes(command.module) && search && results.length < 10) {
 			results.push(command.helpMessage);
 		}
 	});

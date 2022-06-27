@@ -11,7 +11,7 @@ import login from "./exports/login";
 
 //Commands
 client.on("interactionCreate", async (interaction) => {
-	if (interaction.isCommand() || interaction.isMessageContextMenu()) {
+	if (interaction.isCommand()) {
 		const publicCommands = commands.publicCommands[interaction.commandName];
 		const developerCommands = commands.developerCommands[interaction.commandName];
 
@@ -62,6 +62,23 @@ client.on("interactionCreate", async (interaction) => {
 				await developerCommands.globalMessageInteractionnExecute(interaction);
 			} catch (error) {
 				await logMessage(error, "index (global button response) & dev command");
+			}
+		}
+	} else if (interaction.isMessageContextMenu()) {
+		const publicCommands = commands.publicCommands[interaction.commandName];
+		const developerCommands = commands.developerCommands[interaction.commandName];
+
+		if (publicCommands && publicCommands.data.name == (interaction.commandName)) {
+			try {
+				await publicCommands.contextMenuExecute(interaction);
+			} catch (error) {
+				await logMessage(error, "index (context command)");
+			}
+		} else {
+			try {
+				await developerCommands.contextMenuExecute(interaction);
+			} catch (error) {
+				await logMessage(error, "index & dev command (context command)");
 			}
 		}
 	}
