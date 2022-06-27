@@ -1,4 +1,5 @@
 import { MessageEmbed } from "discord.js";
+import permissions from "./perms";
 
 export const question = (image: string, extraText: string) => new MessageEmbed()
 	.setTitle("")
@@ -26,29 +27,7 @@ export const timedOut = new MessageEmbed()
 	.setColor("#2f3136")
 	.setImage("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/send/timed_out.png?raw=true");
 
-export const invalidPerms = new MessageEmbed()
-	.setTitle("Invalid Permissions")
-	.setDescription("Please make sure I have the correct permissions to:\n\u2800")
-	.addFields(
-		{
-			name: "See this channel properly",
-			value: "`View Channels` Permission"
-		},
-		{
-			name: "Send messages",
-			value: "`Send Messages` Permission"
-		},
-		{
-			name: "Send embeded messages",
-			value: "`Embed Links` Permission"
-		},
-		{
-			name: "Ping all roles",
-			value: "`Mention @everyone, @here, and All Roles` Permission"
-		},
-	)
-	.setColor("#ff6c08")
-	.setImage("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/send/invalid_perms.png?raw=true");
+export const invalidPerms = permissions.message;
 
 export const warning = new MessageEmbed()
 	.setTitle("")
