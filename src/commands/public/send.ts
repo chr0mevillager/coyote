@@ -130,7 +130,13 @@ let send: CustomCommand = {
 	commandHelp: [
 		message.help,
 		poll.help,
-		giveaway.help
+		giveaway.help,
+	],
+
+	commandData: [
+		message.info,
+		poll.info,
+		giveaway.info,
 	],
 
 	async modalExecute(interaction) {

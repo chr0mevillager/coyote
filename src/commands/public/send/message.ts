@@ -7,8 +7,7 @@ import { client } from "../../../exports/client";
 import * as buttons from "../../../exports/send_buttons";
 import * as questionEmbeds from "../../../exports/question_embeds";
 import logMessage from "../../../exports/error";
-import * as data from "../../../exports/data";
-import { commandHelp } from "src/exports/types";
+import { commandData, commandHelp } from "src/exports/types";
 
 export const help: commandHelp = {
 	name: "message",
@@ -53,9 +52,17 @@ export const help: commandHelp = {
 		),
 }
 
+export const info: commandData = {
+	uses: 0,
+	buttons: {
+		send: 0,
+		cancel: 0,
+	},
+}
+
 export async function interaction(interaction) {
 	try {
-		data.commandUsed("message");
+		info.uses++;
 		//Inputs ---
 		let title: string = interaction.options.getString("title");
 		let description = interaction.options.getString("description");
@@ -138,7 +145,7 @@ export async function interaction(interaction) {
 			//Send
 			if (i.customId === uuid + "::send") {
 				updateSent = true;
-				data.buttonUsed("message", "send");
+				info.buttons["send"]++;
 				sendUpdate(i);
 				try {
 					if (ping == "") {
@@ -166,7 +173,7 @@ export async function interaction(interaction) {
 				//Cancel
 			} else if (i.customId === uuid + "::cancel") {
 				updateSent = true;
-				data.buttonUsed("message", "cancel");
+				info.buttons["cancel"]++;
 				sendUpdate(i);
 				await interaction.editReply({
 					embeds: [questionEmbeds.cancel, userMessage],

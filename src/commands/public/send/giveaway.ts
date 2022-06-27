@@ -15,8 +15,7 @@ import sendUpdate from "../../../exports/send_update";
 import * as questionEmbeds from "../../../exports/question_embeds";
 import logMessage from "../../../exports/error";
 import * as mode from "../../../exports/mode";
-import * as data from "../../../exports/data";
-import { commandHelp } from "src/exports/types";
+import { commandData, commandHelp } from "src/exports/types";
 
 export const help: commandHelp = {
 	name: "giveaway",
@@ -57,6 +56,15 @@ export const help: commandHelp = {
 				inline: true,
 			},
 		),
+}
+
+export const info: commandData = {
+	uses: 0,
+	buttons: {
+		send: 0,
+		cancel: 0,
+		entry: 0,
+	},
 }
 
 let giveawayData = {};
@@ -106,7 +114,7 @@ export async function deletion(interaction) {
 
 export async function interaction(interaction) {
 	try {
-		data.commandUsed("giveaway");
+		info.uses++;
 
 		//Inputs ---
 		let item: string = interaction.options.getString("item");
@@ -216,7 +224,7 @@ export async function interaction(interaction) {
 		collector1.on("collect", async (i) => {
 			//Send
 			if (i.customId === uuid + "::send") {
-				data.buttonUsed("giveaway", "send");
+				info.buttons["send"]++;
 				sendUpdate(i);
 
 				giveawayData[uuid] = {
@@ -278,7 +286,7 @@ export async function interaction(interaction) {
 				//Cancel
 			} else if (i.customId === uuid + "::cancel") {
 				updateSent = true;
-				data.buttonUsed("giveaway", "cancel");
+				info.buttons["cancel"]++;
 				sendUpdate(i);
 				if (ping == "") {
 					await interaction.editReply({
@@ -349,7 +357,7 @@ export async function interaction(interaction) {
 		async function startGiveaway() {
 
 			//Collector 2 ---
-			let collector2 = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::enter`, time: 8640 /*0000*/ });
+			let collector2 = interaction.channel.createMessageComponentCollector({ filter: (i) => i.customId === `${uuid}::enter`, time: 86400000 /*0000*/ });
 			collector2.on("collect", async (i) => {
 
 				if (giveawayOver) return;
@@ -361,7 +369,7 @@ export async function interaction(interaction) {
 						});
 						return;
 					}
-					data.buttonUsed("giveaway", "entry");
+					info.buttons["entry"]++;
 					if (input == "") {
 						i.reply({
 							embeds: [responseMessage],

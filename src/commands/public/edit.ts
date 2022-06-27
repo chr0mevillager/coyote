@@ -1,5 +1,6 @@
 import { GuildMember, MessageActionRow, MessageContextMenuInteraction, MessageEmbed, Modal, ModalActionRowComponent, TextInputComponent } from "discord.js";
-import { CustomCommand } from "../../exports/types";
+import { commandData, CustomCommand } from "../../exports/types";
+import logMessage from "../../exports/error";
 
 const inputModalTitle = new MessageActionRow<ModalActionRowComponent>()
 	.addComponents(
@@ -69,92 +70,109 @@ let edit: CustomCommand = {
 			]),
 	},
 
+	commandData: {
+		uses: 0,
+		buttons: {
+			send: 0,
+		}
+	},
+
 	async contextMenuExecute(interaction) {
-		if ((interaction as MessageContextMenuInteraction).targetMessage.author.id == "942083941307912193" || (interaction as MessageContextMenuInteraction).targetMessage.author.id == "968997421726195832") {
-			if (!interaction.channel) {
+		try {
+			(edit.commandData as commandData).uses++;
+			if ((interaction as MessageContextMenuInteraction).targetMessage.author.id == "942083941307912193" || (interaction as MessageContextMenuInteraction).targetMessage.author.id == "968997421726195832") {
+				if (!interaction.channel) {
+					await interaction.reply({
+						embeds: [
+							new MessageEmbed()
+								.setColor("#ff6c08")
+								.setTitle("This Command can Only be Used in Servers!")
+								.setDescription("You must be an administrator to edit a message.")
+						],
+						ephemeral: true,
+					});
+					return;
+				}
+				else if (!(interaction.member as GuildMember).permissions.has("ADMINISTRATOR")) {
+					await interaction.reply({
+						embeds: [
+							new MessageEmbed()
+								.setColor("#ff6c08")
+								.setTitle("Missing Admin Permissions!")
+								.setDescription("You must be an administrator to edit a message.")
+						],
+						ephemeral: true,
+					});
+					return;
+				}
+				interaction.showModal(modal((interaction as MessageContextMenuInteraction).targetMessage.id));
+			} else {
 				await interaction.reply({
 					embeds: [
 						new MessageEmbed()
 							.setColor("#ff6c08")
-							.setTitle("This Command can Only be Used in Servers!")
-							.setDescription("You must be an administrator to edit a message.")
+							.setTitle("You can only Edit Messages Sent by Me!")
+							.setDescription("This command cannot be used with messages from other users.")
 					],
 					ephemeral: true,
 				});
-				return;
 			}
-			else if (!(interaction.member as GuildMember).permissions.has("ADMINISTRATOR")) {
-				await interaction.reply({
-					embeds: [
-						new MessageEmbed()
-							.setColor("#ff6c08")
-							.setTitle("Missing Admin Permissions!")
-							.setDescription("You must be an administrator to edit a message.")
-					],
-					ephemeral: true,
-				});
-				return;
-			}
-			interaction.showModal(modal((interaction as MessageContextMenuInteraction).targetMessage.id));
-		} else {
-			await interaction.reply({
-				embeds: [
-					new MessageEmbed()
-						.setColor("#ff6c08")
-						.setTitle("You can only Edit Messages Sent by Me!")
-						.setDescription("This command cannot be used with messages from other users.")
-				],
-				ephemeral: true,
-			});
+		} catch (error) {
+			logMessage(error, "Edit Command", interaction);
 		}
 	},
 
 	async modalExecute(interaction) {
-		const [command, messageID, modal] = (interaction.customId).split("::");
-
-		let title = interaction.fields.getTextInputValue("title");
-		let description = interaction.fields.getTextInputValue("description");
-		let image = "";
-
-		if (interaction.fields.getTextInputValue("image") && interaction.fields.getTextInputValue("image").match(/^((https:\/\/)|(http:\/\/))\w{2,100}(\.{1,10}\w{1,100}){1,100}(\/\w{0,100}){0,100}/gm)) image = interaction.fields.getTextInputValue("image");
-
-		if (title.length > 256) title = title.slice(0, 256);
-		if (description.length > 3998) description = description.slice(0, 3998);
-
 		try {
-			description = JSON.parse('"' + description.replace(/"/g, '\\"') + '"');
-		} catch { }
-		try {
-			title = JSON.parse('"' + title.replace(/"/g, '\\"') + '"');
-		} catch { }
+			(edit.commandData as commandData).buttons["send"]++;
+			const [command, messageID, modal] = (interaction.customId).split("::");
 
-		if (image == "" && interaction.user.id != process.env.OWNER_ID) description += "\n" + "\u200b";
-		if (description.match(/^[\n\u2800\u200b\s]*$/s)) {
-			if (image == "") {
-				description = "\n\u200b"
-			} else {
-				description = "";
+			let title = interaction.fields.getTextInputValue("title");
+			let description = interaction.fields.getTextInputValue("description");
+			let image = "";
+
+			if (interaction.fields.getTextInputValue("image") && interaction.fields.getTextInputValue("image").match(/^((https:\/\/)|(http:\/\/))\w{2,100}(\.{1,10}\w{1,100}){1,100}(\/\w{0,100}){0,100}/gm)) image = interaction.fields.getTextInputValue("image");
+
+			if (title.length > 256) title = title.slice(0, 256);
+			if (description.length > 3998) description = description.slice(0, 3998);
+
+			try {
+				description = JSON.parse('"' + description.replace(/"/g, '\\"') + '"');
+			} catch { }
+			try {
+				title = JSON.parse('"' + title.replace(/"/g, '\\"') + '"');
+			} catch { }
+
+			if (image == "" && interaction.user.id != process.env.OWNER_ID) description += "\n" + "\u200b";
+			if (description.match(/^[\n\u2800\u200b\s]*$/s)) {
+				if (image == "") {
+					description = "\n\u200b"
+				} else {
+					description = "";
+				}
 			}
-		}
 
-		(await interaction.channel).messages.fetch(messageID).then(message => message.edit({
-			embeds: [
-				new MessageEmbed()
-					.setTitle(title)
-					.setDescription(description)
-					.setFooter({ text: "Edited By: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
-					.setColor("#2f3136")
-					.setImage(image)
-			]
-		}));
-		interaction.reply({
-			embeds: [
-				new MessageEmbed()
-					.setTitle("Message Updated!")
-					.setColor("#389af0")
-			],
-			ephemeral: true,
-		})
+			(await interaction.channel).messages.fetch(messageID).then(message => message.edit({
+				embeds: [
+					new MessageEmbed()
+						.setTitle(title)
+						.setDescription(description)
+						.setFooter({ text: "Edited By: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+						.setColor("#2f3136")
+						.setImage(image)
+				]
+			}));
+			interaction.reply({
+				embeds: [
+					new MessageEmbed()
+						.setTitle("Message Updated!")
+						.setColor("#389af0")
+				],
+				ephemeral: true,
+			})
+		} catch (error) {
+			logMessage(error, "Edit Command (modal)", interaction);
+		}
 	},
 };
 

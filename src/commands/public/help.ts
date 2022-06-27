@@ -1,6 +1,5 @@
 import { MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, ModalActionRowComponent, TextInputComponent } from "discord.js";
-import { commandHelp, CustomCommand } from "../../exports/types";
-import * as data from "../../exports/data";
+import { commandData, commandHelp, CustomCommand } from "../../exports/types";
 import { publicCommands } from "../index";
 import logMessage from "../../exports/error";
 
@@ -50,7 +49,17 @@ let help: CustomCommand = {
 			.setColor("#2f3136")
 	},
 
+	commandData: {
+		uses: 0,
+		buttons: {
+			search: 0,
+			dropdown: 0,
+			quickstart: 0,
+		}
+	},
+
 	async modalExecute(interaction) {
+		(help.commandData as commandData).buttons["search"]++;
 		interaction.reply({
 			embeds: findCommand(interaction.fields.getTextInputValue("search").toLowerCase()),
 			ephemeral: true,
@@ -60,7 +69,9 @@ let help: CustomCommand = {
 	async globalMessageInteractionnExecute(interaction) {
 		try {
 			const [command, data,] = (interaction.customId).split("::");
+
 			if (data == "module" && interaction.isSelectMenu()) {
+				(help.commandData as commandData).buttons["dropdown"]++;
 				interaction.reply({
 					embeds: findModule(interaction.values[0]),
 					ephemeral: true,
@@ -68,6 +79,7 @@ let help: CustomCommand = {
 			} else if (data == "search") {
 				interaction.showModal(modal);
 			} else if (data == "quickStart") {
+				(help.commandData as commandData).buttons["quickstart"]++;
 				interaction.reply({
 					embeds: [
 						new MessageEmbed()
@@ -154,7 +166,7 @@ let help: CustomCommand = {
 
 	async execute(interaction) {
 		try {
-			data.commandUsed("help");
+			(help.commandData as commandData).uses++;
 
 			await interaction.reply({
 				embeds: [

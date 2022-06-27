@@ -12,8 +12,7 @@ import sendUpdate from "../../../exports/send_update";
 import * as questionEmbeds from "../../../exports/question_embeds";
 import logMessage from "../../../exports/error";
 import * as mode from "../../../exports/mode";
-import * as data from "../../../exports/data";
-import { commandHelp } from "src/exports/types";
+import { commandData, commandHelp } from "src/exports/types";
 
 export const help: commandHelp = {
 	name: "poll",
@@ -74,9 +73,18 @@ export const help: commandHelp = {
 		),
 }
 
+export const info: commandData = {
+	uses: 0,
+	buttons: {
+		send: 0,
+		cancel: 0,
+		response: 0,
+	},
+}
+
 export async function interaction(interaction) {
 	try {
-		data.commandUsed("poll");
+		info.uses++;
 
 		//Inputs ---
 		let question: string = interaction.options.getString("question");
@@ -242,7 +250,7 @@ export async function interaction(interaction) {
 			//Send
 			if (i.customId === uuid + "::send") {
 				updateSent = true;
-				data.buttonUsed("poll", "send");
+				info.buttons["send"]++;
 				sendUpdate(i);
 				//Change Message for Result Visibility
 				if (visibleResults) {
@@ -298,7 +306,7 @@ export async function interaction(interaction) {
 				//Cancel
 			} else if (i.customId === uuid + "::cancel") {
 				updateSent = true;
-				data.buttonUsed("poll", "cancel");
+				info.buttons["cancel"]++;
 				sendUpdate(i);
 				if (ping == "") {
 					await interaction.editReply({
@@ -381,7 +389,7 @@ export async function interaction(interaction) {
 						});
 						return;
 					}
-					data.buttonUsed("poll", "response");
+					info.buttons["response"]++;
 					await i.reply({
 						embeds: [responseMessage],
 						ephemeral: true,

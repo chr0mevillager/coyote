@@ -12,6 +12,7 @@ import {
 
 export interface CustomCommand {
 	data: ApplicationCommandDataResolvable;
+	commandData?: Array<commandData> | commandData;
 	commandHelp?: Array<commandHelp> | commandHelp;
 	execute?(interaction: CommandInteraction<CacheType>): void | Promise<void>;
 	modalExecute?(interaction: ModalSubmitInteraction<CacheType>): void | Promise<void>;
@@ -28,4 +29,11 @@ export type commandHelp = {
 	module: string,
 	keywords: any[],
 	helpMessage: MessageEmbed,
+}
+
+export type commandData = {
+	uses: number,
+	buttons?: {
+
+	},
 }

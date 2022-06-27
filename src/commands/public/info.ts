@@ -1,6 +1,5 @@
 import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
-import { CustomCommand } from "../../exports/types";
-import * as data from "../../exports/data";
+import { commandData, CustomCommand } from "../../exports/types";
 import * as profileInfo from "../../exports/profile_info";
 
 let info: CustomCommand = {
@@ -24,8 +23,12 @@ let info: CustomCommand = {
 			.setDescription("```Get information about me!```"),
 	},
 
+	commandData: {
+		uses: 0,
+	},
+
 	async execute(interaction) {
-		data.commandUsed("info");
+		(info.commandData as commandData).uses++;
 		await interaction.reply({
 			embeds: [
 				new MessageEmbed()
