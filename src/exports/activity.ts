@@ -1,28 +1,57 @@
+import { ActivityType } from "discord-api-types";
 import { PresenceData } from "discord.js";
 import { client } from "./client";
+import { activities } from "./types";
 
 export let activityRotation;
 export let activityIndex;
 
+/* 15 Seconds for testing (15000)*/
+
+const activities: activities = [
+	{ // Called on bot startup
+		emoji: "🔼",
+		type: "streaming",
+		text: "my new update!",
+		duration: 900000,
+	},
+	{ //Start of loop
+		emoji: "❔",
+		type: "listening",
+		text: "/help",
+		duration: 1800000,
+	},
+	{
+		emoji: "📊",
+		type: "watching",
+		text: "messages",
+		duration: 600000,
+	},
+	{
+		emoji: "📨",
+		type: "watching",
+		text: "polls",
+		duration: 600000,
+	},
+	{
+		emoji: "🎁",
+		type: "watching",
+		text: "giveaways",
+		duration: 600000,
+	},
+]
+
 /** Set the activity of the bot.*/
 export function setBotActivity() {
 	if (!activityRotation) return;
+
 	client.user.setPresence("online" as PresenceData);
+	client.user.setActivity("\u2800" + activities[activityIndex].emoji + "\u2800" + activities[activityIndex].text, { type: activities[activityIndex].type.toUpperCase() as any });
 
-	if (activityIndex == 0) client.user.setActivity("\u2800🔼\u2800 my new update!", { type: "STREAMING" });
-	if (activityIndex == 1) client.user.setActivity("\u2800❔\u2800 /help", { type: "LISTENING" });
-	if (activityIndex == 2) client.user.setActivity("\u2800📊\u2800 polls", { type: "WATCHING" });
-	if (activityIndex == 3) client.user.setActivity("\u2800📨\u2800 messages", { type: "WATCHING" });
-	if (activityIndex == 4) client.user.setActivity("\u2800🎁\u2800 giveaways", { type: "WATCHING" });
+	activityIndex++;
+	if (activityIndex > activities.length - 1) activityIndex = 1;
+	setTimeout(setBotActivity, activities[activityIndex].duration, activityIndex);
 
-	if (activityIndex == 0) {
-		activityIndex++;
-		setTimeout(setBotActivity, 300000 /* 15 Seconds for testing (15000)*/, activityIndex);
-	} else {
-		activityIndex++;
-		if (activityIndex > 4) activityIndex = 1;
-		setTimeout(setBotActivity, 600000 /* 30 Seconds for testing (30000)*/, activityIndex);
-	}
 }
 
 export function setRotateStatus(rotate: boolean) {

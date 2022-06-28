@@ -23,6 +23,14 @@ export interface CustomCommand {
 
 export type mode = "normal" | "update" | "warning";
 
+export type activities = Array<activity>;
+export type activity = {
+	emoji: string,
+	type: string,
+	text: string,
+	duration: number,
+};
+
 export type commandHelp = {
 	name: string,
 	fullName?: string,
