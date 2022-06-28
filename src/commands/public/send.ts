@@ -3,7 +3,8 @@ import { commandHelp, CustomCommand } from "../../exports/types";
 import * as message from "./send/message";
 import * as poll from "./send/poll";
 import * as giveaway from "./send/giveaway";
-import { client } from "../../exports/client";
+import * as colors from "../../exports/colors";
+
 
 let send: CustomCommand = {
 	data: {
@@ -160,7 +161,7 @@ let send: CustomCommand = {
 					new MessageEmbed()
 						.setTitle("This Command can Only be Used in Servers")
 						.setDescription("")
-						.setColor("#ff6c08")
+						.setColor(colors.cancelColor)
 				],
 				ephemeral: true,
 			});

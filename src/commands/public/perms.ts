@@ -1,6 +1,7 @@
 import { MessageEmbed } from "discord.js";
 import { CustomCommand } from "../../exports/types";
 import permissions from "../../exports/perms";
+import * as colors from "../../exports/colors";
 
 let perms: CustomCommand = {
 	data: {
@@ -18,7 +19,7 @@ let perms: CustomCommand = {
 		helpMessage: new MessageEmbed()
 			.setTitle("Permissions")
 			.setDescription("```See what permissions I need!```")
-			.setColor("#2f3136")
+			.setColor(colors.clearColor)
 	},
 
 	commandData: {
@@ -29,11 +30,11 @@ let perms: CustomCommand = {
 		let permissionMessages = Object.values(permissions);
 		permissionMessages.unshift(
 			new MessageEmbed()
-				.setColor("#389af0")
+				.setColor(colors.mainColor)
 				.setTitle("Want to Forget Permissions?")
 				.setDescription("```ts\nGive me the \"Administrator\" permission and never worry about it again, even after new feature releases!```")
 		);
-		
+
 		interaction.reply({
 			embeds: permissionMessages,
 			ephemeral: true,

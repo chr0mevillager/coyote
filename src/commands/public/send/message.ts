@@ -8,6 +8,7 @@ import * as buttons from "../../../exports/send_buttons";
 import * as questionEmbeds from "../../../exports/question_embeds";
 import logMessage from "../../../exports/error";
 import { commandData, commandHelp } from "src/exports/types";
+import * as colors from "../../../exports/colors";
 
 export const help: commandHelp = {
 	name: "message",
@@ -25,7 +26,7 @@ export const help: commandHelp = {
 		"send",
 	],
 	helpMessage: new MessageEmbed()
-		.setColor("#2f3136")
+		.setColor(colors.clearColor)
 		.setTitle("Message")
 		.setDescription("Send a fancy message!\n\n```/send message < Title > < Description > [ Ping Group ] [ Image URL ]```")
 		.addFields(
@@ -94,13 +95,13 @@ export async function interaction(interaction) {
 		let userMessage;
 		if (interaction.user.id == process.env.OWNER_ID) {
 			userMessage = new MessageEmbed()
-				.setColor("#2f3136")
+				.setColor(colors.clearColor)
 				.setTitle(title)
 				.setDescription(description)
 				.setImage(image)
 		} else {
 			userMessage = new MessageEmbed()
-				.setColor("#2f3136")
+				.setColor(colors.clearColor)
 				.setTitle(title)
 				.setDescription(description)
 				.setImage(image)

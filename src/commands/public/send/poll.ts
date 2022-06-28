@@ -12,7 +12,8 @@ import sendUpdate from "../../../exports/send_update";
 import * as questionEmbeds from "../../../exports/question_embeds";
 import logMessage from "../../../exports/error";
 import * as mode from "../../../exports/mode";
-import { commandData, commandHelp } from "src/exports/types";
+import { commandData, commandHelp } from "src/exports/types"
+import * as colors from "../../../exports/colors";
 
 export const help: commandHelp = {
 	name: "poll",
@@ -31,7 +32,7 @@ export const help: commandHelp = {
 		"message",
 	],
 	helpMessage: new MessageEmbed()
-		.setColor("#2f3136")
+		.setColor(colors.clearColor)
 		.setTitle("Poll")
 		.setDescription("Send a simple poll! Polls are open for 1 day.\n\n```/send poll < Question > < Option 1 > < Option 2 > [ Option 3 ] [ Option 4 ] [ Ping Group ] [ Live Results ]```")
 		.addFields(
@@ -115,13 +116,13 @@ export async function interaction(interaction) {
 		let pollOver;
 
 		const responseMessage = new MessageEmbed()
-			.setColor("#3aef3a")
+			.setColor(colors.successColor)
 			.setTitle("Entered Poll")
 			.setDescription("```Your input has been saved.``````Remember, you can only vote once.```")
 			.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/poll.png?raw=true")
 
 		const deniedResponseMessage = new MessageEmbed()
-			.setColor("#ff6c08")
+			.setColor(colors.cancelColor)
 			.setTitle("You can Only Enter a Poll Once")
 			.setDescription("```Your input has already been saved.```")
 			.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/poll.png?raw=true")
@@ -206,12 +207,12 @@ export async function interaction(interaction) {
 		let poll;
 		if (interaction.user.id == process.env.OWNER_ID) {
 			poll = (votingStatus: string) => new MessageEmbed()
-				.setColor("#2f3136")
+				.setColor(colors.clearColor)
 				.setTitle(question)
 				.setDescription("🕑  Closes <t:" + timeToClose + ":R>" + votingStatus)
 		} else {
 			poll = (votingStatus: string) => new MessageEmbed()
-				.setColor("#2f3136")
+				.setColor(colors.clearColor)
 				.setTitle(question)
 				.setDescription("🕑  Closes <t:" + timeToClose + ":R>" + votingStatus)
 				.setFooter({ text: "Poll made by: " + (interaction.user.username).slice(0, 250), iconURL: interaction.user.avatarURL() })
@@ -313,7 +314,7 @@ export async function interaction(interaction) {
 						embeds: [
 							questionEmbeds.cancel,
 							new MessageEmbed()
-								.setColor("#2f3136")
+								.setColor(colors.clearColor)
 								.setTitle(question)
 								.setDescription("🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>" + results)
 								.setFooter({ text: "Poll made by: " + (interaction.user.username).slice(0, 250), iconURL: interaction.user.avatarURL() })
@@ -328,7 +329,7 @@ export async function interaction(interaction) {
 						embeds: [
 							questionEmbeds.cancel,
 							new MessageEmbed()
-								.setColor("#2f3136")
+								.setColor(colors.clearColor)
 								.setTitle(question)
 								.setDescription("🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>" + results)
 								.setFooter({ text: "Poll made by: " + (interaction.user.username).slice(0, 250), iconURL: interaction.user.avatarURL() })
@@ -348,7 +349,7 @@ export async function interaction(interaction) {
 					embeds: [
 						questionEmbeds.timedOut,
 						new MessageEmbed()
-							.setColor("#2f3136")
+							.setColor(colors.clearColor)
 							.setTitle(question)
 							.setDescription("🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>" + previewResults)
 							.setFooter({ text: "Poll made by: " + (interaction.user.username).slice(0, 250), iconURL: interaction.user.avatarURL() })
@@ -363,7 +364,7 @@ export async function interaction(interaction) {
 					embeds: [
 						questionEmbeds.timedOut,
 						new MessageEmbed()
-							.setColor("#2f3136")
+							.setColor(colors.clearColor)
 							.setTitle(question)
 							.setDescription("🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>" + previewResults)
 							.setFooter({ text: "Poll made by: " + (interaction.user.username).slice(0, 250), iconURL: interaction.user.avatarURL() })
@@ -430,7 +431,7 @@ export async function interaction(interaction) {
 			if (pollOver) {
 				dropdownComponents = [];
 				updatedPoll = new MessageEmbed()
-					.setColor("#2f3136")
+					.setColor(colors.clearColor)
 					.setTitle(question)
 					.setDescription("🕑  Closed on <t:" + + Math.round(new Date().getTime() / 1000) + ":D>")
 					.setFooter({ text: "Poll made by: " + (interaction.user.username).slice(0, 250), iconURL: interaction.user.avatarURL() })

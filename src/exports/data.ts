@@ -2,6 +2,7 @@ import { MessageEmbed } from "discord.js";
 import { publicCommands } from "../commands";
 import { client } from "./client";
 import { commandData, commandHelp } from "./types";
+import * as colors from "./colors";
 
 export function getData(topMessage: MessageEmbed) {
 	let currentCommand;
@@ -33,7 +34,7 @@ export function getData(topMessage: MessageEmbed) {
 			let embed = new MessageEmbed()
 				.setTitle(command.module.charAt(0).toUpperCase() + command.module.slice(1))
 				.setDescription("")
-				.setColor("#2f3136")
+				.setColor(colors.clearColor)
 				.addFields([
 					{
 						name: command.name.charAt(0).toUpperCase() + command.name.slice(1),

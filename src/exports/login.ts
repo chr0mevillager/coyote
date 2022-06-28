@@ -1,5 +1,6 @@
 import { MessageEmbed } from "discord.js";
 import { client } from "./client";
+import * as colors from "./colors";
 
 export default async function (auth: string) {
 	await client.login(auth);
@@ -8,7 +9,7 @@ export default async function (auth: string) {
 			content: "@everyone",
 			embeds: [
 				new MessageEmbed()
-					.setColor("#389af0")
+					.setColor(colors.mainColor)
 					.setTitle("Bot Online!")
 					.setDescription("Online <t:" + Math.floor(client.readyAt.getTime() / 1000) + ":R>.")
 			],

@@ -1,6 +1,7 @@
 import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
 import { commandData, CustomCommand } from "../../exports/types";
 import * as profileInfo from "../../exports/profile_info";
+import * as colors from "../../exports/colors";
 
 let info: CustomCommand = {
 	data: {
@@ -18,7 +19,7 @@ let info: CustomCommand = {
 			"general",
 		],
 		helpMessage: new MessageEmbed()
-			.setColor("#2f3136")
+			.setColor(colors.clearColor)
 			.setTitle("Info")
 			.setDescription("```Get information about me!```"),
 	},

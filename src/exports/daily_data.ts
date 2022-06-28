@@ -2,11 +2,12 @@ import { MessageEmbed } from "discord.js";
 import { client } from "./client";
 import * as activity from "./activity";
 import { getData } from "../exports/data";
+import * as colors from "./colors";
 
 /**Start logging data regarding the bot every 24 hours */
 export function logData() {
 	const topMessage = new MessageEmbed()
-		.setColor("#389af0")
+		.setColor(colors.mainColor)
 		.setTitle("Your Daily Data is Ready!")
 		.setDescription("")
 		.addFields([

@@ -2,6 +2,7 @@ import { MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal
 import { commandData, commandHelp, CustomCommand } from "../../exports/types";
 import { publicCommands } from "../index";
 import logMessage from "../../exports/error";
+import * as colors from "../../exports/colors";
 
 let moduleNum;
 let row1;
@@ -46,7 +47,7 @@ let help: CustomCommand = {
 		helpMessage: new MessageEmbed()
 			.setTitle("Help")
 			.setDescription("```Get help with anything you need!```")
-			.setColor("#2f3136")
+			.setColor(colors.clearColor)
 	},
 
 	commandData: {
@@ -83,7 +84,7 @@ let help: CustomCommand = {
 				interaction.reply({
 					embeds: [
 						new MessageEmbed()
-							.setColor("#389af0")
+							.setColor(colors.secondaryColor)
 							.setTitle("Quick-Start Guide")
 							.setDescription("Get all of the information you need to start out with the Embeds Bot!")
 							.addFields([
@@ -101,6 +102,11 @@ let help: CustomCommand = {
 									name: "🎁\u2800Giveaways",
 									value: "```js\nEffectively send a robust giveaway by typing \"/send giveaway\".``````Then, type in an item and how many winners there should be. Hit enter, and then hit the send button.```",
 									inline: true,
+								},
+								{
+									name: "Don't Stress!",
+									value: "```If you ever make a typo, don\'t worry!``````js\nSimply use the \"Edit\" command! Search for the edit command in the help center to see how to find and use it.```",
+									inline: false,
 								},
 							])
 					],
@@ -171,7 +177,7 @@ let help: CustomCommand = {
 			await interaction.reply({
 				embeds: [
 					new MessageEmbed()
-						.setColor("#389af0")
+						.setColor(colors.mainColor)
 						.setTitle("Welcome to the help center!")
 						.setDescription("Find what you are looking for by looking through the modules or searching for a command!")
 				],
@@ -190,7 +196,7 @@ function findModule(module: string) {
 	let results = [];
 	results.push(
 		new MessageEmbed()
-			.setColor("#389af0")
+			.setColor(colors.mainColor)
 			.setTitle(module.charAt(0).toUpperCase() + module.slice(1) + " Module")
 			.setDescription("")
 	)
@@ -207,7 +213,7 @@ function findCommand(search: string) {
 
 	results.push(
 		new MessageEmbed()
-			.setColor("#389af0")
+			.setColor(colors.mainColor)
 			.setTitle("Here are your Results")
 			.setDescription("")
 	)
@@ -227,7 +233,7 @@ function findCommand(search: string) {
 	} else {
 		return [
 			new MessageEmbed()
-				.setColor("#ff6c08")
+				.setColor(colors.cancelColor)
 				.setTitle("No Results were Found")
 				.setDescription("")
 		]

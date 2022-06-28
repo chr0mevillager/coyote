@@ -16,6 +16,7 @@ import * as questionEmbeds from "../../../exports/question_embeds";
 import logMessage from "../../../exports/error";
 import * as mode from "../../../exports/mode";
 import { commandData, commandHelp } from "src/exports/types";
+import * as colors from "../../../exports/colors";
 
 export const help: commandHelp = {
 	name: "giveaway",
@@ -31,7 +32,7 @@ export const help: commandHelp = {
 		"message",
 	],
 	helpMessage: new MessageEmbed()
-		.setColor("#2f3136")
+		.setColor(colors.clearColor)
 		.setTitle("Giveaway")
 		.setDescription("Send a robust giveaway! Giveaways are open for 1 day.\n\n```/send giveaway < Item > < # of Winners > [ Ping Group ] [ Required Input ]```")
 		.addFields(
@@ -70,12 +71,12 @@ export const info: commandData = {
 let giveawayData = {};
 
 const responseMessage = new MessageEmbed()
-	.setColor("#3aef3a")
+	.setColor(colors.successColor)
 	.setTitle("Entered Giveaway")
 	.setDescription("```Your entry has been saved.``````Remember, you can enter once.```")
 
 const deniedResponseMessage = new MessageEmbed()
-	.setColor("#ff6c08")
+	.setColor(colors.cancelColor)
 	.setTitle("You can Only Enter a Giveaway Once")
 	.setDescription("```Your entry has already been saved.```")
 
@@ -159,12 +160,12 @@ export async function interaction(interaction) {
 		let giveaway;
 		if (interaction.user.id == process.env.OWNER_ID) {
 			giveaway = (results: string) => new MessageEmbed()
-				.setColor("#2f3136")
+				.setColor(colors.clearColor)
 				.setTitle(item + " Giveaway")
 				.setDescription("🕑  Closes <t:" + timeToClose + ":R>" + "```" + winnerNumber + " winners```\n" + results)
 		} else {
 			giveaway = (results: string) => new MessageEmbed()
-				.setColor("#2f3136")
+				.setColor(colors.clearColor)
 				.setTitle(item + " Giveaway")
 				.setDescription("🕑  Closes <t:" + timeToClose + ":R>" + "```" + winnerNumber + " winners```\n" + results)
 				.setFooter({ text: "Giveaway made by: " + (interaction.user.username).slice(0, 250), iconURL: interaction.user.avatarURL() })
@@ -293,7 +294,7 @@ export async function interaction(interaction) {
 						embeds: [
 							questionEmbeds.cancel,
 							new MessageEmbed()
-								.setColor("#2f3136")
+								.setColor(colors.clearColor)
 								.setTitle(item + " Giveaway")
 								.setDescription("🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>" + "```" + winnerNumber + " winners```\n" + results)
 								.setFooter({ text: "Giveaway made by: " + (interaction.user.username).slice(0, 250), iconURL: interaction.user.avatarURL() })
@@ -308,7 +309,7 @@ export async function interaction(interaction) {
 						embeds: [
 							questionEmbeds.cancel,
 							new MessageEmbed()
-								.setColor("#2f3136")
+								.setColor(colors.clearColor)
 								.setTitle(item + " Giveaway")
 								.setDescription("🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>" + "```" + winnerNumber + " winners```\n" + results)
 								.setFooter({ text: "Giveaway made by: " + (interaction.user.username).slice(0, 250), iconURL: interaction.user.avatarURL() })
@@ -328,7 +329,7 @@ export async function interaction(interaction) {
 					embeds: [
 						questionEmbeds.timedOut,
 						new MessageEmbed()
-							.setColor("#2f3136")
+							.setColor(colors.clearColor)
 							.setTitle(item + " Giveaway")
 							.setDescription("🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>" + "```" + winnerNumber + " winners```\n" + results)
 							.setFooter({ text: "Giveaway made by: " + (interaction.user.username).slice(0, 250), iconURL: interaction.user.avatarURL() })
@@ -343,7 +344,7 @@ export async function interaction(interaction) {
 					embeds: [
 						questionEmbeds.timedOut,
 						new MessageEmbed()
-							.setColor("#2f3136")
+							.setColor(colors.clearColor)
 							.setTitle(item + " Giveaway")
 							.setDescription("🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>" + "```" + winnerNumber + " winners```\n" + results)
 							.setFooter({ text: "Giveaway made by: " + (interaction.user.username).slice(0, 250), iconURL: interaction.user.avatarURL() })
@@ -403,7 +404,7 @@ export async function interaction(interaction) {
 					await giveawayMessage.edit({
 						embeds: [
 							new MessageEmbed()
-								.setColor("#2f3136")
+								.setColor(colors.clearColor)
 								.setTitle(item + " Giveaway")
 								.setDescription("🕑  Closed on <t:" + Math.round(new Date().getTime() / 1000) + ":D>" + "```" + winnerNumber + " winners```\n" + results)
 								.setFooter({ text: "Giveaway made by: " + (interaction.user.username).slice(0, 250), iconURL: interaction.user.avatarURL() })
@@ -425,7 +426,7 @@ export async function interaction(interaction) {
 					content: formattedWinners + "",
 					embeds: [
 						new MessageEmbed()
-							.setColor("#2f3136")
+							.setColor(colors.clearColor)
 							.setTitle("Congratulations on winning the " + item + " giveaway!")
 							.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/giveaway.png?raw=true")
 					],
@@ -433,7 +434,7 @@ export async function interaction(interaction) {
 
 				if (input != "") {
 					let dm = new MessageEmbed()
-						.setColor("#2f3136")
+						.setColor(colors.clearColor)
 						.setTitle("Your " + item + " Giveaway Has Ended!")
 						.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/giveaway.png?raw=true")
 						.setFooter({

@@ -1,6 +1,7 @@
 import { GuildMember, MessageActionRow, MessageContextMenuInteraction, MessageEmbed, Modal, ModalActionRowComponent, TextInputComponent } from "discord.js";
 import { commandData, CustomCommand } from "../../exports/types";
 import logMessage from "../../exports/error";
+import * as colors from "../../exports/colors";
 
 const inputModalTitle = new MessageActionRow<ModalActionRowComponent>()
 	.addComponents(
@@ -29,7 +30,8 @@ const inputModalImage = new MessageActionRow<ModalActionRowComponent>()
 			.setLabel("What should the image be?")
 			.setStyle("SHORT")
 			.setRequired(false)
-			.setMaxLength(300),
+			.setMaxLength(300)
+			.setPlaceholder("https://my-image.com"),
 	);
 
 let modal = (interactionID: string) => new Modal()
@@ -53,7 +55,7 @@ let edit: CustomCommand = {
 		],
 		module: "embeds",
 		helpMessage: new MessageEmbed()
-			.setColor("#2f3136")
+			.setColor(colors.clearColor)
 			.setTitle("Edit")
 			.setDescription("```Edit a previously sent message!```")
 			.addFields([
@@ -85,7 +87,7 @@ let edit: CustomCommand = {
 					await interaction.reply({
 						embeds: [
 							new MessageEmbed()
-								.setColor("#ff6c08")
+								.setColor(colors.cancelColor)
 								.setTitle("This Command can Only be Used in Servers!")
 								.setDescription("You must be an administrator to edit a message.")
 						],
@@ -97,7 +99,7 @@ let edit: CustomCommand = {
 					await interaction.reply({
 						embeds: [
 							new MessageEmbed()
-								.setColor("#ff6c08")
+								.setColor(colors.cancelColor)
 								.setTitle("Missing Admin Permissions!")
 								.setDescription("You must be an administrator to edit a message.")
 						],
@@ -110,7 +112,7 @@ let edit: CustomCommand = {
 				await interaction.reply({
 					embeds: [
 						new MessageEmbed()
-							.setColor("#ff6c08")
+							.setColor(colors.cancelColor)
 							.setTitle("You can only Edit Messages Sent by Me!")
 							.setDescription("This command cannot be used with messages from other users.")
 					],
@@ -158,7 +160,7 @@ let edit: CustomCommand = {
 						.setTitle(title)
 						.setDescription(description)
 						.setFooter({ text: "Edited By: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
-						.setColor("#2f3136")
+						.setColor(colors.clearColor)
 						.setImage(image)
 				]
 			}));
@@ -166,7 +168,7 @@ let edit: CustomCommand = {
 				embeds: [
 					new MessageEmbed()
 						.setTitle("Message Updated!")
-						.setColor("#389af0")
+						.setColor(colors.successColor)
 				],
 				ephemeral: true,
 			})

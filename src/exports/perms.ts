@@ -1,8 +1,9 @@
 import { MessageEmbed } from "discord.js";
+import * as colors from "./colors";
 
 const permissions = {
 	message: new MessageEmbed()
-		.setColor("#2f3136")
+		.setColor(colors.clearColor)
 		.setTitle("Message Permissions")
 		.setDescription("```To properly function, I must be able to:```")
 		.addFields([

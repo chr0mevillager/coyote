@@ -1,5 +1,6 @@
 import { MessageEmbed } from "discord.js";
 import { client } from "./client";
+import * as colors from "./colors";
 
 /** Logs a error in a chat log and notifies the user of a issue. */
 export default async function logMessage(error: string, errorLocation: string, interaction?) {
@@ -9,7 +10,7 @@ export default async function logMessage(error: string, errorLocation: string, i
 				ephemeral: true,
 				embeds: [
 					new MessageEmbed()
-						.setColor("#ff6c08")
+						.setColor(colors.secondaryColor)
 						.setTitle("An error has occured!")
 						.setDescription("The developers were notified of this error and it will be fixed shortly.")
 				],
@@ -19,7 +20,7 @@ export default async function logMessage(error: string, errorLocation: string, i
 			content: "@everyone",
 			embeds: [
 				new MessageEmbed()
-					.setColor("#ff6c08")
+					.setColor(colors.secondaryColor)
 					.setTitle("An error has occured in the `" + errorLocation + "`!")
 					.setDescription("```" + error + "```")
 			],
