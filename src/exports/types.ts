@@ -37,11 +37,20 @@ export type commandHelp = {
 	module: string,
 	keywords: any[],
 	helpMessage: MessageEmbed,
-}
+};
 
 export type commandData = {
 	uses: number,
 	buttons?: {
 
 	},
+};
+
+export type announcementMessage = {
+	title: string,
+	description: string,
+	button?: {
+		title: string,
+		link: string,
+	}
 }

@@ -84,7 +84,7 @@ let help: CustomCommand = {
 				interaction.reply({
 					embeds: [
 						new MessageEmbed()
-							.setColor(colors.secondaryColor)
+							.setColor(colors.successColor)
 							.setTitle("Quick-Start Guide")
 							.setDescription("Get all of the information you need to start out with the Embeds Bot!")
 							.addFields([

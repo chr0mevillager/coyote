@@ -4,6 +4,7 @@ import status from "./developer/status";
 import bot from "./developer/bot";
 import data from "./developer/data";
 import mode from "./developer/mode";
+import announce from "./developer/announce";
 
 import help from "./public/help";
 import info from "./public/info";
@@ -17,6 +18,7 @@ export const developerCommands: Record<string, CustomCommand> = {
 	bot,
 	data,
 	mode,
+	announce,
 };
 
 /**A list of global, public slash commands*/
