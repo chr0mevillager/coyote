@@ -6,4 +6,5 @@ yarn-error.log
 .env
 todo.md
 example_command.ts
+developer_docs.md
 dist

@@ -30,6 +30,8 @@ export const help: commandHelp = {
 		"gift",
 		"send",
 		"message",
+		"enter",
+		"sweep",
 	],
 	helpMessage: new MessageEmbed()
 		.setColor(colors.clearColor)
