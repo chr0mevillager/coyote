@@ -61,6 +61,7 @@ let announce: CustomCommand = {
 						.setColor(colors.successColor)
 						.setDescription("Title:```" + announceMessage.announcement.title + "```Description:```" + announceMessage.announcement.description + "```Button:```" + announceMessage.announcement.button.title + "\n\n" + announceMessage.announcement.button.link + "```"),
 				],
+				ephemeral: true,
 			});
 		} else if (interaction.options.getSubcommand() === "reset") {
 			announceMessage.resetAnnouncement();
@@ -70,6 +71,7 @@ let announce: CustomCommand = {
 						.setTitle("Announcements Reset")
 						.setColor(colors.successColor)
 				],
+				ephemeral: true,
 			});
 		}
 	},

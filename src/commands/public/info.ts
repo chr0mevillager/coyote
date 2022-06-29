@@ -33,7 +33,7 @@ let info: CustomCommand = {
 		await interaction.reply({
 			embeds: [
 				new MessageEmbed()
-					.setColor("#389af0")
+					.setColor(colors.mainColor)
 					.setTitle("Embeds Bot#7040")
 					.setDescription("Run `/help` for help.")
 					.addFields(
