@@ -119,13 +119,11 @@ export async function interaction(interaction) {
 			.setColor(colors.successColor)
 			.setTitle("Entered Poll")
 			.setDescription("```Your input has been saved.``````Remember, you can only vote once.```")
-			.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/poll.png?raw=true")
 
 		const deniedResponseMessage = new MessageEmbed()
 			.setColor(colors.cancelColor)
 			.setTitle("You can Only Enter a Poll Once")
 			.setDescription("```Your input has already been saved.```")
-			.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/poll.png?raw=true")
 
 		let previewResults;
 		if (visibleResults) {

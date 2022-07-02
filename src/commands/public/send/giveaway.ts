@@ -17,6 +17,7 @@ import logMessage from "../../../exports/error";
 import * as mode from "../../../exports/mode";
 import { commandData, commandHelp } from "src/exports/types";
 import * as colors from "../../../exports/colors";
+import * as emoji from "../../../exports/emoji";
 
 export const help: commandHelp = {
 	name: "giveaway",
@@ -86,8 +87,9 @@ const deleteButtonRowDisabled = new MessageActionRow()
 	.addComponents(
 		new MessageButton()
 			.setCustomId("send::giveawayDelete")
-			.setLabel("Delete Message 🗑")
+			.setLabel("Delete Message")
 			.setStyle("DANGER")
+			.setEmoji(emoji.white.delete)
 			.setDisabled(true)
 	)
 
@@ -95,7 +97,8 @@ const deleteButtonRow = (messageID: string) => new MessageActionRow()
 	.addComponents(
 		new MessageButton()
 			.setCustomId("send::" + messageID + "::giveawayDelete")
-			.setLabel("Delete Message 🗑")
+			.setLabel("Delete Message")
+			.setEmoji(emoji.white.delete)
 			.setStyle("DANGER")
 	)
 
@@ -430,7 +433,6 @@ export async function interaction(interaction) {
 						new MessageEmbed()
 							.setColor(colors.clearColor)
 							.setTitle("Congratulations on winning the " + item + " giveaway!")
-							.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/giveaway.png?raw=true")
 					],
 				});
 
@@ -438,7 +440,6 @@ export async function interaction(interaction) {
 					let dm = new MessageEmbed()
 						.setColor(colors.clearColor)
 						.setTitle("Your " + item + " Giveaway Has Ended!")
-						.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/icon/giveaway.png?raw=true")
 						.setFooter({
 							text: "Tip:\nIf users provided sensitive information, please delete this information after you are done with it.",
 						})

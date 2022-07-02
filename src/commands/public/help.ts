@@ -3,6 +3,7 @@ import { commandData, commandHelp, CustomCommand } from "../../exports/types";
 import { publicCommands } from "../index";
 import logMessage from "../../exports/error";
 import * as colors from "../../exports/colors";
+import * as emoji from "../../exports/emoji";
 
 let moduleNum;
 let row1;
@@ -161,11 +162,13 @@ let help: CustomCommand = {
 			.addComponents(
 				new MessageButton()
 					.setCustomId("help::quickStart")
-					.setLabel("Quick-Start Guide 🕑")
+					.setLabel("Quick-Start Guide")
+					.setEmoji(emoji.white.timer)
 					.setStyle("SUCCESS"),
 				new MessageButton()
 					.setCustomId("help::search")
-					.setLabel("Search 🔍")
+					.setLabel("Search")
+					.setEmoji(emoji.white.search)
 					.setStyle("PRIMARY"),
 			)
 	},
@@ -213,7 +216,7 @@ function findCommand(search: string) {
 
 	results.push(
 		new MessageEmbed()
-			.setColor(colors.mainColor)
+			.setColor(colors.successColor)
 			.setTitle("Here are your Results")
 			.setDescription("")
 	)
