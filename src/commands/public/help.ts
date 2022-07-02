@@ -146,6 +146,7 @@ let help: CustomCommand = {
 					label: (command.module.charAt(0).toUpperCase() + command.module.slice(1)),
 					description: fullName,
 					value: (command.module),
+					emoji: emoji.main[command.module],
 				});
 			} else {
 				modules.find(module => module.value == command.module).description += "\u2800\u2800" + fullName;
@@ -155,7 +156,7 @@ let help: CustomCommand = {
 			.addComponents(
 				new MessageSelectMenu()
 					.setCustomId("help::module")
-					.setPlaceholder("Select a Module")
+					.setPlaceholder("<:DropdownTiles_White:992900389408079892> Select a Module")
 					.addOptions(modules)
 			)
 		row2 = new MessageActionRow()

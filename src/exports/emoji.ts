@@ -5,6 +5,7 @@ export const white = {
 	tiles: "992900389408079892",
 	search: "992900359657885727",
 	timer: "992900377534005389",
+	bulletPoint: "992934948417830963",
 };
 
 export const black = {
@@ -14,4 +15,9 @@ export const black = {
 	tiles: "992898425723039874",
 	search: "992898431939006595",
 	timer: "992898414746546176",
+}
+
+export const main = {
+	general: "992930032093757490",
+	embeds: "992930026704076800",
 }

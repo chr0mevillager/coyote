@@ -1,6 +1,5 @@
 import {
 	MessageActionRow,
-	MessageButton,
 	MessageEmbed,
 	MessageSelectMenu,
 	Role,
@@ -14,6 +13,7 @@ import logMessage from "../../../exports/error";
 import * as mode from "../../../exports/mode";
 import { commandData, commandHelp } from "src/exports/types"
 import * as colors from "../../../exports/colors";
+import * as emoji from "../../../exports/emoji";
 
 export const help: commandHelp = {
 	name: "poll",
@@ -157,11 +157,13 @@ export async function interaction(interaction) {
 					label: pollButton1,
 					description: "",
 					value: "option-1",
+					emoji: emoji.white.bulletPoint
 				},
 				{
 					label: pollButton2,
 					description: "",
 					value: "option-2",
+					emoji: emoji.white.bulletPoint
 				},
 			)
 
@@ -177,6 +179,7 @@ export async function interaction(interaction) {
 					label: pollButton3,
 					description: "",
 					value: "option-3",
+					emoji: emoji.white.bulletPoint
 				},
 			);
 		}
@@ -192,6 +195,7 @@ export async function interaction(interaction) {
 					label: pollButton4,
 					description: "",
 					value: "option-4",
+					emoji: emoji.white.bulletPoint
 				},
 			);
 		}
