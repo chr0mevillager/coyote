@@ -5,6 +5,7 @@ import { activities } from "./types";
 
 export let activityRotation;
 export let activityIndex;
+let currentActivityInxex;
 
 /* 15 Seconds for testing (15000)*/
 
@@ -44,13 +45,14 @@ const activities: activities = [
 /** Set the activity of the bot.*/
 export function setBotActivity() {
 	if (!activityRotation) return;
+	currentActivityInxex = activityIndex;
 
 	client.user.setPresence("online" as PresenceData);
 	client.user.setActivity("\u2800" + activities[activityIndex].emoji + "\u2800" + activities[activityIndex].text, { type: activities[activityIndex].type.toUpperCase() as any });
 
 	activityIndex++;
 	if (activityIndex > activities.length - 1) activityIndex = 1;
-	setTimeout(setBotActivity, activities[activityIndex].duration, activityIndex);
+	setTimeout(setBotActivity, activities[currentActivityInxex].duration, activityIndex);
 
 }
 

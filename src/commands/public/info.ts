@@ -34,8 +34,8 @@ let info: CustomCommand = {
 			embeds: [
 				new MessageEmbed()
 					.setColor(colors.mainColor)
-					.setTitle("Embeds Bot#7040")
-					.setDescription("Run `/help` for help.")
+					.setTitle("Coyote#7040")
+					.setDescription("Run `/help` for help.\n\nRun `/permissions` for permission information.")
 					.addFields(
 						{
 							name: "Version",
