@@ -1,8 +1,12 @@
 import { MessageEmbed } from "discord.js";
+import * as activity from "./activity";
 import { client } from "./client";
 import * as colors from "./colors";
+import { logData } from "./daily_data";
+import { setMode } from "./mode";
 
 export default async function () {
+	//Send login messages
 	if (client.application.id == "942083941307912193") {
 		(client.channels.cache.find((channel) => (channel as any).id === process.env.LOGGING_CHANNEL) as any).send({
 			content: "@everyone",
@@ -10,10 +14,21 @@ export default async function () {
 				new MessageEmbed()
 					.setColor(colors.mainColor)
 					.setTitle("Bot Online!")
-					.setDescription("Online at <t:" + Math.floor(client.readyAt.getTime() / 1000) + ":D><t:" + Math.floor(client.readyAt.getTime() / 1000) + ":T>\n||`" + Math.floor(client.readyAt.getTime() / 1000) + "`||")
+					.setDescription("Online at <t:" + Math.floor(client.readyAt.getTime() / 1000) + ":D> <t:" + Math.floor(client.readyAt.getTime() / 1000) + ":T>\n||`" + Math.floor(client.readyAt.getTime() / 1000) + "`||")
 			],
 		});
 	} else {
 		console.log("Bot online!");
 	}
+
+	//Set mode
+	setMode("normal", "");
+
+	//Set activity
+	activity.setRotateStatus(true);
+	activity.setNextStatus(0);
+
+	//Start daily logging in 24 hours
+	setTimeout(logData, 86400000);
+
 }

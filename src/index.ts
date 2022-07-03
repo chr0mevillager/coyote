@@ -87,23 +87,13 @@ client.on("interactionCreate", async (interaction) => {
 //On login
 client.once("ready", () => {
 
-	//Run login Function
+	//Run login Functions
 	login();
 
 	//Run functions on start
 	for (let i = 0; i < Object.keys(commands.publicCommands).length; i++) {
 		if (commands.publicCommands[Object.keys(commands.publicCommands)[i]].onReadyExecute) commands.publicCommands[Object.keys(commands.publicCommands)[i]].onReadyExecute();
 	}
-
-	//Set mode
-	setMode("normal", "");
-
-	//Set activity
-	activity.setRotateStatus(true);
-	activity.setNextStatus(0);
-
-	//Start daily logging in 24 hours
-	setTimeout(logData, 86400000);
 
 	//Creates commands in testing guild
 	const guild = client.guilds.cache.get(process.env.SLASH_COMMAND_TESTING_GUILD);

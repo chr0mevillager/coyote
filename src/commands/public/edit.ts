@@ -2,6 +2,7 @@ import { GuildMember, MessageActionRow, MessageContextMenuInteraction, MessageEm
 import { commandData, CustomCommand } from "../../exports/types";
 import logMessage from "../../exports/error";
 import * as colors from "../../exports/colors";
+import { client } from "../../exports/client";
 
 const inputModalTitle = new MessageActionRow<ModalActionRowComponent>()
 	.addComponents(
@@ -55,7 +56,7 @@ let edit: CustomCommand = {
 		],
 		module: "embeds",
 		helpMessage: new MessageEmbed()
-		.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/command_icons/edit.png?raw=true")
+			.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/command_icons/edit.png?raw=true")
 			.setColor(colors.clearColor)
 			.setTitle("Edit")
 			.setDescription("```Edit a previously sent message!```")
@@ -83,7 +84,7 @@ let edit: CustomCommand = {
 	async contextMenuExecute(interaction) {
 		try {
 			(edit.commandData as commandData).uses++;
-			if ((interaction as MessageContextMenuInteraction).targetMessage.author.id == "942083941307912193" || (interaction as MessageContextMenuInteraction).targetMessage.author.id == "968997421726195832") {
+			if ((interaction as MessageContextMenuInteraction).targetMessage.author.id == client.application.id) {
 				if (!interaction.channel) {
 					await interaction.reply({
 						embeds: [
@@ -154,17 +155,21 @@ let edit: CustomCommand = {
 					description = "";
 				}
 			}
+			try {
+				(await interaction.channel).messages.fetch(messageID).then(message => message.edit({
+					embeds: [
+						new MessageEmbed()
+							.setTitle(title)
+							.setDescription(description)
+							.setFooter({ text: "Edited By: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+							.setColor(colors.clearColor)
+							.setImage(image)
+					]
+				}));
+			} catch (error) {
+				logMessage(error, "Edit Command (modal)", interaction);
+			}
 
-			(await interaction.channel).messages.fetch(messageID).then(message => message.edit({
-				embeds: [
-					new MessageEmbed()
-						.setTitle(title)
-						.setDescription(description)
-						.setFooter({ text: "Edited By: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
-						.setColor(colors.clearColor)
-						.setImage(image)
-				]
-			}));
 			interaction.reply({
 				embeds: [
 					new MessageEmbed()

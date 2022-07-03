@@ -4,7 +4,7 @@ node_modules
 /build
 yarn-error.log
 .env
-todo.md
+updating_instructions.md
 example_command.ts
 developer_docs.md
 dist

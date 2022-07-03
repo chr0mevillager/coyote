@@ -2,6 +2,7 @@ import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
 import { commandData, CustomCommand } from "../../exports/types";
 import * as profileInfo from "../../exports/profile_info";
 import * as colors from "../../exports/colors";
+import * as inviteURL from "../../exports/invite_url";
 
 let info: CustomCommand = {
 	data: {
@@ -67,7 +68,7 @@ let info: CustomCommand = {
 						new MessageButton()
 							.setLabel("Add to Server")
 							.setStyle("LINK")
-							.setURL("https://discord.com/oauth2/authorize?client_id=942083941307912193&scope=bot%20applications.commands&permissions=150528"),
+							.setURL(inviteURL.inviteURL + inviteURL.permissions.everything),
 						// new MessageButton()
 						// 	.setLabel("Support Server")
 						// 	.setStyle("LINK")

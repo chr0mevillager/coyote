@@ -1,4 +1,4 @@
-export let versionNumber = "1.0.0";
+export let versionNumber = "1.0.1";
 export let releaseNotes = "🖌 • Added edit command!\n🔑 • Added permissions command!\n🐛 • Bug Fixes"
 
 export let helpText = "**Use `/help` for help.**"

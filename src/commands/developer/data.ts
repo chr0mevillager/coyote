@@ -32,7 +32,7 @@ let data: CustomCommand = {
 				},
 				{
 					name: "Online since",
-					value: "```" + Math.floor(client.readyAt.getTime() / 1000) + "```(<t:" + Math.floor(client.readyAt.getTime() / 1000) + ":D><t:" + Math.floor(client.readyAt.getTime() / 1000) + ":T>)",
+					value: "```" + Math.floor(client.readyAt.getTime() / 1000) + "```(<t:" + Math.floor(client.readyAt.getTime() / 1000) + ":D> <t:" + Math.floor(client.readyAt.getTime() / 1000) + ":T>)",
 					inline: true,
 				},
 				{

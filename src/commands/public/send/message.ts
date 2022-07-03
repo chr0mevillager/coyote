@@ -48,7 +48,7 @@ export const help: commandHelp = {
 			},
 			{
 				name: "Description",
-				value: "```Type in a main description that is less than 4000 characters. Use \\n\ to create an enter, \\u200A to create an empty feild, and to create a link, type ( Your Text )[ URL ]```",
+				value: "```Type in a main description that is less than 4000 characters. Use \\n\ to create an enter, \\u200b to create an empty feild, and to create a link, type ( Your Text )[ URL ]```",
 				inline: true,
 			},
 		),
