@@ -4,6 +4,7 @@ import { client } from "./client";
 import * as colors from "./colors";
 import { logData } from "./daily_data";
 import { setMode } from "./mode";
+import * as profileInfo from "./profile_info";
 
 export default async function () {
 	//Send login messages
@@ -14,7 +15,7 @@ export default async function () {
 				new MessageEmbed()
 					.setColor(colors.mainColor)
 					.setTitle("Bot Online!")
-					.setDescription("Online at <t:" + Math.floor(client.readyAt.getTime() / 1000) + ":D> <t:" + Math.floor(client.readyAt.getTime() / 1000) + ":T>\n||`" + Math.floor(client.readyAt.getTime() / 1000) + "`||")
+					.setDescription("Online at <t:" + Math.floor(client.readyAt.getTime() / 1000) + ":D> <t:" + Math.floor(client.readyAt.getTime() / 1000) + ":T>\n\n||`" + Math.floor(client.readyAt.getTime() / 1000) + "`||\n\n" + "Version `" + profileInfo.versionNumber + "`")
 			],
 		});
 	} else {

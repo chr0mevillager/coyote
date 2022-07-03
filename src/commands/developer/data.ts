@@ -3,6 +3,7 @@ import * as activity from "../../exports/activity";
 import { client } from "../../exports/client";
 import { CustomCommand } from "../../exports/types";
 import { getData } from "../../exports/data";
+import * as profileInfo from "../../exports/profile_info";
 
 let data: CustomCommand = {
 	data: {
@@ -38,6 +39,11 @@ let data: CustomCommand = {
 				{
 					name: "Activity",
 					value: "```Index: " + activity.activityIndex + "``````Will Rotate: " + activity.activityRotation + "```",
+					inline: true,
+				},
+				{
+					name: "Version",
+					value: "```Index: " + profileInfo.versionNumber + "```",
 					inline: true,
 				},
 			]);
