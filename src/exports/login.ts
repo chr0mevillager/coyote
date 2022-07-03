@@ -2,8 +2,7 @@ import { MessageEmbed } from "discord.js";
 import { client } from "./client";
 import * as colors from "./colors";
 
-export default async function (auth: string) {
-	await client.login(auth);
+export default async function () {
 	if (client.application.id == "942083941307912193") {
 		(client.channels.cache.find((channel) => (channel as any).id === process.env.LOGGING_CHANNEL) as any).send({
 			content: "@everyone",

@@ -87,6 +87,9 @@ client.on("interactionCreate", async (interaction) => {
 //On login
 client.once("ready", () => {
 
+	//Run login Function
+	login();
+
 	//Run functions on start
 	for (let i = 0; i < Object.keys(commands.publicCommands).length; i++) {
 		if (commands.publicCommands[Object.keys(commands.publicCommands)[i]].onReadyExecute) commands.publicCommands[Object.keys(commands.publicCommands)[i]].onReadyExecute();
@@ -117,4 +120,4 @@ client.once("ready", () => {
 });
 
 //Login
-login(process.env.DISCORD_AUTH);
+client.login(process.env.DISCORD_AUTH);
