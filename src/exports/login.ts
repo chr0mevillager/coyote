@@ -11,7 +11,7 @@ export default async function (auth: string) {
 				new MessageEmbed()
 					.setColor(colors.mainColor)
 					.setTitle("Bot Online!")
-					.setDescription("Online <t:" + Math.floor(client.readyAt.getTime() / 1000) + ":R>.")
+					.setDescription("Online at <t:" + Math.floor(client.readyAt.getTime() / 1000) + ":D><t:" + Math.floor(client.readyAt.getTime() / 1000) + ":T>\n||`" + Math.floor(client.readyAt.getTime() / 1000) + "`||")
 			],
 		});
 	} else {
