@@ -19,6 +19,7 @@ let info: CustomCommand = {
 			"general",
 		],
 		helpMessage: new MessageEmbed()
+			.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/command_icons/info.png?raw=true")
 			.setColor(colors.clearColor)
 			.setTitle("Info")
 			.setDescription("```Get information about me!```"),
@@ -39,7 +40,6 @@ let info: CustomCommand = {
 					.setImage("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/banners/info.png?raw=true"),
 
 				new MessageEmbed()
-					.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/command_icons/info.png?raw=true")
 					.setColor(colors.clearColor)
 					.setTitle("Coyote#7040")
 					.setDescription("Run `/help` for help.\n\nRun `/permissions` for permission information.")
