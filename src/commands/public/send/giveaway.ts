@@ -35,6 +35,7 @@ export const help: commandHelp = {
 		"sweep",
 	],
 	helpMessage: new MessageEmbed()
+		.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/command_icons/giveaway.png?raw=true")
 		.setColor(colors.clearColor)
 		.setTitle("Giveaway")
 		.setDescription("Send a robust giveaway! Giveaways are open for 1 day.\n\n```/send giveaway < Item > < # of Winners > [ Ping Group ] [ Required Input ]```")

@@ -33,7 +33,14 @@ let info: CustomCommand = {
 		await interaction.reply({
 			embeds: [
 				new MessageEmbed()
-					.setColor(colors.mainColor)
+					.setColor(colors.clearColor)
+					.setTitle("")
+					.setDescription("")
+					.setImage("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/banners/info.png?raw=true"),
+
+				new MessageEmbed()
+					.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/command_icons/info.png?raw=true")
+					.setColor(colors.clearColor)
 					.setTitle("Coyote#7040")
 					.setDescription("Run `/help` for help.\n\nRun `/permissions` for permission information.")
 					.addFields(

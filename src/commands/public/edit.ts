@@ -55,6 +55,7 @@ let edit: CustomCommand = {
 		],
 		module: "embeds",
 		helpMessage: new MessageEmbed()
+		.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/command_icons/edit.png?raw=true")
 			.setColor(colors.clearColor)
 			.setTitle("Edit")
 			.setDescription("```Edit a previously sent message!```")

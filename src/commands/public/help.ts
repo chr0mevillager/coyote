@@ -46,6 +46,7 @@ let help: CustomCommand = {
 		],
 		module: "general",
 		helpMessage: new MessageEmbed()
+			.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/command_icons/help.png?raw=true")
 			.setTitle("Help")
 			.setDescription("```Get help with anything you need!```")
 			.setColor(colors.clearColor)
@@ -156,7 +157,7 @@ let help: CustomCommand = {
 			.addComponents(
 				new MessageSelectMenu()
 					.setCustomId("help::module")
-					.setPlaceholder("<:DropdownTiles_White:992900389408079892> Select a Module")
+					.setPlaceholder("Select a Module")
 					.addOptions(modules)
 			)
 		row2 = new MessageActionRow()
@@ -181,7 +182,12 @@ let help: CustomCommand = {
 			await interaction.reply({
 				embeds: [
 					new MessageEmbed()
-						.setColor(colors.mainColor)
+						.setColor(colors.clearColor)
+						.setTitle("")
+						.setDescription("")
+						.setImage("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/banners/help.png?raw=true"),
+					new MessageEmbed()
+						.setColor(colors.clearColor)
 						.setTitle("Welcome to the help center!")
 						.setDescription("Find what you are looking for by looking through the modules or searching for a command!")
 				],
