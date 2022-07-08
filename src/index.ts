@@ -87,10 +87,10 @@ client.on("interactionCreate", async (interaction) => {
 //On login
 client.once("ready", () => {
 
-	//Run login Functions
+	//Run login functions
 	login();
 
-	//Run functions on start
+	//Run command functions on start
 	for (let i = 0; i < Object.keys(commands.publicCommands).length; i++) {
 		if (commands.publicCommands[Object.keys(commands.publicCommands)[i]].onReadyExecute) commands.publicCommands[Object.keys(commands.publicCommands)[i]].onReadyExecute();
 	}

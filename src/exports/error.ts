@@ -6,15 +6,17 @@ import * as colors from "./colors";
 export default async function logMessage(error: string, errorLocation: string, interaction?) {
 	try {
 		if (interaction) {
-			await interaction.reply({
-				ephemeral: true,
-				embeds: [
-					new MessageEmbed()
-						.setColor(colors.secondaryColor)
-						.setTitle("An error has occured!")
-						.setDescription("The developers were notified of this error and it will be fixed shortly.")
-				],
-			});
+			try {
+				await interaction.reply({
+					ephemeral: true,
+					embeds: [
+						new MessageEmbed()
+							.setColor(colors.secondaryColor)
+							.setTitle("An error has occured!")
+							.setDescription("The developers were notified of this error and it will be fixed shortly.")
+					],
+				});
+			} catch { }
 		}
 		await (client.channels.cache.find((channel) => (channel as any).id === process.env.LOGGING_CHANNEL) as any).send({
 			content: "@everyone",
@@ -25,6 +27,7 @@ export default async function logMessage(error: string, errorLocation: string, i
 					.setDescription("```" + error + "```")
 			],
 		});
+		console.error("An error occured whenever trying to log an error in the discord server:")
 		console.error(error);
 	} catch (error) {
 		console.error(error);

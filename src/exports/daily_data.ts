@@ -5,7 +5,7 @@ import { getData } from "../exports/data";
 import * as colors from "./colors";
 
 /**Start logging data regarding the bot every 24 hours */
-export function logData() {
+export async function logData() {
 	const topMessage = new MessageEmbed()
 		.setColor(colors.mainColor)
 		.setTitle("Your Daily Data is Ready!")
@@ -27,7 +27,7 @@ export function logData() {
 				inline: true,
 			},
 		]);
-	(client.channels.cache.find((channel) => (channel as any).id === process.env.LOGGING_CHANNEL) as any).send({
+	await (client.channels.cache.find((channel) => (channel as any).id === process.env.LOGGING_CHANNEL) as any).send({
 		embeds: getData(topMessage),
 	});
 	setTimeout(logData, 86400000);
