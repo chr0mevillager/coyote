@@ -2,28 +2,54 @@ import { MessageEmbed } from "discord.js";
 import * as colors from "./colors";
 
 const permissions = {
+	general: new MessageEmbed()
+		.setColor(colors.clearColor)
+		.setTitle("General Permissions")
+		.setDescription("```To properly function, I must be able to:```")
+		.addFields([
+			{
+				name: "Embeded Messages",
+				value: "```ts\n\"Embed Links\" Permission\n\u200b```",
+				inline: true,
+			},
+			{
+				name: "Use External Emojis",
+				value: "```ts\n\"Use External Emoji\" Permission\n\u200b```",
+				inline: true,
+			},
+			{
+				name: "Use External Stickers",
+				value: "```ts\n\"Use External Stickers\" Permission```",
+				inline: true,
+			},
+		]),
 	message: new MessageEmbed()
 		.setColor(colors.clearColor)
 		.setTitle("Message Permissions")
 		.setDescription("```To properly function, I must be able to:```")
 		.addFields([
 			{
-				name: "Send messages",
-				value: "```ts\n\"Send Messages\" Permission```",
+				name: "Send Messages",
+				value: "```ts\n\"Send Messages\" Permission\n\u200b```",
 				inline: true,
 			},
 			{
-				name: "Send embeded messages",
-				value: "```ts\n\"Embed Links\" Permission```",
+				name: "Send Threaded Messages",
+				value: "```ts\n\"Send Messages in Threads\" Permission```",
 				inline: true,
 			},
 			{
-				name: "See this channel properly",
-				value: "```ts\n\"View Channels\" Permission```",
+				name: "Send Embeded Messages",
+				value: "```ts\n\"Embed Links\" Permission\n\u200b```",
 				inline: true,
 			},
 			{
-				name: "Ping all roles",
+				name: "See this Channel Properly",
+				value: "```ts\n\"View Channels\"/\"Read Messages\" Permission```",
+				inline: true,
+			},
+			{
+				name: "Ping all Roles",
 				value: "```ts\n\"Mention @everyone, @here, and All Roles\" Permission```",
 				inline: true,
 			},

@@ -35,7 +35,7 @@ let perms: CustomCommand = {
 			new MessageEmbed()
 				.setColor(colors.clearColor)
 				.setTitle("Want to Forget Permissions?")
-				.setDescription("```js\nTo automatically update my permissions, select on one of the links below, select this server, select \"Authorize\"```")
+				.setDescription("```js\nTo automatically update my permissions, select on one of the links below, select this server, select \"Authorize\".```")
 				.addFields([
 					{
 						name: "Admin Permission",
