@@ -57,7 +57,7 @@ let perms: CustomCommand = {
 				.setImage("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/banners/perms.png?raw=true"),
 		);
 
-		interaction.reply({
+		await interaction.reply({
 			embeds: permissionMessages,
 			ephemeral: true,
 		});

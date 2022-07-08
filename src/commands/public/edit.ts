@@ -109,7 +109,7 @@ let edit: CustomCommand = {
 					});
 					return;
 				}
-				interaction.showModal(modal((interaction as MessageContextMenuInteraction).targetMessage.id));
+				await interaction.showModal(modal((interaction as MessageContextMenuInteraction).targetMessage.id));
 			} else {
 				await interaction.reply({
 					embeds: [
@@ -170,7 +170,7 @@ let edit: CustomCommand = {
 				logMessage(error, "Edit Command (modal)", interaction);
 			}
 
-			interaction.reply({
+			await interaction.reply({
 				embeds: [
 					new MessageEmbed()
 						.setTitle("Message Updated!")

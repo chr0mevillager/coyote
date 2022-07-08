@@ -143,14 +143,14 @@ let send: CustomCommand = {
 	async modalExecute(interaction) {
 		const [command, id, data] = (interaction.customId).split("::");
 		if (data == "giveawayEnter") {
-			giveaway.modalInteraction(interaction);
+			await giveaway.modalInteraction(interaction);
 		}
 	},
 
 	async globalMessageInteractionnExecute(interaction) {
 		const [command, messageId, data] = (interaction.customId).split("::");
 		if (data == "giveawayDelete") {
-			giveaway.deletion(interaction);
+			await giveaway.deletion(interaction);
 		}
 	},
 
@@ -169,11 +169,11 @@ let send: CustomCommand = {
 		}
 
 		if (interaction.options.getSubcommand() === "message") {
-			message.interaction(interaction);
+			await message.interaction(interaction);
 		} else if (interaction.options.getSubcommand() === "poll") {
-			poll.interaction(interaction);
+			await poll.interaction(interaction);
 		} else if (interaction.options.getSubcommand() === "giveaway") {
-			giveaway.interaction(interaction);
+			await giveaway.interaction(interaction);
 		}
 	},
 };

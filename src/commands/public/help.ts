@@ -63,7 +63,7 @@ let help: CustomCommand = {
 
 	async modalExecute(interaction) {
 		(help.commandData as commandData).buttons["search"]++;
-		interaction.reply({
+		await interaction.reply({
 			embeds: findCommand(interaction.fields.getTextInputValue("search").toLowerCase()),
 			ephemeral: true,
 		})
@@ -75,15 +75,15 @@ let help: CustomCommand = {
 
 			if (data == "module" && interaction.isSelectMenu()) {
 				(help.commandData as commandData).buttons["dropdown"]++;
-				interaction.reply({
+				await interaction.reply({
 					embeds: findModule(interaction.values[0]),
 					ephemeral: true,
 				})
 			} else if (data == "search") {
-				interaction.showModal(modal);
+				await interaction.showModal(modal);
 			} else if (data == "quickStart") {
 				(help.commandData as commandData).buttons["quickstart"]++;
-				interaction.reply({
+				await interaction.reply({
 					embeds: [
 						new MessageEmbed()
 							.setColor(colors.successColor)
