@@ -32,7 +32,7 @@ export const help: commandHelp = {
 		"message",
 	],
 	helpMessage: new MessageEmbed()
-		.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/command_icons/poll.png?raw=true")
+		.setThumbnail("https://github.com/chr0mevillager/coyote/blob/master/src/artwork/command_icons/poll.png?raw=true")
 		.setColor(colors.clearColor)
 		.setTitle("Poll")
 		.setDescription("Send a simple poll! Polls are open for 1 day.\n\n```/send poll < Question > < Option 1 > < Option 2 > [ Option 3 ] [ Option 4 ] [ Ping Group ] [ Live Results ]```")

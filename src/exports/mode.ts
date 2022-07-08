@@ -14,7 +14,7 @@ export function setMode(newMode: mode, newDescription?: string) {
 		description = "";
 	}
 
-	if (newMode == "normal") image = "https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/send/ready_to_send.png?raw=true";
-	if (newMode == "warning") image = "https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/send/warning.png?raw=true";
-	if (newMode == "update") image = "https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/send/update_pending.png?raw=true";
+	if (newMode == "normal") image = "https://github.com/chr0mevillager/coyote/blob/master/src/artwork/send/ready_to_send.png?raw=true";
+	if (newMode == "warning") image = "https://github.com/chr0mevillager/coyote/blob/master/src/artwork/send/warning.png?raw=true";
+	if (newMode == "update") image = "https://github.com/chr0mevillager/coyote/blob/master/src/artwork/send/update_pending.png?raw=true";
 }

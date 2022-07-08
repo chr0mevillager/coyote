@@ -19,7 +19,7 @@ let perms: CustomCommand = {
 		],
 		module: "general",
 		helpMessage: new MessageEmbed()
-			.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/command_icons/perms.png?raw=true")
+			.setThumbnail("https://github.com/chr0mevillager/coyote/blob/master/src/artwork/command_icons/perms.png?raw=true")
 			.setTitle("Permissions")
 			.setDescription("```See what permissions I need!```")
 			.setColor(colors.clearColor)
@@ -54,7 +54,7 @@ let perms: CustomCommand = {
 				.setColor(colors.clearColor)
 				.setTitle("")
 				.setDescription("")
-				.setImage("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/banners/perms.png?raw=true"),
+				.setImage("https://github.com/chr0mevillager/coyote/blob/master/src/artwork/banners/perms.png?raw=true"),
 		);
 
 		await interaction.reply({

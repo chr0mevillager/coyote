@@ -46,7 +46,7 @@ let help: CustomCommand = {
 		],
 		module: "general",
 		helpMessage: new MessageEmbed()
-			.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/command_icons/help.png?raw=true")
+			.setThumbnail("https://github.com/chr0mevillager/coyote/blob/master/src/artwork/command_icons/help.png?raw=true")
 			.setTitle("Help")
 			.setDescription("```Get help with anything you need!```")
 			.setColor(colors.clearColor)
@@ -185,7 +185,7 @@ let help: CustomCommand = {
 						.setColor(colors.clearColor)
 						.setTitle("")
 						.setDescription("")
-						.setImage("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/banners/help.png?raw=true"),
+						.setImage("https://github.com/chr0mevillager/coyote/blob/master/src/artwork/banners/help.png?raw=true"),
 					new MessageEmbed()
 						.setColor(colors.clearColor)
 						.setTitle("Welcome to the help center!")

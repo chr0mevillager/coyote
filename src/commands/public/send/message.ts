@@ -26,7 +26,7 @@ export const help: commandHelp = {
 		"send",
 	],
 	helpMessage: new MessageEmbed()
-		.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/command_icons/message.png?raw=true")
+		.setThumbnail("https://github.com/chr0mevillager/coyote/blob/master/src/artwork/command_icons/message.png?raw=true")
 		.setColor(colors.clearColor)
 		.setTitle("Message")
 		.setDescription("Send a fancy message!\n\n```/send message < Title > < Description > [ Ping Group ] [ Image URL ]```")
@@ -126,14 +126,14 @@ export async function interaction(interaction) {
 		//Send Preview ---
 		if (ping == "") {
 			await interaction.reply({
-				embeds: [questionEmbeds.question("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/send/ready_to_send.png?raw=true", ""), userMessage],
+				embeds: [questionEmbeds.question("https://github.com/chr0mevillager/coyote/blob/master/src/artwork/send/ready_to_send.png?raw=true", ""), userMessage],
 				components: [buttons.buttonRow(uuid)],
 				ephemeral: true,
 			});
 		} else {
 			await interaction.reply({
 				content: ping,
-				embeds: [questionEmbeds.question("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/send/ready_to_send.png?raw=true", ""), userMessage],
+				embeds: [questionEmbeds.question("https://github.com/chr0mevillager/coyote/blob/master/src/artwork/send/ready_to_send.png?raw=true", ""), userMessage],
 				components: [buttons.buttonRow(uuid)],
 				ephemeral: true,
 			});

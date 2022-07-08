@@ -21,7 +21,7 @@ let announcements: CustomCommand = {
 			"anno",
 		],
 		helpMessage: new MessageEmbed()
-			.setThumbnail("https://github.com/chr0mevillager/embeds-bot/blob/master/src/artwork/command_icons/announcements.png?raw=true")
+			.setThumbnail("https://github.com/chr0mevillager/coyote/blob/master/src/artwork/command_icons/announcements.png?raw=true")
 			.setColor(colors.clearColor)
 			.setTitle("Announcements")
 			.setDescription("```View the latest information, polls, and more!```"),
