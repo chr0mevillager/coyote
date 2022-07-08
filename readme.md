@@ -15,6 +15,6 @@
 
 ## Add To Server
 
-- [Add Bot to Server](https://discord.com/oauth2/authorize?client_id=942083941307912193&scope=bot%20applications.commands&permissions=412317305864)
+- [Add Bot to Server](https://discord.com/oauth2/authorize?client_id=942083941307912193&scope=bot%20applications.commands&permissions=8)
 
 - [Top.gg Page](https://top.gg/bot/942083941307912193?s=05178588d8001)
