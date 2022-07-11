@@ -33,6 +33,7 @@ let help: CustomCommand = {
 	data: {
 		name: "help",
 		description: "See documentation about my commands!",
+		type: "CHAT_INPUT",
 	},
 
 	commandHelp: {

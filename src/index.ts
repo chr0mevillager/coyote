@@ -2,11 +2,6 @@ import "./exports/vars";
 import { client } from "./exports/client";
 import * as commands from "./commands";
 import logMessage from "./exports/error";
-import * as activity from "./exports/activity";
-import { MessageContextMenuInteraction, MessageEmbed } from "discord.js";
-import { setMode } from "./exports/mode";
-import { logData } from "./exports/daily_data";
-import * as profileInfo from "./exports/profile_info";
 import login from "./exports/login";
 
 //Commands
@@ -107,6 +102,7 @@ client.once("ready", () => {
 	Object.values(commands.publicCommands).forEach((command) => {
 		client.application.commands.create(command.data);
 	});
+
 });
 
 //Login

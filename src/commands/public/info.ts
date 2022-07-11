@@ -8,6 +8,7 @@ let info: CustomCommand = {
 	data: {
 		name: "info",
 		description: "See information about me!",
+		type: "CHAT_INPUT",
 	},
 
 	commandHelp: {

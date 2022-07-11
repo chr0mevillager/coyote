@@ -1,15 +1,15 @@
 import { MessageEmbed } from "discord.js";
-import { commandHelp, CustomCommand } from "../../exports/types";
+import { CustomCommand } from "../../exports/types";
 import * as message from "./send/message";
 import * as poll from "./send/poll";
 import * as giveaway from "./send/giveaway";
 import * as colors from "../../exports/colors";
 
-
 let send: CustomCommand = {
 	data: {
 		name: "send",
 		description: "Send an embeded message!",
+		type: "CHAT_INPUT",
 		options: [
 			{
 				name: "message",

@@ -9,6 +9,7 @@ let perms: CustomCommand = {
 	data: {
 		name: "permissions",
 		description: "See what permissions I need!",
+		type: "CHAT_INPUT",
 	},
 
 	commandHelp: {
