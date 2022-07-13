@@ -1,21 +1,21 @@
-import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
+import { MessageEmbed } from "discord.js";
 import { commandData, CustomCommand } from "../../exports/types";
 import * as colors from "../../exports/colors";
 
-const monthDuration = {
-	january: 31,
-	february: 28,
-	march: 31,
-	april: 30,
-	may: 31,
-	june: 30,
-	july: 31,
-	august: 31,
-	september: 30,
-	october: 31,
-	november: 30,
-	december: 31,
-}
+// const monthDuration = {
+// 	january: 31,
+// 	february: 28,
+// 	march: 31,
+// 	april: 30,
+// 	may: 31,
+// 	june: 30,
+// 	july: 31,
+// 	august: 31,
+// 	september: 30,
+// 	october: 31,
+// 	november: 30,
+// 	december: 31,
+// }
 
 let generate: CustomCommand = {
 	data: {
@@ -259,7 +259,7 @@ let generate: CustomCommand = {
 					new MessageEmbed()
 						.setColor(colors.successColor)
 						.setTitle("Timer Started!")
-						.setDescription("Your timer is set to end on <t:" + time + ">, which is in <t:" + time + ":R>```To copy this timer anywhere, select how you would like it to be displayed, then copy the text below it.```")
+						.setDescription("Your timer is set to end on <t:" + time + ">, which is in <t:" + time + ":R>.```To copy this timer anywhere, select how you would like it to be displayed, then copy the text below it.```")
 						.addFields([
 							{
 								name: "<t:" + time + ":d>",

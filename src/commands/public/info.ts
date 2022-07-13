@@ -33,6 +33,7 @@ let info: CustomCommand = {
 
 	async execute(interaction) {
 		(info.commandData as commandData).uses++;
+
 		await interaction.reply({
 			embeds: [
 				new MessageEmbed()

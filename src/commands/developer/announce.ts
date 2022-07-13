@@ -15,25 +15,25 @@ let announce: CustomCommand = {
 				options: [
 					{
 						name: "title",
-						description: "Are you sure you want to change the bot's mode?",
+						description: "Set the title of the announcement.",
 						type: "STRING",
 						required: true,
 					},
 					{
 						name: "description",
-						description: "Are you sure you want to change the bot's mode?",
+						description: "Set the description of the announcement.",
 						type: "STRING",
 						required: true,
 					},
 					{
 						name: "button_title",
-						description: "Are you sure you want to change the bot's mode?",
+						description: "Set the title of the announcement's button.",
 						type: "STRING",
 						required: false,
 					},
 					{
 						name: "button_link",
-						description: "Are you sure you want to change the bot's mode?",
+						description: "Set the link of the announcement's button.",
 						type: "STRING",
 						required: false,
 					}
@@ -51,18 +51,27 @@ let announce: CustomCommand = {
 		if (interaction.options.getSubcommand() === "message") {
 			if (interaction.options.getString("button_title")) {
 				announceMessage.updateAnnouncement(interaction.options.getString("title"), interaction.options.getString("description"), interaction.options.getString("button_title"), interaction.options.getString("button_link"));
+				interaction.reply({
+					embeds: [
+						new MessageEmbed()
+							.setTitle("Announcement Sent")
+							.setColor(colors.successColor)
+							.setDescription("Title:```" + announceMessage.announcement.title + "```Description:```" + announceMessage.announcement.description + "```Button:```" + announceMessage.announcement.button.title + "\n\n" + announceMessage.announcement.button.link + "```"),
+					],
+					ephemeral: true,
+				});
 			} else {
 				announceMessage.updateAnnouncement(interaction.options.getString("title"), interaction.options.getString("description"));
+				interaction.reply({
+					embeds: [
+						new MessageEmbed()
+							.setTitle("Announcement Sent")
+							.setColor(colors.successColor)
+							.setDescription("Title:```" + announceMessage.announcement.title + "```Description:```" + announceMessage.announcement.description + "```"),
+					],
+					ephemeral: true,
+				});
 			}
-			interaction.reply({
-				embeds: [
-					new MessageEmbed()
-						.setTitle("Announcement Sent")
-						.setColor(colors.successColor)
-						.setDescription("Title:```" + announceMessage.announcement.title + "```Description:```" + announceMessage.announcement.description + "```Button:```" + announceMessage.announcement.button.title + "\n\n" + announceMessage.announcement.button.link + "```"),
-				],
-				ephemeral: true,
-			});
 		} else if (interaction.options.getSubcommand() === "reset") {
 			announceMessage.resetAnnouncement();
 			interaction.reply({

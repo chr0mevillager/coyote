@@ -1,6 +1,5 @@
 import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
 import { commandData, CustomCommand } from "../../exports/types";
-import * as profileInfo from "../../exports/profile_info";
 import * as colors from "../../exports/colors";
 import * as announceMessage from "../../exports/announce";
 

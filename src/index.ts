@@ -6,6 +6,7 @@ import login from "./exports/login";
 
 //Commands
 client.on("interactionCreate", async (interaction) => {
+	// Find the function to run when any type of interaction is created
 	if (interaction.isCommand()) {
 		const publicCommands = commands.publicCommands[interaction.commandName];
 		const developerCommands = commands.developerCommands[interaction.commandName];
@@ -59,7 +60,7 @@ client.on("interactionCreate", async (interaction) => {
 				await logMessage(error, "index (global button response) & dev command");
 			}
 		}
-	} else if (interaction.isMessageContextMenu()) {
+	} else if (interaction.isMessageContextMenu() || interaction.isUserContextMenu()) {
 		const publicCommands = commands.publicCommands[interaction.commandName];
 		const developerCommands = commands.developerCommands[interaction.commandName];
 
@@ -82,7 +83,7 @@ client.on("interactionCreate", async (interaction) => {
 //On login
 client.once("ready", () => {
 
-	//Run login functions
+	//Run login functions on start
 	login();
 
 	//Run command functions on start
@@ -90,7 +91,7 @@ client.once("ready", () => {
 		if (commands.publicCommands[Object.keys(commands.publicCommands)[i]].onReadyExecute) commands.publicCommands[Object.keys(commands.publicCommands)[i]].onReadyExecute();
 	}
 
-	//Creates commands in testing guild
+	//Create commands in testing guild (developer commands)
 	const guild = client.guilds.cache.get(process.env.SLASH_COMMAND_TESTING_GUILD);
 	if (guild) {
 		Object.values(commands.developerCommands).forEach((command) => {
@@ -98,7 +99,7 @@ client.once("ready", () => {
 		});
 	}
 
-	//Creates commands in all guilds
+	//Create commands in all guilds (public commands)
 	Object.values(commands.publicCommands).forEach((command) => {
 		client.application.commands.create(command.data);
 	});

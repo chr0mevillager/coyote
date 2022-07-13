@@ -11,10 +11,6 @@ let data: CustomCommand = {
 		description: "See a detailed log of information about me!",
 	},
 
-	async onReadyExecute() {
-
-	},
-
 	async execute(interaction) {
 		let topEmbed = new MessageEmbed()
 			.setTitle("Your Data is Ready!")

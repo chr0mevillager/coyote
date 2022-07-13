@@ -27,7 +27,53 @@ const modal = new Modal()
 	.setTitle("Search")
 	.setCustomId("help::modal")
 	.setComponents(inputModal)
+function findModule(module: string) {
+	let results = [];
+	results.push(
+		new MessageEmbed()
+			.setColor(colors.mainColor)
+			.setTitle("<:" + module + ":" + emoji.main[module] + ">\u2800" + module.charAt(0).toUpperCase() + module.slice(1) + " Module")
+			.setDescription("")
+	)
+	commands.forEach(command => {
+		if (command.module == module && results.length < 10) {
+			results.push(command.helpMessage);
+		}
+	});
+	return results;
+}
 
+function findCommand(search: string) {
+	let results = [];
+
+	results.push(
+		new MessageEmbed()
+			.setColor(colors.successColor)
+			.setTitle("<:Search_White:" + emoji.white.search + ">\u2800Here are your Results")
+			.setDescription("")
+	)
+	commands.forEach(command => {
+		let match = command.keywords.find(element => {
+			if (element.includes(search) || search.includes(element)) {
+				return true;
+			}
+		});
+
+		if (match !== undefined || command.module.includes(search) || search.includes(command.module) && search && results.length < 10) {
+			results.push(command.helpMessage);
+		}
+	});
+	if (results.length > 1) {
+		return results;
+	} else {
+		return [
+			new MessageEmbed()
+				.setColor(colors.cancelColor)
+				.setTitle("<:X_White:" + emoji.white.x + ">\u2800No Results were Found")
+				.setDescription("")
+		]
+	}
+}
 
 let help: CustomCommand = {
 	data: {
@@ -61,6 +107,85 @@ let help: CustomCommand = {
 			dropdown: 0,
 			quickstart: 0,
 		}
+	},
+
+	async execute(interaction) {
+		try {
+			(help.commandData as commandData).uses++;
+
+			await interaction.reply({
+				embeds: [
+					new MessageEmbed()
+						.setColor(colors.clearColor)
+						.setTitle("")
+						.setDescription("")
+						.setImage("https://github.com/chr0mevillager/coyote/blob/master/src/artwork/banners/help.png?raw=true"),
+					new MessageEmbed()
+						.setColor(colors.clearColor)
+						.setTitle("Welcome to the help center!")
+						.setDescription("Find what you are looking for by looking through the modules or searching for a command!")
+				],
+				ephemeral: true,
+				components: [row1, row2],
+			});
+		} catch (error) {
+			logMessage(error, "/help command", interaction);
+		}
+	},
+
+	async onReadyExecute() {
+		for (let i = 0; i < Object.keys(publicCommands).length; i++) {
+			//Get list of commands
+			moduleNum = i;
+			if (publicCommands[Object.keys(publicCommands)[i]].commandHelp) {
+				if (publicCommands[Object.keys(publicCommands)[i]].commandHelp[1]) {
+					for (let i = 0; i < (publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>).length; i++) {
+						commands.push((publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>)[i]);
+					}
+				} else {
+					commands.push(publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp);
+				}
+			}
+		}
+		//Make dropdown
+		commands.forEach(command => {
+			if (command.fullName) {
+				fullName = command.fullName
+			} else {
+				fullName = "/" + command.name
+			}
+
+			if (!modules.find(module => module.value == command.module)) {
+				modules.push({
+					label: (command.module.charAt(0).toUpperCase() + command.module.slice(1)),
+					description: fullName,
+					value: (command.module),
+					emoji: emoji.main[command.module],
+				});
+			} else {
+				modules.find(module => module.value == command.module).description += "\u2800\u2800" + fullName;
+			}
+		});
+		row1 = new MessageActionRow()
+			.addComponents(
+				new MessageSelectMenu()
+					.setCustomId("help::module")
+					.setPlaceholder("Select a Module")
+					.addOptions(modules)
+			)
+		row2 = new MessageActionRow()
+			.addComponents(
+				new MessageButton()
+					.setCustomId("help::quickStart")
+					.setLabel("Quick-Start Guide")
+					.setEmoji(emoji.white.timer)
+					.setStyle("SUCCESS"),
+				new MessageButton()
+					.setCustomId("help::search")
+					.setLabel("Search")
+					.setEmoji(emoji.white.search)
+					.setStyle("PRIMARY"),
+			)
 	},
 
 	async modalExecute(interaction) {
@@ -121,134 +246,6 @@ let help: CustomCommand = {
 			logMessage(error, "/help button", interaction);
 		}
 	},
-
-	async onReadyExecute() {
-		for (let i = 0; i < Object.keys(publicCommands).length; i++) {
-			//Get list of commands
-			moduleNum = i;
-			if (publicCommands[Object.keys(publicCommands)[i]].commandHelp) {
-				if (publicCommands[Object.keys(publicCommands)[i]].commandHelp[1]) {
-					for (let i = 0; i < (publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>).length; i++) {
-						commands.push((publicCommands[Object.keys(publicCommands)[moduleNum]].commandHelp as Array<commandHelp>)[i]);
-					}
-				} else {
-					commands.push(publicCommands[Object.keys(publicCommands)[i]].commandHelp as commandHelp);
-				}
-			}
-		}
-		//Make dropdown
-		commands.forEach(command => {
-			if (command.fullName) {
-				fullName = command.fullName
-			} else {
-				fullName = "/" + command.name
-			}
-
-			if (!modules.find(module => module.value == command.module)) {
-				modules.push({
-					label: (command.module.charAt(0).toUpperCase() + command.module.slice(1)),
-					description: fullName,
-					value: (command.module),
-					emoji: emoji.main[command.module],
-				});
-			} else {
-				modules.find(module => module.value == command.module).description += "\u2800\u2800" + fullName;
-			}
-		});
-		row1 = new MessageActionRow()
-			.addComponents(
-				new MessageSelectMenu()
-					.setCustomId("help::module")
-					.setPlaceholder("Select a Module")
-					.addOptions(modules)
-			)
-		row2 = new MessageActionRow()
-			.addComponents(
-				new MessageButton()
-					.setCustomId("help::quickStart")
-					.setLabel("Quick-Start Guide")
-					.setEmoji(emoji.white.timer)
-					.setStyle("SUCCESS"),
-				new MessageButton()
-					.setCustomId("help::search")
-					.setLabel("Search")
-					.setEmoji(emoji.white.search)
-					.setStyle("PRIMARY"),
-			)
-	},
-
-	async execute(interaction) {
-		try {
-			(help.commandData as commandData).uses++;
-
-			await interaction.reply({
-				embeds: [
-					new MessageEmbed()
-						.setColor(colors.clearColor)
-						.setTitle("")
-						.setDescription("")
-						.setImage("https://github.com/chr0mevillager/coyote/blob/master/src/artwork/banners/help.png?raw=true"),
-					new MessageEmbed()
-						.setColor(colors.clearColor)
-						.setTitle("Welcome to the help center!")
-						.setDescription("Find what you are looking for by looking through the modules or searching for a command!")
-				],
-				ephemeral: true,
-				components: [row1, row2],
-			});
-		} catch (error) {
-			logMessage(error, "/help command", interaction);
-		}
-	},
 };
 
 export default help;
-
-function findModule(module: string) {
-	let results = [];
-	results.push(
-		new MessageEmbed()
-			.setColor(colors.mainColor)
-			.setTitle("<:" + module + ":" + emoji.main[module] + ">\u2800" + module.charAt(0).toUpperCase() + module.slice(1) + " Module")
-			.setDescription("")
-	)
-	commands.forEach(command => {
-		if (command.module == module && results.length < 10) {
-			results.push(command.helpMessage);
-		}
-	});
-	return results;
-}
-
-function findCommand(search: string) {
-	let results = [];
-
-	results.push(
-		new MessageEmbed()
-			.setColor(colors.successColor)
-			.setTitle("<:Search_White:" + emoji.white.search + ">\u2800Here are your Results")
-			.setDescription("")
-	)
-	commands.forEach(command => {
-		let match = command.keywords.find(element => {
-			if (element.includes(search) || search.includes(element)) {
-				return true;
-			}
-		});
-
-		if (match !== undefined || command.module.includes(search) || search.includes(command.module) && search && results.length < 10) {
-			results.push(command.helpMessage);
-		}
-	});
-	if (results.length > 1) {
-		return results;
-	} else {
-		return [
-			new MessageEmbed()
-				.setColor(colors.cancelColor)
-				.setTitle("<:X_White:" + emoji.white.x + ">\u2800No Results were Found")
-				.setDescription("")
-		]
-	}
-
-}

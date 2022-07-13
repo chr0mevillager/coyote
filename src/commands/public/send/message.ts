@@ -24,6 +24,7 @@ export const help: commandHelp = {
 		"memo",
 		"communication",
 		"send",
+		"imag",
 	],
 	helpMessage: new MessageEmbed()
 		.setThumbnail("https://github.com/chr0mevillager/coyote/blob/master/src/artwork/command_icons/message.png?raw=true")
