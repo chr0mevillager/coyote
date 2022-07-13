@@ -12,6 +12,7 @@ import send from "./public/send";
 import Edit from "./public/edit";
 import permissions from "./public/perms";
 import announcements from "./public/announcements";
+import generate from "./public/timestamp";
 
 /**A list of developer slash commands*/
 export const developerCommands: Record<string, CustomCommand> = {
@@ -30,4 +31,5 @@ export const publicCommands: Record<string, CustomCommand> = {
 	permissions,
 	send,
 	Edit,
+	generate,
 };
