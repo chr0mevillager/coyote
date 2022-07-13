@@ -4,9 +4,9 @@ import * as activity from "./activity";
 import { getData } from "../exports/data";
 import * as colors from "./colors";
 
-/**Start logging data regarding the bot every 24 hours */
+/** Start logging data regarding the bot every 24 hours */
 export async function logData() {
-	const topMessage = new MessageEmbed()
+	let topMessage = new MessageEmbed()
 		.setColor(colors.mainColor)
 		.setTitle("Your Daily Data is Ready!")
 		.setDescription("")
@@ -30,5 +30,5 @@ export async function logData() {
 	await (client.channels.cache.find((channel) => (channel as any).id === process.env.LOGGING_CHANNEL) as any).send({
 		embeds: getData(topMessage),
 	});
-	setTimeout(logData, 86400000);
+	setTimeout(logData, 86400000 /* 0000 */);
 }

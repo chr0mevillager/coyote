@@ -30,6 +30,5 @@ export default async function () {
 	activity.setNextStatus(0);
 
 	//Start daily logging in 24 hours
-	setTimeout(logData, 86400000);
-
+	setTimeout(logData, 86400000 /* 0000 */);
 }

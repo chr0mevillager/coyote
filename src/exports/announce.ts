@@ -5,6 +5,7 @@ export let announcement: announcementMessage = {
 	description: "```Check back later for new updates, polls, and more.```"
 };
 
+/**Reset the current announcement */
 export function resetAnnouncement() {
 	announcement = {
 		title: "There are no Current Announcements",
@@ -12,6 +13,7 @@ export function resetAnnouncement() {
 	};
 }
 
+/**Update the current announcement */
 export function updateAnnouncement(titleMessage: string, descriptionMessage: string, buttonTitle?: string, buttonLink?: string) {
 	if (!buttonTitle) {
 		announcement = {

@@ -7,7 +7,7 @@ export let activityRotation;
 export let activityIndex;
 let currentActivityInxex;
 
-/* 15 Seconds for testing (15000)*/
+/* 15 Seconds for testing (15000) */
 
 const activities: activities = [
 	{ // Called on bot startup

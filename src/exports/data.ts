@@ -4,6 +4,7 @@ import { client } from "./client";
 import { commandData, commandHelp } from "./types";
 import * as colors from "./colors";
 
+/** Get a list of embeds which contain the data collected through command usage. Pass through the top message embed. */
 export function getData(topMessage: MessageEmbed) {
 	let currentCommand;
 	let commandInfo = [];
