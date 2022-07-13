@@ -18,9 +18,9 @@ const inputModal = new MessageActionRow<ModalActionRowComponent>()
 			.setCustomId("search")
 			.setLabel("What do you want to search for?")
 			.setStyle("SHORT")
-			.setPlaceholder("Ex: message")
+			.setPlaceholder("Ex: How do I send a message?")
 			.setRequired(true)
-			.setMaxLength(20)
+			.setMaxLength(45)
 			.setMinLength(3)
 	);
 const modal = new Modal()
@@ -43,7 +43,8 @@ let help: CustomCommand = {
 			"info",
 			"what",
 			"why",
-			"how",
+			"use",
+			"this",
 		],
 		module: "general",
 		helpMessage: new MessageEmbed()
@@ -92,17 +93,17 @@ let help: CustomCommand = {
 							.setDescription("Get all of the information you need to start out with the Embeds Bot!")
 							.addFields([
 								{
-									name: "📨\u2800Messages",
+									name: "<:Message:" + emoji.main.message + ">\u2800Messages",
 									value: "```js\nQuickly send a fancy message by typing \"/send command\".``````Then, type in a title and description. Hit enter, and then hit the send button.\n\u200b```",
 									inline: true,
 								},
 								{
-									name: "📊\u2800Polls",
+									name: "<:Poll:" + emoji.main.poll + ">\u2800Polls",
 									value: "```js\nEasily send a simple poll by typing \"/send poll\".``````Then, type in a question and 2-4 answers. Hit enter, and then hit the send button.\n\u200b```",
 									inline: true,
 								},
 								{
-									name: "🎁\u2800Giveaways",
+									name: "<:Giveaway:" + emoji.main.giveaway + ">\u2800Giveaways",
 									value: "```js\nEffectively send a robust giveaway by typing \"/send giveaway\".``````Then, type in an item and how many winners there should be. Hit enter, and then hit the send button.```",
 									inline: true,
 								},
@@ -208,7 +209,7 @@ function findModule(module: string) {
 	results.push(
 		new MessageEmbed()
 			.setColor(colors.mainColor)
-			.setTitle(module.charAt(0).toUpperCase() + module.slice(1) + " Module")
+			.setTitle("<:" + module + ":" + emoji.main[module] + ">\u2800" + module.charAt(0).toUpperCase() + module.slice(1) + " Module")
 			.setDescription("")
 	)
 	commands.forEach(command => {
@@ -225,7 +226,7 @@ function findCommand(search: string) {
 	results.push(
 		new MessageEmbed()
 			.setColor(colors.successColor)
-			.setTitle("Here are your Results")
+			.setTitle("<:Search_White:" + emoji.white.search + ">\u2800Here are your Results")
 			.setDescription("")
 	)
 	commands.forEach(command => {
@@ -245,7 +246,7 @@ function findCommand(search: string) {
 		return [
 			new MessageEmbed()
 				.setColor(colors.cancelColor)
-				.setTitle("No Results were Found")
+				.setTitle("<:X_White:" + emoji.white.x + ">\u2800No Results were Found")
 				.setDescription("")
 		]
 	}

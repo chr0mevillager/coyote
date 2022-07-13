@@ -55,7 +55,7 @@ let perms: CustomCommand = {
 				.setColor(colors.clearColor)
 				.setTitle("")
 				.setDescription("")
-				.setImage("https://github.com/chr0mevillager/coyote/blob/master/src/artwork/banners/perms.png?raw=true"),
+				.setImage("https://github.com/chr0mevillager/coyote/blob/master/src/artwork/banners/perms.png?raw=true")
 		);
 
 		await interaction.reply({

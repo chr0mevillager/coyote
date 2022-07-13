@@ -64,7 +64,7 @@ export const help: commandHelp = {
 			},
 			{
 				name: "Ping Group",
-				value: "```Select who you want to ping with the message.\n\n\n\n\u200b```",
+				value: "```Select who you want to ping with the message.\n\n\n\n\n\u200b```",
 				inline: true,
 			},
 			{

@@ -47,7 +47,7 @@ export const help: commandHelp = {
 			},
 			{
 				name: "# of Winners",
-				value: "```Type in how many people you would like to win the giveaway (1-100).\n\u200b```",
+				value: "```Type in how many people you would like to win the giveaway (1-100).```",
 				inline: true,
 			},
 			{

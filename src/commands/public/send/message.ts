@@ -38,7 +38,7 @@ export const help: commandHelp = {
 			},
 			{
 				name: "Image",
-				value: "```Type in a link to an image.\n\n\u200b```",
+				value: "```Type in a link to an image.\n\n\n\u200b```",
 				inline: true,
 			},
 			{
