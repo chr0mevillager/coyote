@@ -45,7 +45,7 @@ let info: CustomCommand = {
 				new MessageEmbed()
 					.setColor(colors.clearColor)
 					.setTitle("Coyote#7040")
-					.setDescription("Run `/help` for help.\n\nRun `/permissions` for permission information.")
+					.setDescription("Run `/help` for help.\n\nRun `/announcements` for polls and news.\n\nRun `/permissions` for permission information.")
 					.addFields(
 						{
 							name: "Version",

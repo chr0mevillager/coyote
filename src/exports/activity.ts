@@ -40,6 +40,12 @@ const activities: activities = [
 		text: "giveaways",
 		duration: 600000,
 	},
+	{
+		emoji: "⌛",
+		type: "watching",
+		text: "timers",
+		duration: 600000,
+	},
 ]
 
 /** Set the activity of the bot.*/
