@@ -7,7 +7,7 @@ import { setMode } from "./mode";
 import * as profileInfo from "./profile_info";
 
 export default async function () {
-	//Send login messages
+	//Send login message
 	if (client.application.id == "942083941307912193") {
 		(client.channels.cache.find((channel) => (channel as any).id === process.env.LOGGING_CHANNEL) as any).send({
 			content: "@everyone",
@@ -28,7 +28,4 @@ export default async function () {
 	//Set activity
 	activity.setRotateStatus(true);
 	activity.setNextStatus(0);
-
-	//Start daily logging in 24 hours
-	setTimeout(logData, 86400000 /* 0000 */);
 }

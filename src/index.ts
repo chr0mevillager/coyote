@@ -90,6 +90,9 @@ client.once("ready", () => {
 	for (let i = 0; i < Object.keys(commands.publicCommands).length; i++) {
 		if (commands.publicCommands[Object.keys(commands.publicCommands)[i]].onReadyExecute) commands.publicCommands[Object.keys(commands.publicCommands)[i]].onReadyExecute();
 	}
+	for (let i = 0; i < Object.keys(commands.developerCommands).length; i++) {
+		if (commands.developerCommands[Object.keys(commands.developerCommands)[i]].onReadyExecute) commands.developerCommands[Object.keys(commands.developerCommands)[i]].onReadyExecute();
+	}
 
 	//Create commands in testing guild (developer commands)
 	const guild = client.guilds.cache.get(process.env.SLASH_COMMAND_TESTING_GUILD);

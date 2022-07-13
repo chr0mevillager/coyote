@@ -4,11 +4,16 @@ import { client } from "../../exports/client";
 import { CustomCommand } from "../../exports/types";
 import { getData } from "../../exports/data";
 import * as profileInfo from "../../exports/profile_info";
+import { logData } from "../../exports/daily_data";
 
 let data: CustomCommand = {
 	data: {
 		name: "data",
 		description: "See a detailed log of information about me!",
+	},
+
+	async onReadyExecute() {
+		setTimeout(logData, 86400000 /* 0000 */);
 	},
 
 	async execute(interaction) {
