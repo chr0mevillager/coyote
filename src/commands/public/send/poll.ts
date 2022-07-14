@@ -297,14 +297,15 @@ export async function interaction(interaction) {
 						});
 					}
 					startPoll();
-				} catch (error) {
+
+				} catch {
 					await interaction.editReply({
 						embeds: [questionEmbeds.invalidPerms, poll(previewResults)],
 						components: [
 							buttons.buttonRowDisabled(uuid),
 						],
 					});
-					console.error(error);
+					updateSent = true;
 				}
 
 				//Cancel

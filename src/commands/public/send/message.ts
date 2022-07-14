@@ -72,7 +72,7 @@ export async function interaction(interaction) {
 		let image: string = "";
 		let ping: string = "";
 
-		if (interaction.options.getString("image") && interaction.options.getString("image").match(/^((https:\/\/)|(http:\/\/))\w{2,100}(\.{1,10}\w{1,100}){1,100}(\/\w{0,100}){0,100}/gm)) image = interaction.options.getString("image");
+		if (interaction.options.getString("image") && interaction.options.getString("image").match(/^((https:\/\/)|(http:\/\/))[a-z A-Z 1-9]+\.[a-z A-Z 1-9]+/gm)) image = interaction.options.getString("image");
 
 		if (title.length > 256) title = title.slice(0, 256);
 		if (description.length > 3998) description = description.slice(0, 3998);

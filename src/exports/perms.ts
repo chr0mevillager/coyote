@@ -8,7 +8,7 @@ const permissions = {
 		.setDescription("```To properly function, I must be able to:```")
 		.addFields([
 			{
-				name: "Embeded Messages",
+				name: "Embed Messages",
 				value: "```ts\n\"Embed Links\" Permission\n\u200b```",
 				inline: true,
 			},

@@ -3,6 +3,7 @@ import { commandData, CustomCommand } from "../../exports/types";
 import logMessage from "../../exports/error";
 import * as colors from "../../exports/colors";
 import { client } from "../../exports/client";
+import permissions from "../../exports/perms";
 
 const inputModalTitle = new MessageActionRow<ModalActionRowComponent>()
 	.addComponents(
@@ -135,7 +136,7 @@ let edit: CustomCommand = {
 			let description = interaction.fields.getTextInputValue("description");
 			let image = "";
 
-			if (interaction.fields.getTextInputValue("image") && interaction.fields.getTextInputValue("image").match(/^((https:\/\/)|(http:\/\/))\w{2,100}(\.{1,10}\w{1,100}){1,100}(\/\w{0,100}){0,100}/gm)) image = interaction.fields.getTextInputValue("image");
+			if (interaction.fields.getTextInputValue("image") && interaction.fields.getTextInputValue("image").match(/^((https:\/\/)|(http:\/\/))[a-z A-Z 1-9]+\.[a-z A-Z 1-9]+/gm)) image = interaction.fields.getTextInputValue("image");
 
 			if (title.length > 256) title = title.slice(0, 256);
 			if (description.length > 3998) description = description.slice(0, 3998);
@@ -150,24 +151,37 @@ let edit: CustomCommand = {
 			if (image == "" && interaction.user.id != process.env.OWNER_ID) description += "\n" + "\u200b";
 			if (description.match(/^[\n\u2800\u200b\s]*$/s)) {
 				if (image == "") {
-					description = "\n\u200b"
+					description = "\n\u200b";
 				} else {
 					description = "";
 				}
 			}
-			try {
-				(await interaction.channel).messages.fetch(messageID).then(message => message.edit({
-					embeds: [
-						new MessageEmbed()
-							.setTitle(title)
-							.setDescription(description)
-							.setFooter({ text: "Edited By: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
-							.setColor(colors.clearColor)
-							.setImage(image)
-					]
-				}));
-			} catch (error) {
-				logMessage(error, "Edit Command (modal)", interaction);
+			if (interaction.channel.permissionsFor(client.user).toArray().includes("VIEW_CHANNEL") && interaction.channel.permissionsFor(client.user).toArray().includes("EMBED_LINKS") && interaction.channel.permissionsFor(client.user).toArray().includes("SEND_MESSAGES") && interaction.channel.permissionsFor(client.user).toArray().includes("SEND_MESSAGES_IN_THREADS")) {
+				try {
+					(await interaction.channel).messages.fetch(messageID).then(message => {
+						try {
+							message.edit({
+								embeds: [
+									new MessageEmbed()
+										.setTitle(title)
+										.setDescription(description)
+										.setFooter({ text: "Edited By: " + interaction.user.username, iconURL: interaction.user.avatarURL() })
+										.setColor(colors.clearColor)
+										.setImage(image)
+								]
+							})
+						} catch { }
+					});
+
+				} catch (error) {
+					logMessage(error, "Edit Message", interaction);
+				}
+			} else {
+				await interaction.reply({
+					embeds: [permissions.message],
+					ephemeral: true,
+				});
+				return;
 			}
 
 			await interaction.reply({
@@ -177,7 +191,7 @@ let edit: CustomCommand = {
 						.setColor(colors.successColor)
 				],
 				ephemeral: true,
-			})
+			});
 		} catch (error) {
 			logMessage(error, "Edit Command (modal)", interaction);
 		}

@@ -174,7 +174,7 @@ let generate: CustomCommand = {
 			"day",
 		],
 		helpMessage: new MessageEmbed()
-			.setThumbnail("https://github.com/chr0mevillager/coyote/blob/master/src/artwork/command_icons/hammer_time.png?raw=true")
+			.setThumbnail("https://github.com/chr0mevillager/coyote/blob/master/src/artwork/command_icons/timer.png?raw=true")
 			.setColor(colors.clearColor)
 			.setTitle("Timer")
 			.setDescription("Create a flexible timer.\n\n```/generate timer [ Seconds ] [ Minutes ] [ Hours ] [ Days ]```")
